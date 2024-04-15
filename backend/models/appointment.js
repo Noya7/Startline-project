@@ -4,8 +4,9 @@ const Schema = mongoose.Schema;
 
 const appointmentSchema = new Schema({
     appointmentDate: {type: Date, required: true},
+    appointmentTimeIndex: {type: Number, required: true},
     area: {type: String, required: true},
-    medic: {type: mongoose.Schema.Types.ObjectId, ref: "Medic", required: true},
+    medic: {type: mongoose.Schema.Types.ObjectId, ref: "Medic", required: false},
 
     name: {type: String, required: true},
     surname: {type: String, required: true},

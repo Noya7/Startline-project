@@ -11,12 +11,12 @@ const medicSchema = new Schema({
     gender: {type: String, required: true},
     birthDate: {type: Date, required: true},
     DNI: {type: Number, required: true},
-    matricula: {type: Number, required: true},
+    matricula: {type: String, required: true},
     position: {type: String, required: true},
+    image: {type: String, required: true},
 
-    reviews: {type: mongoose.Schema.Types.ObjectId, ref: "Review", required: false},
+    reviews: [{type: mongoose.Schema.Types.ObjectId, ref: "Review", required: false}],
     creationDate: {type: String, required: true},
-    createdBy: {type: mongoose.Schema.Types.ObjectId, ref: "Admin", required: true}
 })
 
 module.exports = mongoose.model('Medic', medicSchema);
