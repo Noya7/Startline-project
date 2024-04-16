@@ -9,83 +9,69 @@ const Medic = require('../models/medic');
 const MedicalAuthCode = require('../models/enabling-code')
 
 const HttpError = require('../models/http-error');
+const enablingCode = require('../models/enabling-code');
 
 //function login, for every kind of user.
 
-const login = async(req, res, next) =>{    
-    try{
-        //validacion
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-          let validationErrors = [];
+const login = (userType) => {
+    return async (req, res, next) =>{    
+        try{
+            const {DNI, password} = req.body;
 
-          errors.errors.forEach((err) => {
-            let { path } = err;
-            validationErrors.push(path);
-          });
+            //buscar usuario segun su correspondiente modelo.
 
-          throw new HttpError("Datos invalidos, por favor, corrige tus entradas e intenta de nuevo. Errores: " + validationErrors, 400)
-        }
-
-        const {userType, DNI, password} = req.body;
-
-        //ver si el usuario esta autenticado.
-        if (req.userData) {
-            throw new HttpError("El usuario ya esta autenticado.", 400)
-          }
-
-        //buscar usuario segun su correspondiente modelo.
-        let existingUser;
-
-        switch(userType){
-            case "admin":{
-                existingUser = await Admin.findOne({DNI: DNI});
-                break;
+            let existingUser;
+    
+            switch(userType){
+                case "admin":{
+                    existingUser = await Admin.findOne({DNI: DNI});
+                    break;
+                }
+                case "patient":{
+                    existingUser = await Patient.findOne({DNI: DNI});
+                    break;
+                }
+                case "medic":{
+                    existingUser = await Medic.findOne({DNI: DNI});
+                    break;
+                }
             }
-            case "patient":{
-                existingUser = await Patient.findOne({DNI: DNI});
-                break;
+    
+            if (!existingUser){
+                throw new HttpError("Usuario no encontrado o inexistente.", 404)
             }
-            case "admin":{
-                existingUser = await Medic.findOne({DNI: DNI});
-                break;
+    
+            //comparar contraseñas:
+
+            const hashedPassword = existingUser.password;
+    
+            const isRightPass = await bcrypt.compare(password, hashedPassword);
+    
+            if(!isRightPass){
+                throw new HttpError("La contraseña provista es incorrecta, por favor checkea tu entrada o recupera tu contraseña si la olvidaste.", 401)
             }
-        }
-
-        if (!existingUser){
-            throw new HttpError("Usuario no encontrado o inexistente.", 404)
-        }
-
-        //comparar contraseñas:
-        const {hashedPassword} = existingUser;
-
-        const isRightPass = await bcrypt.compare(password, hashedPassword);
-
-        if(!isRightPass){
-            throw new HttpError("La contraseña provista es incorrecta, por favor checkea tu entrada o recupera tu contraseña si la olvidaste.", 401)
-        }
-
-        //obtencion de token:
-
-        let token = jwt.sign({
-            userId: existingUser.id,
-            DNI: existingUser.DNI,
-            name: existingUser.name,
-            surname: existingUser.surname,
-            userType: userType
-        }, process.env.MY_SECRET, {expiresIn: "1h"})
-
-        res.cookie("token", token, {httpOnly: true}).status(200).json({message: "Sesion iniciada correctamente. Bienvenido!"})
-
-    }catch(err){
-        if (err instanceof HttpError){
-            res.status(err.code).json({error: err.message})
-        }else{
-            console.log(err)
-            res.status(500).json({error: "Lo sentimos, ocurrió un error inesperado en el servidor y estamos trabajando para solucionarlo. Por favor, intenta de nuevo en unos minutos."})
+    
+            //obtencion de token:
+    
+            let token = jwt.sign({
+                userId: existingUser.id,
+                DNI: existingUser.DNI,
+                name: existingUser.name,
+                surname: existingUser.surname,
+                userType: userType
+            }, process.env.MY_SECRET, {expiresIn: "1h"})
+    
+            res.cookie("token", token, {httpOnly: true}).status(200).json({message: "Sesion iniciada correctamente. Bienvenido!"})
+    
+        }catch(err){
+            if (err instanceof HttpError){
+                res.status(err.code).json({error: err.message})
+            }else{
+                console.log(err)
+                res.status(500).json({error: "Lo sentimos, ocurrió un error inesperado en el servidor y estamos trabajando para solucionarlo. Por favor, intenta de nuevo en unos minutos."})
+            }
         }
     }
-
 }
 
 //function reset password:
@@ -93,6 +79,10 @@ const login = async(req, res, next) =>{
 const resetPass = async(req, res, next) =>{
 
 }
+
+
+//***********ADMIN AUTH CONTROLLERS***********
+
 
 //admin signup:
 
@@ -110,7 +100,7 @@ const adminSignup = async(req, res, next) => {
             throw new HttpError('Este E-mail o DNI ya esta en uso por una cuenta de administrador. Si olvidaste tu contraseña, podes recuperarla.', 409);
         }
 
-        //encripcion de contraseña
+        //encripcion de contraseña:
 
         let hashedPassword = await bcrypt.hash(password, 10)
 
@@ -149,13 +139,17 @@ const adminSignup = async(req, res, next) => {
     }
 }
 
+
+//***********MEDIC AUTH CONTROLLERS***********
+
+
 //function verify medic signup code.
 
 const medicSignupVerification = async (req, res, next) => {
     try {
         const {code, matricula} = req.body
 
-        //buscar si la matricula ingresada tiene un codigo asocioado en la db:
+        //buscar si la matricula ingresada tiene un codigo asociado en la db:
 
         const existingCode = await MedicalAuthCode.findOne({matricula: matricula, status: 'active'})
 
@@ -166,7 +160,7 @@ const medicSignupVerification = async (req, res, next) => {
         //comparar el codigo ingresado con el codigo de la db:
 
         if(existingCode.code !== code){
-            throw new HttpError("El codigo ingresado no es correcto, por favor chequea tu entrada e intenta de nuevo.")
+            throw new HttpError("El codigo de verificacion ingresado no es correcto, por favor chequea tu entrada e intenta de nuevo.", 400)
         }
 
         //verificar que el codigo no hay expirado
@@ -175,7 +169,7 @@ const medicSignupVerification = async (req, res, next) => {
         if (codeHasExpired){
             existingCode.status = "expired"
             await existingCode.save()
-            throw new HttpError("El codigo de verificacion ingresado ha caducado. Por favor, solicita otro.")
+            throw new HttpError("El codigo de verificacion ingresado ha caducado. Por favor, solicita otro.", 400)
         }
         
         //respuesta:
@@ -220,6 +214,10 @@ const medicSignup = async (req, res, next) =>{
         })
 
         await createdUser.save()
+
+        //finalmente se elimina el codigo de verificacion de la base de datos:
+
+        await enablingCode.findOneAndDelete({matricula: matricula});
 
         //obtencion de token:
 

@@ -1,17 +1,14 @@
 const jwt = require('jsonwebtoken');
 
-const httpError = require('../models/http-error')
+const HttpError = require('../models/http-error');
 
 const checkAuth = (req, res, next) => {
     try{
         const token = req.cookies.token;
         if(!token){
             req.userData = null
-            console.log("no token")
             return next()
         }
-        console.log("there's a token")
-
         const decodedToken = jwt.verify(token, process.env.MY_SECRET);
         req.userData = { userId: decodedToken.userId, userType: decodedToken.userType};
         return next();
@@ -20,11 +17,27 @@ const checkAuth = (req, res, next) => {
     }
 }
 
-const protectRoute = (req, res, next) => {
-    if(!!req.userData){
-        return next()
-    }else{
-        res.status(401).json({error: "No puedes realizar esta accion sin autenticarte primero. Por favor, inicia sesion o registrate e intenta de nuevo."})
+const protectRoute = (userType) => {
+    return (req, res, next) => {
+        try {
+            //ver si hay userData:
+
+            if(!req.userData){
+                throw new HttpError("No puedes realizar esta accion sin autenticarte primero. Por favor, inicia sesion o registrate e intenta de nuevo.", 401)
+            }
+
+            //ver que user type coincida con el parametro:
+
+            if (req.userData.userType !== userType){
+                throw new HttpError("No estas autorizado para acceder a esta ruta.", 401)
+            }else{
+                return next()
+            }
+        } catch (err) {
+            if (err instanceof HttpError){
+                res.status(err.code).json({error: err.message})
+            }
+        }
     }
 }
 

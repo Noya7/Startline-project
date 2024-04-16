@@ -3,13 +3,16 @@ const express = require('express');
 const {check} = require('express-validator');
 const validationCheck = require('../../middleware/check-validation');
 
-const {adminSignup} = require('../../controllers/auth-controllers')
-const {enableMedicSignup} = require('../../controllers/admin-controllers')
+const {adminSignup, login} = require('../../controllers/auth-controllers')
+const {enableMedicSignup} = require('../../controllers/admin-controllers');
+const { noAuthRoute, protectRoute } = require('../../middleware/check-auth');
 
 
 const router = express.Router()
 
-router.post('/signup', [
+//no auth routes
+
+router.post('/signup', noAuthRoute, [
     check('email').isEmail(),
     check('password').isStrongPassword({
         minLength: 6,
@@ -21,7 +24,15 @@ router.post('/signup', [
     check('DNI').notEmpty().isNumeric().isLength({min: 8, max: 8})
 ], validationCheck, adminSignup)
 
-router.post('/code-generator', [
+router.post('/login', noAuthRoute, [
+    check('DNI').notEmpty().isNumeric().isLength({min: 8, max: 8}),
+    check('password').notEmpty().isLength({min: 6, max: 16}),
+], validationCheck, login('admin'));
+
+
+//auth routes
+
+router.post('/code-generator', protectRoute('admin'), [
     check('matricula').notEmpty().isNumeric(),
     check('email').isEmail()
 ], validationCheck, enableMedicSignup)

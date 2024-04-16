@@ -10,6 +10,8 @@ const {getAppointments, getStatistics, createReport} = require('../../controller
 
 const router = express.Router()
 
+//no auth routes:
+
 router.post('/verify-code', noAuthRoute, [
     check('code').notEmpty(),
     check('matricula').notEmpty()
@@ -29,7 +31,13 @@ router.post('/signup', noAuthRoute, [
     check('DNI').notEmpty().isNumeric().isLength({min: 8, max: 8})
 ], validationCheck, medicSignup);
 
-router.post('/login', login);
+router.post('/login', noAuthRoute, [
+    check('DNI').notEmpty().isNumeric().isLength({min: 8, max: 8}),
+    check('password').notEmpty().isLength({min: 6, max: 16}),
+], validationCheck, login('medic'));
+
+//auth routes:
+
 router.get('/appointments', getAppointments)
 router.get('/stats', getStatistics)
 router.post('/createReport', createReport)
