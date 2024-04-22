@@ -3,8 +3,9 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const appointmentSchema = new Schema({
-    appointmentDate: {type: Date, required: true},
-    appointmentTimeIndex: {type: Number, required: true},
+    fullDate: {type: Date, required: true, unique: true},
+    date: {type: Date, required: true},
+    timeIndex: {type: Number, required: true},
     area: {type: String, required: true},
     medic: {type: mongoose.Schema.Types.ObjectId, ref: "Medic", required: false},
 
