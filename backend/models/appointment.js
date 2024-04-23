@@ -18,7 +18,7 @@ const appointmentSchema = new Schema({
     receipt: {type: mongoose.Schema.Types.ObjectId, ref: "Receipt", required: false},
     review: {type: mongoose.Schema.Types.ObjectId, ref: "Review", required: false},
 
-    creationDate: {type: String, required: true},
+    creationDate: {type: Date, required: true},
 })
 
 module.exports = mongoose.model('Appointment', appointmentSchema);

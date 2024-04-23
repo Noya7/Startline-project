@@ -6,6 +6,7 @@ const { protectRoute } = require('../middleware/check-auth');
 
 const {appointmentUserCheck, firstAppointmentCheck, createAppointment, deleteAppointment, getUnavailableAppointments} = require('../controllers/appointment-controllers')
 const {patientCheck, signup, login} = require('../controllers/auth-controllers');
+const { reviewValidations, createReview } = require('../controllers/review-controllers');
 
 const router = express.Router();
 
@@ -47,4 +48,11 @@ router.post('/create-appointment', appointmentUserCheck, [
 ], validationCheck, firstAppointmentCheck, createAppointment)
 
 router.delete('/delete-appointment', protectRoute(true, 'patient'), check('id').notEmpty().isMongoId(), validationCheck, deleteAppointment)
+
+router.post('/create-review', protectRoute(true, 'patient'), [
+    check(['reviewedMedic', 'appointment']).notEmpty().isMongoId(),
+    check('rating').notEmpty().isInt({min: 1, max: 10}),
+    check('review').notEmpty().isLength({min: 25, max: 500}),
+], validationCheck, reviewValidations, createReview)
+
 module.exports = router;

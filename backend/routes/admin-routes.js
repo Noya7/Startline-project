@@ -21,11 +21,11 @@ router.post('/signup', protectRoute(false), [
         minSymbols: 1
     }).isLength({max: 32}),
     check(['name', 'surname']).trim().isLength({min: 3, max: 24}),
-    check('DNI').trim().notEmpty().isNumeric().isLength({min: 8, max: 8})
+    check('DNI').trim().notEmpty().isNumeric().isLength(8)
 ], validationCheck, signup("admin"))
 
 router.post('/login', protectRoute(false), [
-    check('DNI').trim().notEmpty().isNumeric().isLength({min: 8, max: 8}),
+    check('DNI').trim().notEmpty().isNumeric().isLength(8),
     check('password').notEmpty(),
 ], validationCheck, login('admin'));
 
