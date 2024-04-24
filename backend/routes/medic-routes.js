@@ -13,12 +13,12 @@ const router = express.Router()
 
 //no auth routes:
 
-router.post('/verify-code', protectRoute(false), [
+router.post('/verify-code', protectRoute(false), validationCheck([
     check('code').notEmpty(),
     check('matricula').notEmpty()
-], validationCheck, medicSignupVerification)
+]), medicSignupVerification)
 
-router.post('/signup', protectRoute(false), [
+router.post('/signup', protectRoute(false), validationCheck([
     check('email').isEmail(),
     check('password').isStrongPassword({
         minLength: 6,
@@ -30,33 +30,33 @@ router.post('/signup', protectRoute(false), [
     check(['gender', "matricula", "position", "image"]).trim().notEmpty(),
     check('birthDate').notEmpty().toDate().isISO8601(),
     check('DNI').trim().notEmpty().isNumeric().isLength(8)
-], validationCheck, signup("medic"));
+]), signup("medic"));
 
-router.post('/login', protectRoute(false), [
+router.post('/login', protectRoute(false), validationCheck([
     check('DNI').trim().notEmpty().isNumeric().isLength(8),
     check('password').notEmpty(),
-], validationCheck, login('medic'));
+]), login('medic'));
 
 //auth routes:
 
 router.use(protectRoute(true, "medic"))
 
-router.get('/appointments', [
+router.get('/appointments', validationCheck([
     check('date').notEmpty().toDate().isISO8601(),
     check('page').notEmpty().isInt({min: 1, max: 2})
-], validationCheck, getAppointments)
+]), getAppointments)
 
 router.get('/stats', getStatistics)
 
-router.post('/create-report',[
+router.post('/create-report', validationCheck([
     check(["appointment", "patient"]).notEmpty().isMongoId(),
     check(["motive", "diagnosis", "treatment"]).notEmpty()
-], validationCheck, createReport)
+]), createReport)
 
-router.post('/create-review',[
+router.post('/create-review', validationCheck([
     check('reviewedMedic').notEmpty().isMongoId(),
     check('rating').notEmpty().isInt({min: 1, max: 10}),
     check('review').notEmpty().isLength({min: 25, max: 750})
-], validationCheck, reviewValidations, createReview)
+]), reviewValidations, createReview)
 
 module.exports = router;

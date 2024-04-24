@@ -22,19 +22,19 @@ const appointmentUserCheck = (req, res, next) => {
 //este check sirve para verificar que si el usuario esta tratando de sacar un turno solo con su DNI,
 //sea su primer turno, de lo contrario indicarle que inicie sesion.
 
-const firstAppointmentCheck = async (req, res, next) =>{
-    try {
-        if (!req.userData){
-            const isNotFirstAppointment = await Appointment.findOne({DNI: req.body.DNI})
-            if (!!isNotFirstAppointment){
-                throw new HttpError("Hay una cuenta registrada con tu DNI. Por favor, inicia sesion, y programa tu turno. Si olvidaste tu contraseña, podes recuperarla.", 400)
-            }
-        }
-        return next()
-    } catch (err) {
-        return next(err)
-    }
-}
+// const firstAppointmentCheck = async (req, res, next) =>{
+//     try {
+//         if (!req.userData){
+//             const isNotFirstAppointment = await Appointment.findOne({DNI: req.body.DNI})
+//             if (!!isNotFirstAppointment){
+//                 throw new HttpError("Hay una cuenta registrada con tu DNI. Por favor, inicia sesion, y programa tu turno. Si olvidaste tu contraseña, podes recuperarla.", 400)
+//             }
+//         }
+//         return next()
+//     } catch (err) {
+//         return next(err)
+//     }
+// }
 
 //time validation: helper function que valida que la fecha ingresada para consultar o programar un turno no sea en el pasado,
 //ni mas de 2 meses en el futuro.
@@ -137,4 +137,4 @@ const deleteAppointment = async (req, res, next) => {
     }
 }
 
-module.exports = {appointmentUserCheck, firstAppointmentCheck, createAppointment, deleteAppointment, getUnavailableAppointments}
+module.exports = {appointmentUserCheck, createAppointment, deleteAppointment, getUnavailableAppointments}
