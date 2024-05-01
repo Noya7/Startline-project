@@ -10,7 +10,7 @@ const medicalReportSchema = new Schema({
     motiveForConsultation: {type: String, required: false},
     diagnosis: {type: String, required: false},
     treatment: {type: String, required: false},
-    imageResults: [{type: String, required: false}],
+    // imageResults: [{type: String, required: false}],
     observations: {type: String, required: false}
 })
 

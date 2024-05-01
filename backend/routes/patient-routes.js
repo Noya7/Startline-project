@@ -1,35 +1,18 @@
 const express = require('express');
 const {check} = require('express-validator');
-const validationCheck = require('../middleware/check-validation')
+const {validationCheck, uppercaseField} = require('../middleware/check-validation')
 const { protectRoute } = require('../middleware/check-auth');
-const {createAppointment, deleteAppointment, getUnavailableAppointments, appointmentUserCheck} = require('../controllers/appointment-controllers')
-const {patientCheck, signup, login} = require('../controllers/auth-controllers');
+const {createAppointment, deleteAppointment, getUnavailableAppointments, appointmentUserCheck, getAvailableAreas, getMedicsByArea} = require('../controllers/appointment-controllers')
 const { reviewValidations, createReview } = require('../controllers/review-controllers');
+const { getPatientAppointments, getMedicalHistory } = require('../controllers/patient-controllers');
 
 const router = express.Router();
 
-router.post('/signup', protectRoute(false), validationCheck([
-    check('email').isEmail(),
-    check('password').isStrongPassword({
-        minLength: 6,
-        minUppercase: 1,
-        minNumbers: 1,
-        minSymbols: 1
-    }).isLength({max: 32}),
-    check(['name', 'surname']).trim().isLength({min: 3, max: 24}),
-    check(['gender', "address"]).trim().notEmpty(),
-    check('birthDate').notEmpty().toDate().isISO8601(),
-    check('DNI').trim().notEmpty().isNumeric().isLength({min: 8, max: 8})
-]), signup("patient"));
+router.get('/available-areas', getAvailableAreas);
 
-router.post('/login', protectRoute(false), validationCheck([
-    check('DNI').trim().notEmpty().isNumeric().isLength({min: 8, max: 8}),
-    check('password').notEmpty(),
-]), login('patient'));
-
-router.post('/check-patient-availability', protectRoute(false), validationCheck([
-    check('DNI').trim().isNumeric().isLength({min: 8, max: 8})
-]), patientCheck);
+router.get('/available-medics', validationCheck([
+    check('area').trim().notEmpty()
+]), getMedicsByArea)
 
 router.post('/unavailable-appointments', validationCheck([
     check('date').notEmpty().toDate().isISO8601(),
@@ -38,21 +21,29 @@ router.post('/unavailable-appointments', validationCheck([
 
 router.post('/create-appointment', appointmentUserCheck, validationCheck([
     check('DNI').trim().isNumeric().isLength({min: 8, max: 8}),
-    check(['name', 'surname']).trim().isLength({min: 3, max: 24}),
+    check(['name', 'surname']).customSanitizer(uppercaseField).isLength({min: 3, max: 24}),
     check('medic').notEmpty().isMongoId(),
     check('area').notEmpty().isLength({min: 5, max: 32}),
     check('date').notEmpty().toDate().isISO8601(),
-    check('timeIndex').notEmpty().isInt({min: 0, max: 17})
+    check('timeIndex').trim().notEmpty().isInt({min: 0, max: 17})
 ]), createAppointment)
 
-router.delete('/delete-appointment', protectRoute(true, 'patient'), validationCheck([
+router.use(protectRoute(true, 'patient'));
+
+router.get('/appointments', validationCheck([
+    check('page').notEmpty().isInt()
+]), getPatientAppointments)
+
+router.delete('/delete-appointment', validationCheck([
     check('id').notEmpty().isMongoId()
 ]), deleteAppointment)
 
-router.post('/create-review', protectRoute(true, 'patient'), validationCheck([
+router.post('/create-review', validationCheck([
     check(['reviewedMedic', 'appointment']).notEmpty().isMongoId(),
-    check('rating').notEmpty().isInt({min: 1, max: 10}),
-    check('review').notEmpty().isLength({min: 25, max: 500}),
-]), reviewValidations, createReview)
+    check('rating').trim().notEmpty().isInt({min: 1, max: 10}),
+    check('review').trim().notEmpty().isLength({min: 25, max: 500}),
+]), reviewValidations, createReview);
+
+router.get('/get-medical-history', getMedicalHistory)
 
 module.exports = router;

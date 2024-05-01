@@ -1,13 +1,11 @@
 const jwt = require('jsonwebtoken');
 const HttpError = require('../models/http-error');
 
-//mejorar estos middlewares.
-
 const checkAuth = (req, res, next) => {
     try {
         if(req.cookies.token){
             const decodedToken = jwt.verify(req.cookies.token, process.env.MY_SECRET, (err, decoded) => {
-                if (err) throw new HttpError("Error en la verificacion de token: " + err, 400);
+                if (err) throw new HttpError("Error en la verificacion de token: " + err.message, 401);
                 return decoded
             });
             req.userData = {...decodedToken};

@@ -2,6 +2,7 @@ const dayjs = require("dayjs");
 const utc = require("dayjs/plugin/utc")
 const Appointment = require("../models/appointment");
 const Patient = require('../models/patient')
+const Medic = require('../models/medic')
 const HttpError = require("../models/http-error");
 const mongoose = require("mongoose");
 
@@ -19,34 +20,32 @@ const appointmentUserCheck = (req, res, next) => {
     }
 }
 
-//este check sirve para verificar que si el usuario esta tratando de sacar un turno solo con su DNI,
-//sea su primer turno, de lo contrario indicarle que inicie sesion.
+//getFullDate: dada una fecha y un time index, devuelve la fullDate:
 
-// const firstAppointmentCheck = async (req, res, next) =>{
-//     try {
-//         if (!req.userData){
-//             const isNotFirstAppointment = await Appointment.findOne({DNI: req.body.DNI})
-//             if (!!isNotFirstAppointment){
-//                 throw new HttpError("Hay una cuenta registrada con tu DNI. Por favor, inicia sesion, y programa tu turno. Si olvidaste tu contraseña, podes recuperarla.", 400)
-//             }
-//         }
-//         return next()
-//     } catch (err) {
-//         return next(err)
-//     }
-// }
+const getFullDate = (date, timeIndex) => {
+    dayjs.extend(utc);
+    let initialDate, finalDate;
+    if (timeIndex >= 0 && timeIndex <= 9) {
+        initialDate = dayjs(date).utcOffset(-3).add(8, 'hours');
+        finalDate = dayjs(initialDate).utcOffset(-3).add((0.5 * timeIndex), 'hour');
+    } else if (timeIndex >= 10 && timeIndex <= 17) {
+        initialDate = dayjs(date).utcOffset(-3).add(14, 'hours');
+        finalDate = dayjs(initialDate).utcOffset(-3).add((0.5 * (timeIndex - 10)), 'hour');
+    }
+    return finalDate;
+}
 
-//time validation: helper function que valida que la fecha ingresada para consultar o programar un turno no sea en el pasado,
-//ni mas de 2 meses en el futuro.
+//time validation: helper function que valida que la fecha ingresada este en el constraint de tiempo.
 
-const timeValidation = (date) => {
+const timeValidation = (date, timeIndex) => {
+    const input = dayjs(date);
     //primero validar que la fecha no sea en el pasado.
-    const isBeforeToday = dayjs(date).isBefore(dayjs().startOf('day'));
-    if(isBeforeToday){throw new HttpError("No se pueden programar turnos en el pasado.", 400)}
+    const inputFullDate = timeIndex ? getFullDate(input, timeIndex) : input;
+    if (inputFullDate.isBefore(dayjs())) throw new HttpError("No se pueden programar turnos en el pasado.", 400)
     //Validar que la fecha este dentro del periodo de dos meses desde hoy.
     const maxDate = dayjs().add(2, "months");
-    const isLaterThanMax = dayjs(date).isAfter(maxDate)
-    if(isLaterThanMax){throw new HttpError("Lo sentimos, no programamos turnos con mas de dos meses de antelación.", 400)}
+    if (input.isAfter(maxDate)) throw new HttpError("Lo sentimos, no programamos turnos con mas de dos meses de antelación.", 400);
+    if ([0, 6].includes(dayjs(date).day())) throw new HttpError("Lo sentimos, no programamos turnos en fines de semana.", 400)
     return;
 }
 
@@ -57,10 +56,13 @@ const getUnavailableAppointments = async (req, res, next) => {
     try {
         const {date, medic} = req.body
         timeValidation(date)
+        //validar que el medico exista:
+        const existingMedic = await Medic.findById(medic, {DNI: 1});
+        if (!existingMedic) throw new HttpError('El medico seleccionado no existe.', 404)
         //obtener los turnos disponibles para esa fecha:
-        const takenAppointments = await Appointment.find({date: date, medic})
+        const takenAppointments = await Appointment.find({date: date, medic}, {fullDate: 1, date: 1, timeIndex: 1})
         //Verificamos si en esta fecha hay turnos tomados. Si esto no pasa, devolvemos null.
-        if(takenAppointments.length === 0){
+        if(!takenAppointments.length){
             return res.status(204).json({unavailableAppointments: null})
         }
         //si hay turnos tomados, entonces devolvemos un array con estos.
@@ -72,69 +74,102 @@ const getUnavailableAppointments = async (req, res, next) => {
     }
 }
 
+//get available areas:
+
+const getAvailableAreas = async (req, res, next) => {
+    try{
+        const areas = await Medic.distinct('area');
+        if (!areas.length) return res.status(204).json({message: 'No hay areas disponibles para elegir.'});
+        return res.status(200).json({areas})
+    } catch (err) {
+        return next(err)
+    }
+}
+
+//get medics by area:
+
+const getMedicsByArea = async (req, res, next) => {
+    try{
+        const {area} = req.query
+        const medics = await Medic.find({area}).select('name surname matricula image');
+        if (!medics.length) return res.status(204).json({message: 'No hay medicos disponibles para mostrar.'});
+        return res.status(200).json({medics})
+    } catch (err) {
+        return next(err)
+    }
+}
+
 //create appointment:
 
 const createAppointment = async(req, res, next) => {
+    const session = await mongoose.startSession()
     try {
+        session.startTransaction()
         const {userId, DNI, name, surname, date, timeIndex, area, medic} = req.body;
         //validacion de fecha:
-        timeValidation(date)
+        timeValidation(date, timeIndex)
+        //validar que el medico exista:
+        const existingMedic = await Medic.findById(medic, {DNI: 1});
+        if (!existingMedic) throw new HttpError('El medico seleccionado no existe.', 404)
         //conversion de fecha y time index a una sola fecha y hora:
-        dayjs.extend(utc)
-        let initialDate, finalDate;
-        if (timeIndex >= 0 && timeIndex <= 9) {
-            initialDate = dayjs(date).utcOffset(-3).add(8, 'hours');
-            finalDate = dayjs(initialDate).utcOffset(-3).add((0.5 * timeIndex), 'hour');
-        } else if (timeIndex >= 10 && timeIndex <= 17) {
-            initialDate = dayjs(date).utcOffset(-3).add(14, 'hours');
-            finalDate = dayjs(initialDate).utcOffset(-3).add((0.5 * (timeIndex - 10)), 'hour');
-        } else {
-            throw new HttpError('El horario escogido es invalido. Por favor, escoge un horario de la lista.', 401);
-        }
-        //verificar que no haya un appointment creado para esa fecha en ese time index:     
-        const existingAppointment = await Appointment.findOne({fullDate: finalDate})        
-        if (!!existingAppointment){
+        const fullDate = getFullDate(date, timeIndex)
+        //verificar que no haya un appointment creado para el medico en esa fecha, en ese time index:
+        const existingAppointment = await Appointment.findOne({fullDate, medic}, {fullDate: 1}); 
+        if (existingAppointment){
             throw new HttpError("Este turno no esta disponible, por favor elige un horario disponible e intenta de nuevo.", 409)
-        }       
-        //se procede a crear el appointment.        
-        const createdAppointment = new Appointment({
-            fullDate: finalDate,
+        }
+        //se verifica si el DNI ingresado tiene un usuario asociado. Si esto sucede, el turno se carga a su cuenta.
+        const existingPatient = await Patient.findOne({DNI, name, surname}, {DNI: 1, name: 1, surname: 1})
+        if (existingPatient && (existingPatient.name !== name || existingPatient.surname !== surname)){
+            throw new HttpError('Ya existe un paciente registrado con este DNI, pero diferente nombre y apellido. Por favor, ingresa tus datos correctamente, o saca el turno iniciando sesion en tu cuenta de paciente.', 409)
+        }
+        //se procede a crear el appointment.
+        const createdAppointment = await new Appointment({
+            fullDate,
             date: date,
             timeIndex: timeIndex,
             area, medic, name, surname, DNI,
-            existingPatient: userId ? userId : undefined,
+            existingPatient: userId ? userId : existingPatient ? existingPatient.id : null,
             creationDate: new Date()
-        })      
-        await createdAppointment.save();
+        }).save({session})     
         //agregar el appointment a los appointments del paciente, si este esta registrado:
-        if(userId){
-            await Patient.findByIdAndUpdate(userId, {$push : {appointments: new mongoose.Types.ObjectId(createdAppointment.id)}})
+        if(userId || (existingPatient && existingPatient.id)){
+            await Patient.findByIdAndUpdate(userId ? userId : existingPatient.id, {$push : {appointments: createdAppointment.id}}, {session})
         }
         //respuesta:
         const successMessage = userId ?
         "Turno creado! Recorda que con tu cuenta podes gestionar tus turnos, diagnosticos y tratamientos." :
-        "Turno creado! Te invitamos a crear una cuenta de paciente para gestionar tus turnos, diagnosticos y tratamientos."     
+        "Turno creado! Si aun no te registraste, te invitamos a crear una cuenta de paciente para gestionar tus turnos, diagnosticos y tratamientos."
+        await session.commitTransaction()
         return res.status(200).json({message: successMessage})
     } catch (err) {
+        await session.abortTransaction()
         return next(err)
+    } finally {
+        await session.endSession()
     }
 }
 
 //delete appointment:
 
 const deleteAppointment = async (req, res, next) => {
+    const session = await mongoose.startSession()
     try {
-        const appointment = await Appointment.findById(req.body.id);
-        if(!appointment){throw new HttpError('Este turno fue eliminado o no existe.', 404)}
-        const mongoUserId = new mongoose.Types.ObjectId(req.userData.userId)
-        const isCreator = appointment.existingPatient.equals(mongoUserId) 
-        if (!isCreator){throw new HttpError('No podes eliminar turnos que no te pertenecen.', 409)}
-        await Appointment.findByIdAndDelete(req.body.id)
-        await Patient.findByIdAndUpdate(req.userData.userId, {$pull: {appointments: new mongoose.Types.ObjectId(req.body.id)}})
+        session.startTransaction()
+        const appointment = await Appointment.findById(req.body.id, {existingPatient: 1});
+        if(!appointment) throw new HttpError('Este turno fue eliminado o no existe.', 404);
+        const isCreator = appointment.existingPatient.equals(req.userData.userId) 
+        if (!isCreator) throw new HttpError('No podes eliminar turnos que no te pertenecen.', 409);
+        await Appointment.findByIdAndDelete(req.body.id, {session})
+        await Patient.findByIdAndUpdate(req.userData.userId, {$pull: {appointments: req.body.id}}, {session})
+        await session.commitTransaction()
         return res.status(204).json({message: "Turno eliminado."})
     } catch (err) {
+        await session.abortTransaction()
         return next(err)
+    } finally {
+        await session.endSession()
     }
 }
 
-module.exports = {appointmentUserCheck, createAppointment, deleteAppointment, getUnavailableAppointments}
+module.exports = {appointmentUserCheck, getAvailableAreas, getMedicsByArea, createAppointment, deleteAppointment, getUnavailableAppointments}

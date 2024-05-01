@@ -4,7 +4,7 @@ const HttpError = require('../models/http-error')
 
 const errorHandler = (err, req, res, next) => {
     console.log("error detected")
-    if(err instanceof  HttpError){
+    if(err instanceof HttpError){
         return res.status(err.code).json({error: err.message})
     }
     if(err instanceof MongoServerError){

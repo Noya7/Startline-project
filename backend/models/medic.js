@@ -13,7 +13,7 @@ const medicSchema = new Schema({
     birthDate: {type: Date, required: true},
     
     matricula: {type: String, required: true, unique: true},
-    position: {type: String, required: true},
+    area: {type: String, required: true},
     image: {type: String, required: true},
 
     reviews: [{type: mongoose.Schema.Types.ObjectId, ref: "Review", required: false}],
