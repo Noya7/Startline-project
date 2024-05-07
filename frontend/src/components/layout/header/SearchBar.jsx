@@ -2,8 +2,8 @@ import classes from './SearchBar.module.css'
 
 const SearchBar = () => {
   return (
-    <form className={classes.searchBar}>
-      <input type="text" placeholder="Search..." />
+    <form className={`${classes.searchBar} ${classes.glass}`}>
+      <input className={classes.glass} type="text" placeholder="Search..." />
       <button type="submit">
         search
       </button>

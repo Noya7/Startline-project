@@ -1,0 +1,26 @@
+.item{
+    box-sizing: border-box;
+    width: 100%;
+    height: 10%;
+    display: grid;
+    grid-template-columns: 20% 70% 10%;
+    align-items: center;
+    transition: background-color 0.3s;
+}
+
+.item:hover{
+    background-color: #9900335a;
+}
+
+.item p{
+    justify-self: center;
+    font-weight: 400;
+}
+
+.item a{
+    width: 90%;
+    height: 90%;
+    border-radius: 2vw;
+    background-color: transparent;
+}
+

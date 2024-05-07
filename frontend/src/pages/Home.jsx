@@ -1,13 +1,15 @@
-import TextBox from '../components/TextBox';
-import classes from './Home.module.css';
+import Info from '../components/homeSlides/Info';
+import Slider from '../components/layout/slider/Slider';
+import HOME_SLIDER_TEXT from '../assets/text/home';
+
+const {INFO} = HOME_SLIDER_TEXT;
 
 const Home = () => {
     return(
-        <div className={classes.layout}>
-            <div className={classes.grid}>
-                <TextBox />
-            </div>
-        </div>
+        <Slider>
+            <Info backgroundImage={INFO.backgroundImage} title={INFO.title} description={INFO.description} buttonText={INFO.buttonText} buttonLink={INFO.buttonLink} />
+            
+        </Slider>
     )
 }
 

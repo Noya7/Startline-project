@@ -1,0 +1,39 @@
+.main{
+    box-sizing: border-box;
+    width: 100%;
+    align-self: center;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), #ffffff00);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 0.1vw solid #ffffff2e;
+    border-radius: 2vw;
+    box-shadow: 0 8px 32px 0 #0000005e;
+}
+
+.medic{
+    box-sizing: border-box; 
+    height: 45%;
+    padding: 10% 2.5%;
+    display: grid;
+    grid-template-rows: 20% 20% 20%;
+    gap: 20%;
+    background-color: #99003389;
+    border-color: #5F021F2e;
+    color: #E0E0E0;
+}
+
+a{
+    box-sizing: border-box;
+    border-radius: 100%;
+    width: 100%;
+    height: 100%;
+    justify-self: center;
+    align-self: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.05);
+    text-decoration: none;
+    color: #E0E0E0;
+
+}
