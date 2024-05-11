@@ -1,0 +1,131 @@
+.grid{
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    padding: 2% 2%;
+    display: grid;
+    grid-template-rows: 8% 90%;
+    gap: 2%;
+}
+
+.pagination{
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    padding: 0 2.5%;
+    display: grid;
+    grid-template-columns: 60% 30%;
+    gap: 10%;
+}
+
+.pagination div{
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    padding: 0 2%;
+    display: grid;
+    grid-template-columns: 35% 60%;
+    gap: 5%;
+    align-items: center;
+    border-radius: 2vw;
+    background-color: rgba(0, 0, 0, 0.223);
+}
+
+.buttons{
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 23% 23% 23% 23%;
+    gap: 2%;
+    align-items: center;
+}
+
+.buttons button{
+    width: 100%;
+    height: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 1vw;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.223);
+    outline: none;
+}
+
+.pages{
+    width: 100%;
+    height: 75%;
+    padding: 1% 2%;
+    align-self: center;
+    align-items: center;
+    display: grid;
+    grid-template-columns: 45% 45%;
+    gap: 10%;
+    background-color: rgba(0, 0, 0, 0.223);
+    border-radius: 1vw;
+}
+
+.pages button{
+    width: 100%;
+    height: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 1vw;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.223);
+    outline: none;
+}
+
+.buttons button,
+.pages button {
+  background-color: transparent;
+  color: #E0E0E0; 
+  font-size: 14px; 
+  padding: 5px 10px; 
+  cursor: pointer; 
+  transition: background-color 0.3s; 
+}
+
+.buttons button:hover,
+.pages button:hover {
+  background-color: #9900335a;
+}
+
+.list{
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-rows: 8% 92%;
+    background-color: rgba(0, 0, 0, 0.223);
+    border-radius: 1vw;
+}
+
+.refference{
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 20% 70% 10%;
+    align-items: center;
+    border-bottom: 0.1vw solid rgba(0, 0, 0, 0.223);
+}
+
+.refference h2{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 400;
+}
+
+.list ul{
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+}
+
+.list ul::-webkit-scrollbar{
+    display: none;
+}

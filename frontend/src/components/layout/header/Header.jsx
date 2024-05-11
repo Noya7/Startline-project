@@ -21,7 +21,7 @@ const Header = ({type}) => {
         <h1>StartLine Clinic</h1>
         <span>
           <Link to={"turnos"}>Turnos Online</Link>
-          <Link to={"login"}>Iniciar Sesion</Link>
+          <Link to={"auth/login"}>Iniciar Sesion</Link>
         </span>
       </div>
       <nav>

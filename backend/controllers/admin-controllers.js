@@ -29,7 +29,7 @@ const enableMedicSignup = async (req, res, next) => {
         //si pasamos a esta etapa es porque no existe un codigo activo ni uno expirado.
         //generamos un token con expiracion en 2 dias:
         const token = jwt.sign({matricula, area}, process.env.RESET_SECRET, {expiresIn: 3600*48})
-        const url = `${process.env.FRONTEND_URL}/medic/signup/${token}`
+        const url = `${process.env.FRONTEND_URL}/auth/signup/medic?token=${token}`
         //guardar en base de datos
         await new EnablingCode({ matricula, email, expDate: dayjs().add(2,'days'), isActive: true }).save({session})
         //envio de codigo por mail mediante nodemailer:

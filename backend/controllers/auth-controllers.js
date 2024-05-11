@@ -144,11 +144,21 @@ const login = async (req, res, next) =>{
 
 //function auto login, logs user with just token, if not expired:
 
-const autoLogin = (userType) => {
-  return (req, res) => {
-    
-  }
+const autoLogin = (req, res, next) => {
+  if(!req.userData) throw new HttpError('Credenciales invalidas, caducadas o inexistentes. Por favor, loggeate de nuevo.', 400)
+  delete req.userData.iat;
+  delete req.userData.exp;
+  return res.status(200).json(req.userData)
 }
+
+//function logout: deletes the token cookie. Only way to actually log out since its an httpOnly cookie.
+
+const logout = (req, res, next) => {
+  if (!req.userData) throw new HttpError('No hay una sesion activa para cerrar.', 400)
+  return res.clearCookie("token", {httpOnly: true}).status(200).json({message: "Sesión finalizada correctamente."})
+}
+
+//function reset password:
 
 // send password reset token:
 
@@ -164,12 +174,12 @@ const mailResetToken = async(req, res, next) =>{
       case "patient" : type = Patient; break;
       default : throw new HttpError("Tipo de usuario invalido.", 400)
     }
-    const existingUser = await type.findOne({DNI}).select('email');
+    const existingUser = await type.findOne({DNI}).select('email name surname');
     if (!existingUser) throw new HttpError("No existe ningun usuario registrado con este DNI en la base de datos. Por favor, chequea tus entradas.", 404)
     const payload = {existingUser, usertype}
     //generate reset token with different secret, and then generate reset url:
     const resetToken = jwt.sign(payload, process.env.RESET_SECRET, {expiresIn: '15m'})
-    const resetURL =  `${process.env.FRONTEND_URL}/auth/reset/${resetToken}`
+    const resetURL =  `${process.env.FRONTEND_URL}/auth/reset?token=${resetToken}`
     //send mail with url
     mail.resetPass(existingUser.email, resetURL)
     //response:
@@ -179,11 +189,25 @@ const mailResetToken = async(req, res, next) =>{
   }
 }
 
+//function verify reset token:
+
+const verifyResetToken = async(req, res, next) => {
+  try {
+    const {token} = req.headers;
+    const decoded = jwt.verify(token, process.env.RESET_SECRET, (err, decoded)=>{
+      if (err) throw new HttpError("Error en la verificacion de token: " + err.message, 401);
+      return decoded
+    })
+    return res.status(200).json(decoded)
+  } catch (err) {
+    return next(err)
+  }
+}
+
 //function reset password:
 
 const resetPassword = async(req, res, next) => {
   try {
-    //get token and email from body
     const {token} = req.headers;
     //verify token
     const decoded = jwt.verify(token, process.env.RESET_SECRET, (err, decoded)=>{
@@ -230,6 +254,8 @@ const medicSignupVerification = async (req, res, next) => {
       return decoded;
     }) 
     //respuesta:
+    delete decoded.exp;
+    delete decoded.iat;
     res.status(200).json(decoded)
   } catch (err) {
     return next(err)
@@ -250,10 +276,10 @@ const patientCheck = async (req, res, next) =>{
       const existingAppointment = await Appointment.findOne({DNI: DNI}, {DNI: 1});
       if(!existingAppointment) throw new HttpError("Tu DNI no esta registrado en nuestra base de datos, no puedes crear una cuenta de paciente sin tener turnos para gestionar.", 404);
       //respuesta positiva, el front redirige a form de registro de paciente.
-      return res.status(200).json({message: "Disponible para creacion de usuario paciente."})
+      return res.status(200).json({DNI, message: "Disponible para creacion de usuario paciente."})
   } catch (err) {
     return next(err)  
   }
 }
 
-module.exports = {signup, login, mailResetToken, resetPassword, medicSignupVerification, patientCheck}
+module.exports = {signup, login, autoLogin, logout, mailResetToken, verifyResetToken, resetPassword, medicSignupVerification, patientCheck}

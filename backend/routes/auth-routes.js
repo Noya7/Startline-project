@@ -1,6 +1,6 @@
 const express = require('express')
 const multer = require('multer')
-const {login, signup, mailResetToken, resetPassword, medicSignupVerification, patientCheck} = require('../controllers/auth-controllers')
+const {login, signup, mailResetToken, resetPassword, medicSignupVerification, patientCheck, autoLogin, logout, verifyResetToken} = require('../controllers/auth-controllers')
 const {validationCheck, uppercaseField} = require('../middleware/check-validation')
 const {check} = require('express-validator')
 const { protectRoute } = require('../middleware/check-auth')
@@ -10,7 +10,6 @@ const upload = multer();
 
 router.post('/signup', protectRoute(false), upload.single('image'), [
     validationCheck([
-        check('usertype').notEmpty().isIn(['admin','medic','patient']),
         check('email').trim().isEmail(),
         check('password').isStrongPassword({
             minLength: 6,
@@ -34,13 +33,22 @@ router.post('/signup', protectRoute(false), upload.single('image'), [
 ], signup)
 
 router.post('/login', protectRoute(false), validationCheck([
+    check('usertype').notEmpty().isIn(['admin','medic','patient']),
     check('DNI').trim().notEmpty().isNumeric().isLength({ min: 8, max: 8 }),
     check('password').notEmpty(),
 ]), login);
 
+router.get('/autoLogin', autoLogin);
+
+router.get('/logout', logout)
+
 router.post('/reset-mail', validationCheck([
     check('DNI').trim().isNumeric().isLength({ min: 8, max: 8 })
 ]), mailResetToken)
+
+router.get('/verify-reset-token', validationCheck([
+    check('token').notEmpty(),
+]), verifyResetToken)
 
 router.post('/reset-password', validationCheck([
     check('password').isStrongPassword({

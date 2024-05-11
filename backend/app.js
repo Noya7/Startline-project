@@ -3,6 +3,7 @@ require('dotenv').config()
 const express = require("express");
 const mongoose = require('mongoose')
 const cookieParser = require('cookie-parser')
+const cors = require('cors')
 
 const {checkAuth} = require('./middleware/check-auth')
 const {errorHandler} = require('./middleware/error-handler')
@@ -10,7 +11,15 @@ const {errorHandler} = require('./middleware/error-handler')
 const router = require('./routes/router')
 
 const app = express();
-app.use(express.json(), cookieParser(), checkAuth)
+
+const corsOptions = {
+    origin: [process.env.FRONTEND_URL],
+    credentials: true,
+    optionsSuccessStatus: 200
+};
+
+app.options('*', cors(corsOptions));
+app.use(express.json(), cors(corsOptions), cookieParser(), checkAuth)
 app.use('/api', router)
 app.use(errorHandler)
 

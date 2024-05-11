@@ -12,9 +12,7 @@ const patientSchema = new Schema({
     gender: {type: String, required: true},
     birthDate: {type: Date, required: true},
 
-    address: {type: String, required: true},
     medicalHistory: [{type: mongoose.Schema.Types.ObjectId, ref: "MedicalReport", required: false}],
-
     appointments: [{type: mongoose.Schema.Types.ObjectId, ref: "Appointment", required: false}],
     creationDate: {type: String, required: true},
 })
