@@ -13,16 +13,14 @@ const router = require('./routes/router')
 const app = express();
 
 const corsOptions = {
-    origin: true,
+    origin: [process.env.FRONTEND_URL],
     credentials: true,
     optionsSuccessStatus: 200
 };
 
-// app.options('*', cors(corsOptions));
-app.use(cors())
+app.options('*', cors(corsOptions));
 app.use(express.json(), cors(corsOptions), cookieParser(), checkAuth)
 app.use('/api', router)
-app.use('/test', (req, res) => res.send('Test route'))
 app.use(errorHandler)
 
 const startServer = async () => {
