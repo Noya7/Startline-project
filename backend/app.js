@@ -27,7 +27,7 @@ app.use(errorHandler)
 const startServer = async () => {
     try {
         await mongoose.connect(process.env.MONGODB_URI);
-        app.listen(process.env.PORT, () => console.log(`Server running on port ${process.env.PORT}`) );
+        app.listen(process.env.PORT || 3000, () => console.log(`Server running on port ${process.env.PORT}`) );
     } catch (err) {
         console.error('Error starting server:', err.message);
         return {
