@@ -18,8 +18,8 @@ const corsOptions = {
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH']
 };
 
-// app.options('*', cors(corsOptions));
-app.use(cors())
+app.options('*', cors(corsOptions));
+// app.use(cors(corsOptions))
 app.use(express.json(), cors(corsOptions), cookieParser(), checkAuth)
 app.use('/api', router)
 app.use(errorHandler)
