@@ -153,7 +153,7 @@ const login = async (req, res, next) =>{
       maxAge: 3600000, 
       sameSite: 'none', 
       secure: true, 
-      domain: '.vercel.app' 
+      // domain: '.vercel.app' 
     }).status(200).json({userData, message: "Sesion iniciada correctamente. Bienvenido!"})
   } catch (err) {
     return next(err)
