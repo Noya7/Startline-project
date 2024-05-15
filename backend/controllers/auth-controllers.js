@@ -95,7 +95,13 @@ const signup = async (req, res, next) => {
     );
     await session.commitTransaction();
     //respuesta:
-    return res.status(201).cookie("token", token, { httpOnly: true, maxAge: 3600000 }).json({ userData, message: "Usuario creado correctamente!" });
+    return res.status(201).cookie("token", token, { 
+      httpOnly: true, 
+      maxAge: 3600000, 
+      sameSite: 'none', 
+      secure: true, 
+      domain: '.vercel.app' 
+    }).json({ userData, message: "Usuario creado correctamente!" });
   } catch (err) {
     //falta eliminar imagen de perfil de medico en caso de un error.
     await session.abortTransaction();
@@ -142,7 +148,13 @@ const login = async (req, res, next) =>{
         : { userId: userData.userId, userType: userData.userType },
       process.env.MY_SECRET, { expiresIn: "1h" });
     //respuesta:
-    res.cookie("token", token, {httpOnly: true, maxAge: 3600000}).status(200).json({userData, message: "Sesion iniciada correctamente. Bienvenido!"})
+    res.cookie("token", token, { 
+      httpOnly: true, 
+      maxAge: 3600000, 
+      sameSite: 'none', 
+      secure: true, 
+      domain: '.vercel.app' 
+    }).status(200).json({userData, message: "Sesion iniciada correctamente. Bienvenido!"})
   } catch (err) {
     return next(err)
   }
