@@ -13,12 +13,13 @@ const router = require('./routes/router')
 const app = express();
 
 const corsOptions = {
-    origin: [process.env.FRONTEND_URL],
+    origin: "*",
     credentials: true,
-    optionsSuccessStatus: 200
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH']
 };
 
-app.options('*', cors(corsOptions));
+// app.options('*', cors(corsOptions));
+app.use(cors(corsOptions))
 app.use(express.json(), cors(corsOptions), cookieParser(), checkAuth)
 app.use('/api', router)
 app.use(errorHandler)
@@ -37,3 +38,5 @@ const startServer = async () => {
 };
 
 startServer();
+
+module.exports = app;

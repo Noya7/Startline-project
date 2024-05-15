@@ -1,3 +1,3 @@
-import app from '..app.js';
+module.exports = require('../app.js') ;
 
-export default app;
+// export default app;
