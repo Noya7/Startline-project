@@ -12,14 +12,7 @@ const router = require('./routes/router')
 
 const app = express();
 
-// const corsOptions = {
-//     origin: '*',
-//     credentials: true,
-//     optionsSuccessStatus: 200
-// };
-
-app.use(cors());
-// app.use(cors(corsOptions))
+app.use(cors({ credentials: true, origin: process.env.FRONTEND_URL }))
 app.use(express.json(), cookieParser(), checkAuth)
 app.use('/api', router)
 app.use(errorHandler)
