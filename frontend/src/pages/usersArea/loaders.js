@@ -28,10 +28,13 @@ export const patientLoader = async () =>{
         userData = autoLoginData.payload;
     }
 
-    const appointmentData = await store.dispatch(userData.userType === 'medic' ?
-    getMedicAppointmentsAsync(new Date()) :
+    const today = new Date();
+    const formattedDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+
+    await store.dispatch(userData.userType === 'medic' ?
+    getMedicAppointmentsAsync(formattedDate) :
     getPatientAppointmentsAsync(1)
     )
-    if (appointmentData.type === 'patients/get-appointments/rejected') return null;
-    return appointmentData
+
+    return null
 }

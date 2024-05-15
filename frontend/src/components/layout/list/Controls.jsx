@@ -4,9 +4,7 @@ import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 const Controls = ({ type, onPageChange, currentPage, totalPages, onDateChange }) => {
     const handlePageChange = (direction) => {
       const newPage = direction === 'next' ? currentPage + 1 : currentPage - 1;
-      if (newPage >= 1 && newPage <= totalPages) {
-        onPageChange(newPage);
-      }
+      if (newPage >= 1 && newPage < totalPages) onPageChange(newPage);
     };
   
     return (

@@ -15,8 +15,8 @@ const Item = ({ data, type }) => {
     <>
       <p className={classes.date}>{getFormattedDate(data.fullDate)}</p>
       <span className={classes.medicSpan}>
-        <img src={data.medic.image} alt={data.name} />
-        <p>{data.medic.name} {data.medic.surname}, {data.area}</p>
+        <img src={data.medic?.image} alt={data.name} />
+        <p>{data.medic?.name} {data.medic?.surname}, {data.area}</p>
       </span>
       <span className={classes.actions}>
         {!isPastAppointment ? (

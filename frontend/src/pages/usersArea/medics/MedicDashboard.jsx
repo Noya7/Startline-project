@@ -21,36 +21,17 @@ const chartOptions = {
     },
   },
   responsive: true,
-  maintainAspectRatio: false,
+  maintainAspectRatio: true,
 };
 
 const Dashboard = () => {
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const state = useSelector(state => state.auth.userData)
-
-  useEffect(()=>{
-    const handleResize = () => setIsMobile(window.innerWidth <= 768);
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
 
   return (
     <div className={classes.main}>
-      {isMobile ? (
-        <>
-          <UserDataWidget userData={state} />
-          <AppointmentsWidget userType={state.userType} nextAppointments={testData} />
-          <StatsWidget data={[12, 19]} options={chartOptions} />
-        </>
-      ) : (
-        <>
-          <div className={classes.upper}>
-            <UserDataWidget userData={state} />
-            <StatsWidget data={[12, 19]} options={chartOptions} />
-          </div>
-          <AppointmentsWidget userType={state.userType} nextAppointments={testData} />
-        </>
-      )}
+      <UserDataWidget userData={state} />
+      <AppointmentsWidget userType={state.userType} nextAppointments={testData} />
+      <StatsWidget data={[12, 19]} options={chartOptions} />
     </div>
   );
 }

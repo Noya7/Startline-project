@@ -7,15 +7,18 @@ import { getMedicAppointmentsAsync } from '../../../store/medic-thunks';
 
 import classes from './List.module.css'
 
+const today = new Date();
+const formattedDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+
+
 const List = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(formattedDate);
   const [items, setItems] = useState([]);
 
   const dispatch = useDispatch();
   const userType = useSelector((state) => state.auth.userData.userType);
   const listData = useSelector((state) => userType === 'patient' ? state.patient.appointments : state.medic.appointments);
-  console.log(listData)
 
   const itemsMapping = useCallback((data) => {
     return !!data && data.map(item => <Item key={item._id} data={item} type={userType === 'medic' ? 'patient' : 'medic'} />)
@@ -34,7 +37,7 @@ const List = () => {
 
   return (
     <div className={classes.main}>
-      <Controls type={userType} totalPages={listData.totalPages} currentPage={currentPage} onPageChange={(page)=>setCurrentPage(page)} onDateChange={(date)=>{setSelectedDate(date)}} />
+      <Controls type={userType} totalPages={listData?.totalPages || 1} currentPage={currentPage} onPageChange={(page)=>setCurrentPage(page)} onDateChange={(date)=>{setSelectedDate(date)}} />
       <div className={classes.list}>
         <span style={{backgroundColor: userType === 'medic' ? '#990033' : '#005566'}} className={classes.refference}>
           <p>{userType === 'patient' ? 'Fecha' : 'Hora'}</p>

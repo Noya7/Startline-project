@@ -1,16 +1,25 @@
 import Card from './../layout/card/Card'
 import {Link} from 'react-router-dom';
+import WidgetItem from './WidgetItem';
+import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
 
 import classes from './AppointmentsWidget.module.css';
-import WidgetItem from './WidgetItem';
 
-const AppointmentsWidget = ({nextAppointments, userType}) => {
 
-  const mappedItems = nextAppointments?.map(appointment => (
-    <WidgetItem key={appointment._id} data={appointment} userType={userType} />
-  ));
+const AppointmentsWidget = ({userType}) => {
+  const [items, setItems] = useState([])
 
-  const columnCount = mappedItems?.length || 1;
+  const appointments = useSelector(state =>userType === 'medic' ?  state.medic.appointments : state.patient.appointments.appointments)
+
+  console.log(appointments)
+
+  useEffect(()=>{
+    const mappingFunction = (data) => {
+      return !!data && data.map(item => <WidgetItem key={item._id} data={item} userType={userType} />)
+    }
+    setItems(mappingFunction(appointments))
+  }, [appointments, userType])
   
   return (
     <Card styling={{ borderRadius: '1rem' }}>
@@ -19,13 +28,7 @@ const AppointmentsWidget = ({nextAppointments, userType}) => {
           <h2>{userType === 'medic' ? 'Próximos turnos:' : 'Mis turnos:'}</h2>
           <Link to="appointments">Ir a turnos</Link>
         </span>
-        {mappedItems?.length ? (
-          <ul style={{ gridTemplateColumns: `repeat(${columnCount}, 1fr)` }}>
-            {mappedItems}
-          </ul>
-        ) : (
-          <li className={classes.empty}>No hay turnos próximos</li>
-        )}
+        { items.length ? <ul>{items}</ul> : <li className={classes.empty}>No hay turnos próximos</li> }
       </div>
     </Card>
   );
