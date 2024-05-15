@@ -18,9 +18,11 @@ const corsOptions = {
     optionsSuccessStatus: 200
 };
 
-app.options('*', cors(corsOptions));
+// app.options('*', cors(corsOptions));
+app.use(cors())
 app.use(express.json(), cors(corsOptions), cookieParser(), checkAuth)
 app.use('/api', router)
+app.use('/test', (req, res) => res.send('Test route'))
 app.use(errorHandler)
 
 const startServer = async () => {
