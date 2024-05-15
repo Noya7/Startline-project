@@ -36,8 +36,4 @@ const startServer = async () => {
     }
 };
 
-module.exports = app;
-
-if (require.main === module) {
-  startServer();
-}
+startServer();
