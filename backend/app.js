@@ -20,7 +20,7 @@ const app = express();
 
 app.use(cors());
 // app.use(cors(corsOptions))
-app.use(express.json(), cors(corsOptions), cookieParser(), checkAuth)
+app.use(express.json(), cookieParser(), checkAuth)
 app.use('/api', router)
 app.use(errorHandler)
 
