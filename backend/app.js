@@ -12,13 +12,13 @@ const router = require('./routes/router')
 
 const app = express();
 
-const corsOptions = {
-    origin: "*",
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH']
-};
+// const corsOptions = {
+//     origin: '*',
+//     credentials: true,
+//     optionsSuccessStatus: 200
+// };
 
-app.options('*', cors(corsOptions));
+app.use(cors());
 // app.use(cors(corsOptions))
 app.use(express.json(), cors(corsOptions), cookieParser(), checkAuth)
 app.use('/api', router)
