@@ -1,50 +1,54 @@
+.dashboardContainer{
+    position: relative;
+}
+
 .dashBoardMain{
+    position: relative;
     box-sizing: border-box;
     width: 100%;
     height: 100%;
-    padding: 0 1%;
-    display: grid;
-    grid-template-columns: 20% 25% 31%;
-    gap: 12%;
-    border-radius: 5vw;
-}
-
-.glass{
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), #ffffff00);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 0.1vw solid #ffffff2e;
-    box-shadow: 0 8px 32px 0 #0000005e;
-}
-
-.medic{
-    background-color: #99003389;
-    border-color: #5F021F2e;
-    color: #E0E0E0;
-}
-
-.patient{
-    background-color: #0088a389;
-    border-color: #0055662e;
-    color: #E0E0E0;
-}
-
-.admin{
-    background-color: #004CA389;
-    border-color: #0030662e;
-    color: #E0E0E0;
+    padding: 0 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    border-radius: 5rem;
+    background-color: #F3F3F3;
+    z-index: 4;
 }
 
 .title{
-    box-sizing: border-box;
-    width: 100%;
-    height: 100%;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    font-family: 'Times New Roman', Times, serif;
+    color: #004CA3;
+    font-size: 2rem;
+    font-weight: 300;
+    text-decoration: underline #990033;
+}
+
+.welcome{
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: 'Times New Roman', Times, serif;
-    font-weight: 400;
-    font-size: 2.2vw;
+    font-family: Helvetica, sans-serif;
+    color: #6D6D6D;
+    font-size: 1.8rem;
+    font-weight: 200;
+}
+
+.menuButton{
+    width: 3rem;
+    height: 3rem;
+    align-self: center;
+    justify-self: end;
+    border-radius: 100%;
+    background-color: transparent;
+    border: 0.1vw solid #E0E0E0;
+    cursor: pointer;
+}
+
+.open{
+    background-color: #E0E0E0;
 }
 
 .homeMain{
@@ -54,7 +58,6 @@
     display: grid;
     grid-template-rows: 65% 35%;
     background-color: #003066;
-
 }
 
 .upperHeader{
@@ -62,111 +65,130 @@
     width: 100%;
     height: 100%;
     padding: 0 10%;
-    display: grid;
-    grid-template-columns: 25% 35%;
-    gap: 40%;
-    justify-content: center;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
 }
 
-.upperHeader h1{
+.upperHeader .homeTitle{
     font-family:'Times New Roman', Times, serif;
-    width: 100%;
-    height: 100%;
+    width: max-content;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     color: #F3F3F3;
-    font-size: 3vw;
+    font-size: 3rem;
     font-weight: 300;
     text-decoration: underline #990033;
 }
 
 .upperHeader span{
     box-sizing: border-box;
-    width: 100%;
+    width: max-content;
+    /* padding: 0.5rem 0; */
     height: 100%;
-    padding: 2% 0;
-    display: grid;
-    grid-template-columns: 45% 45%;
-    gap: 10%;
+    display: flex;
+    gap: 2rem;
 }
 
 .upperHeader span a{
-    width: 100%;
-    height: 65%;
+    width: max-content;
+    height: max-content;
+    padding: 0.25rem 1rem;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 2vw;
+    justify-self: center;
+    align-self: center;
+    border-radius: 2rem;
     border: 0.1vw solid #F3F3F3;
     font-family: Helvetica, sans-serif;
     font-weight: 300;
-    font-size: 1.5vw;
+    font-size: 1.2rem;
     text-decoration: none;
     color: #F3F3F3;
     background-color: rgba(0, 0, 0, 0);
-    transition: background-color 0.3s;
+    transition: 0.3s;
 }
 
 .upperHeader span a:hover{
     background-color: rgba(0, 0, 0, 0.2);
 }
 
-
-.homeMain nav{
-    width: 100%;;
-    height: 100%;
+.lowerHeader{
     border-top: 0.1vw solid #F3F3F3;
-    border-bottom: 0.1vw solid #F3F3F3;
     display: flex;
     justify-content: center;
 }
 
-.location{
-    width: 20%;
-    border-left: 0.1vw solid #F3F3F3;
-    border-right: 0.1vw solid #F3F3F3;
-    transition: background-color 0.3;
-    border-radius: 0;
+.lowerHeader .location{
+    width: max-content;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color:#E0E0E0;
+    text-decoration: none;
+    transition: 0.3s;
 }
 
-.location:hover{
+.lowerHeader .location:hover{
     background-color: rgba(0, 0, 0, 0.2);
 }
 
-.homeMain nav span{
-    width: 20%;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
+.lowerHeader .icons{
+    width: max-content;
+    display: flex;
 }
 
-.homeMain nav span a{
-    width: 100%;
+.lowerHeader .icons a{
+    width: 4rem;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-left: 0.1vw solid #F3F3F3;
-    border-right: 0.1vw solid #F3F3F3;
-    border-radius: 0;
-    color: #F3F3F3;
-    background-color: rgba(0, 0, 0, 0);
-    transition: background-color 0.3s;
+    color: #E0E0E0;
+    cursor: pointer;
 }
 
-.homeMain nav span a:hover{
-    background-color: rgba(0, 0, 0, 0.2);
-}
-
-
-@media only screen and (max-width: 600px) {
-    .main {
-      grid-template-columns: 65% 25%;
-      gap: 10%;
+@media (max-width: 1024px) {
+    .upperHeader .homeTitle {
+      font-size: 2.5rem;
     }
-  
+
+    .upperHeader span a{
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .upperHeader .homeTitle {
+      font-size: 2rem;
+    }
+
+    .upperHeader span{
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 630px) {
+    .upperHeader .homeTitle {
+      font-size: 1.7rem;
+    }
+
+    .upperHeader span{
+        height: 100%;
+        padding: 0.2rem 0;
+        flex-direction: column;
+        gap: 0;
+        justify-content: space-between;
+    }
+
+    .upperHeader span a{
+        padding: 0 0.5rem;
+    }
+}
+
+@media (max-width: 515px) {
     .title {
-      display: none; 
+      font-size: 1.5rem;
     }
   } 

@@ -1,0 +1,213 @@
+.medic{
+    background-color: #990033;
+    border-color: #5f021f;
+    color: #E0E0E0;
+}
+
+.patient{
+    background-color: #0088a3;
+    border-color: #005566;
+    color: #E0E0E0;
+}
+
+.admin{
+    background-color: #004ca3;
+    border-color: #003066;
+    color: #E0E0E0;
+}
+
+.main{
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+    display: grid;
+    grid-template-rows: 7% 50% 30%;
+    gap: 6.5%;
+}
+
+.goToConfig{
+    color: #E0E0E0;
+    font-size: 1rem;
+    text-decoration: none;
+    text-align: end;
+}
+
+.goToConfig:hover{
+    text-decoration: underline;
+}
+
+.userInfo{
+    box-sizing: border-box;
+    padding: 0.5rem 1rem;
+    display: flex;
+    gap: 3rem;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 1rem;
+}
+
+.image{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image img{
+    width: 115px;
+    aspect-ratio: 1;
+    border-radius: 100%;
+}
+
+.text{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.text h2{
+    font-size: 1.5rem;
+}
+
+.text p{
+    font-weight: 400;
+}
+
+.medicOnly {
+    box-sizing: border-box;
+    display: flex;
+    gap: 1rem;
+    padding: 0.5rem;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 1rem;
+    align-items: flex-end;
+    overflow: hidden;
+}
+
+.medicOnly h2{
+    font-size: 3.5rem;
+}
+
+.medicOnly p{
+    font-size: 1.5rem;
+    align-self: end;
+}
+
+@media (max-width: 1300px){
+    .text h2{
+        font-size: 1.15rem;
+    }
+}
+
+
+@media (max-width: 1024px) {
+    .userInfo{
+        gap: 1rem;
+    }
+
+    .image img{
+        width: 90px;
+    }
+
+    .text{
+        justify-content: center;
+        gap: 0.3rem;
+    }
+    .text h2{
+        font-size: 1.1rem;
+    }
+
+    .text p{
+        font-size: 0.9rem;
+    }
+
+    .medicOnly h2{
+        font-size: 3rem;
+    }
+    
+    .medicOnly p{
+        font-size: 1.1rem;
+        align-self: center;
+    }
+}
+
+@media (max-width: 769px) {
+
+    .text{
+        justify-content: center;
+        gap: 0.2rem;
+    }
+    .text h2{
+        font-size: 1rem;
+    }
+
+    .text p{
+        font-size: 0.9rem;
+    }
+
+    .medicOnly h2{
+        font-size: 2rem;
+    }
+    
+    .medicOnly p{
+        font-size: 1.1rem;
+        align-self: center;
+    }
+}
+
+@media (max-width: 426px) {
+
+    .goToConfig{
+        font-size: 0.8rem;
+    }
+
+    .userInfo{
+        gap: 1rem;
+    }
+
+    .image img{
+        width: 75px;
+    }
+
+    .text{
+        justify-content: center;
+        gap: 0.3rem;
+    }
+    .text h2{
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 348px) {
+    .goToConfig{
+        font-size: 0.7rem;
+    }
+
+    .userInfo{
+        gap: 1rem;
+    }
+
+    .image img{
+        width: 65px;
+    }
+
+    .text{
+        justify-content: center;
+        gap: 0.3rem;
+    }
+    .text h2{
+        font-size: 0.9rem;
+    }
+
+    .text p{
+        font-size: 0.8rem;
+    }
+
+    .medicOnly h2{
+        font-size: 1.5rem;
+    }
+    
+    .medicOnly p{
+        font-size: 0.9rem;
+        align-self: center;
+    }
+}

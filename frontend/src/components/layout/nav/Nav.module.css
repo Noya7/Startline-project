@@ -1,39 +1,106 @@
-.main{
+.drawerClosed {
     box-sizing: border-box;
-    width: 100%;
-    align-self: center;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), #ffffff00);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 0.1vw solid #ffffff2e;
-    border-radius: 2vw;
-    box-shadow: 0 8px 32px 0 #0000005e;
-}
-
-.medic{
-    box-sizing: border-box; 
-    height: 45%;
-    padding: 10% 2.5%;
-    display: grid;
-    grid-template-rows: 20% 20% 20%;
-    gap: 20%;
-    background-color: #99003389;
-    border-color: #5F021F2e;
-    color: #E0E0E0;
-}
-
-a{
-    box-sizing: border-box;
-    border-radius: 100%;
-    width: 100%;
+    position: absolute;
+    top: 200%;
+    left: 15%;
+    width: 70%;
     height: 100%;
-    justify-self: center;
+    padding: 0 1rem;
     align-self: center;
     display: flex;
-    justify-content: center;
+    gap: 1.5rem;
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.05);
-    text-decoration: none;
-    color: #E0E0E0;
+    justify-content: center;
+    background-color: #F3F3F3;
+    border: 0.1vw solid #E0E0E0;
+    border-bottom-left-radius: 2rem;
+    border-bottom-right-radius: 2rem;
+    transform: translateY(-200%);
+    transition: transform 0.3s ease-out;
+    z-index: 3;
+}
 
+.drawerOpen {
+  transform: translateY(-100%);
+}
+
+.navButton{
+    width: 55px;
+    height: 55px;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #CCCCCC;
+    border: 0.1vw solid #E0E0E0;
+}
+
+@media only screen and (max-width: 925px){
+    .navButton{
+        width: 45px;
+        height: 45px;
+    }
+}
+
+@media only screen and (max-width: 768px){
+
+    .drawerClosed{
+        gap: 1rem;
+    }
+
+    .navButton{
+        width: 40px;
+        height: 40px;
+    }
+}
+
+@media only screen and (max-width: 635px){
+
+    .drawerClosed{
+        gap: 0.5rem;
+    }
+
+    .navButton{
+        width: 35px;
+        height: 35px;
+    }
+}
+
+@media only screen and (max-width: 510px){
+
+    .drawerClosed{
+        width: 95%;
+        height: 90%;
+        top: 205%;
+        left: 2.5%;
+        gap: 0.5rem;
+        border-radius: 2rem;
+        transform: translateY(-220%);
+    }
+
+    .drawerOpen {
+        transform: translateY(-100%);
+    }
+
+    .navButton{
+        width: 35px;
+        height: 35px;
+    }
+}
+
+@media only screen and (max-width: 376px){
+
+    .drawerClosed{
+        width: 95%;
+        height: 90%;
+        top: 205%;
+        left: 2.5%;
+        gap: 0.35rem;
+        border-radius: 2rem;
+    }
+
+    .navButton{
+        width: 30px;
+        height: 30px;
+    }
 }

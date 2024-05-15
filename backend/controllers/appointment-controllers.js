@@ -41,12 +41,37 @@ const timeValidation = (date, timeIndex) => {
     const input = dayjs(date);
     //primero validar que la fecha no sea en el pasado.
     const inputFullDate = timeIndex ? getFullDate(input, timeIndex) : input;
-    if (inputFullDate.isBefore(dayjs())) throw new HttpError("No se pueden programar turnos en el pasado.", 400)
+    if (inputFullDate.isBefore(dayjs().add(-3, "hours"))) throw new HttpError("No se pueden programar turnos en el pasado.", 400)
     //Validar que la fecha este dentro del periodo de dos meses desde hoy.
     const maxDate = dayjs().add(2, "months");
     if (input.isAfter(maxDate)) throw new HttpError("Lo sentimos, no programamos turnos con mas de dos meses de antelación.", 400);
     if ([0, 6].includes(dayjs(date).day())) throw new HttpError("Lo sentimos, no programamos turnos en fines de semana.", 400)
     return;
+}
+
+//get available areas:
+
+const getAvailableAreas = async (req, res, next) => {
+    try{
+        const areas = await Medic.distinct('area');
+        if (!areas.length) return res.status(204).json({message: 'No hay areas disponibles para elegir.'});
+        return res.status(200).json(areas)
+    } catch (err) {
+        return next(err)
+    }
+}
+
+//get medics by area:
+
+const getMedicsByArea = async (req, res, next) => {
+    try{
+        const {area} = req.query
+        const medics = await Medic.find({area}).select('name surname matricula image');
+        if (!medics.length) return res.status(204).json({message: 'No hay medicos disponibles para mostrar.'});
+        return res.status(200).json(medics)
+    } catch (err) {
+        return next(err)
+    }
 }
 
 //get available appointments: dada una fecha (no mayor a dos meses) y un medico,
@@ -68,32 +93,7 @@ const getUnavailableAppointments = async (req, res, next) => {
         //si hay turnos tomados, entonces devolvemos un array con estos.
         const unavailableAppointments = takenAppointments.map(appointment => appointment.timeIndex);
         //respuesta
-        return res.status(200).json({unavailableAppointments})
-    } catch (err) {
-        return next(err)
-    }
-}
-
-//get available areas:
-
-const getAvailableAreas = async (req, res, next) => {
-    try{
-        const areas = await Medic.distinct('area');
-        if (!areas.length) return res.status(204).json({message: 'No hay areas disponibles para elegir.'});
-        return res.status(200).json({areas})
-    } catch (err) {
-        return next(err)
-    }
-}
-
-//get medics by area:
-
-const getMedicsByArea = async (req, res, next) => {
-    try{
-        const {area} = req.query
-        const medics = await Medic.find({area}).select('name surname matricula image');
-        if (!medics.length) return res.status(204).json({message: 'No hay medicos disponibles para mostrar.'});
-        return res.status(200).json({medics})
+        return res.status(200).json(unavailableAppointments)
     } catch (err) {
         return next(err)
     }

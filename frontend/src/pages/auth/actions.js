@@ -23,7 +23,8 @@ export const signupAction = async ({request}) => {
     const body = await request.formData();
     const data = await store.dispatch(signupAsync(body))
     if (data.error) return data.error.message;
-    return redirect('/')
+    const state = store.getState().auth;
+    return redirect('/portal/' + state.userData.userType)
 }
 
 export const loginAction = async ({request}) => {
@@ -31,7 +32,8 @@ export const loginAction = async ({request}) => {
     const body = bodyExtractor(formData);
     const data = await store.dispatch(loginAsync(body));
     if (data.error) return data.error.message;
-    return redirect('/');
+    const state = store.getState().auth;
+    return redirect('/portal/' + state.userData.userType);
 };
 
 export const forgotPasswordAction = async ({request}) => {

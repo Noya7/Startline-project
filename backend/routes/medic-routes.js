@@ -12,7 +12,6 @@ router.use(protectRoute(true, "medic"))
 
 router.get('/appointments', validationCheck([
     check('date').notEmpty().toDate().isISO8601(),
-    check('page').notEmpty().isInt({min: 1, max: 2})
 ]), getAppointments)
 
 router.get('/stats', validationCheck([

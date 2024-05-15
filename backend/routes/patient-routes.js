@@ -14,6 +14,11 @@ router.get('/available-medics', validationCheck([
     check('area').trim().notEmpty()
 ]), getMedicsByArea)
 
+const test = (req, res, next) => {
+    console.log(req.body);
+    return next()
+} //TODO ELIMINAR ESTO CUANDO NO SE USE MAS
+
 router.post('/unavailable-appointments', validationCheck([
     check('date').notEmpty().toDate().isISO8601(),
     check('medic').notEmpty().isMongoId()

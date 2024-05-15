@@ -11,7 +11,8 @@ const TextInput = ({ name, type, placeholder, onValidation, value }) => {
 
   const validate = (value) => {
       switch (type) {
-          case 'name': case 'surname': return value.length > 3 && value.length <= 24;
+          case 'text': return value.trim().length > 3 && value.trim().length <= 32;
+          case 'name': case 'surname': return value.trim().length > 3 && value.trim().length <= 24;
           case 'email': return emailRegex.test(value);
           case 'DNI': return dniRegex.test(value);
           case 'signup_password': return passwordRegex.test(value);

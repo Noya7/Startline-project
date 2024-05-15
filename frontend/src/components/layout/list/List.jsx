@@ -1,41 +1,52 @@
-import Card from '../card/Card'
+import { useCallback, useEffect, useState } from 'react';
+import Controls from './Controls';
 import Item from './Item'
+import { useDispatch, useSelector } from 'react-redux';
+import { getPatientAppointmentsAsync } from '../../../store/patient-thunks';
+import { getMedicAppointmentsAsync } from '../../../store/medic-thunks';
+
 import classes from './List.module.css'
 
-const List = ({type, children, item, data}) => {
+const List = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [items, setItems] = useState([]);
 
-    const mappedItems = data.map(item => <Item key={item.id} data={item}/>);
+  const dispatch = useDispatch();
+  const userType = useSelector((state) => state.auth.userData.userType);
+  const listData = useSelector((state) => userType === 'patient' ? state.patient.appointments : state.medic.appointments);
+  console.log(listData)
 
-    return (
-        <Card>
-            <div className={`${classes.grid}`}>
-                <div className={classes.pagination}>
-                    <div>
-                        <p>Items por pagina:</p>
-                        <span className={classes.buttons}>
-                            <button>3</button>
-                            <button>6</button>
-                            <button>10</button>
-                            <button>15</button>
-                        </span>
-                    </div>
-                    <span className={classes.pages}>
-                        <button>prev</button>
-                        <button>next</button>
-                    </span>
-                </div>
-                <div className={`${children ? classes.withRef : classes.noRef}`}>
-                    {children && 
-                    <div className={classes.refference}>
-                        {children}
-                    </div>}
-                    <ul>
-                        {!!mappedItems.length && mappedItems || <li>No hay elementos para mostrar.</li> }
-                    </ul>
-                </div>
-            </div>
-        </Card>
-    )
+  const itemsMapping = useCallback((data) => {
+    return !!data && data.map(item => <Item key={item._id} data={item} type={userType === 'medic' ? 'patient' : 'medic'} />)
+  }, [userType])
+
+  useEffect(()=>{
+    setItems(itemsMapping(userType === 'medic' ? listData : listData.appointments));
+  }, [listData, itemsMapping, userType])
+
+  useEffect(()=>{
+    setItems([])
+    userType === 'patient' ?
+    dispatch(getPatientAppointmentsAsync(currentPage)) :
+    dispatch(getMedicAppointmentsAsync(selectedDate))
+  }, [userType, currentPage, selectedDate, dispatch])
+
+  return (
+    <div className={classes.main}>
+      <Controls type={userType} totalPages={listData.totalPages} currentPage={currentPage} onPageChange={(page)=>setCurrentPage(page)} onDateChange={(date)=>{setSelectedDate(date)}} />
+      <div className={classes.list}>
+        <span style={{backgroundColor: userType === 'medic' ? '#990033' : '#005566'}} className={classes.refference}>
+          <p>{userType === 'patient' ? 'Fecha' : 'Hora'}</p>
+          <p>{userType === 'patient' ? 'Profesional' : 'Paciente'}</p>
+          <p>Acciones</p>
+        </span>
+        <ul className={classes.items}>
+          {items.length ? items : <li className={classes.empty}><h2>No hay elementos para mostrar.</h2></li>}
+        </ul>
+      </div>
+    </div>
+  )
 }
 
 export default List;

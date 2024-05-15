@@ -1,6 +1,6 @@
 import { redirect } from "react-router-dom";
 import store from "../../store/store"
-import { medicVerificationAsync, resetTokenVerificationAsync } from "../../store/auth-thunks";
+import { autoLoginAsync, logoutAsync, medicVerificationAsync, resetTokenVerificationAsync } from "../../store/auth-thunks";
 
 export const signupLoader = async ({params, request}) => {
     const {usertype} = params;
@@ -33,9 +33,15 @@ export const resetPasswordLoader = async ({request}) => {
     return resetData;
 }
 
-// const portalLoader = () => {
-    //ver si hay un cookie. si no hay, redirigir a login.
-    //enviar cookie en solicitud de autologin
-    //si es valido, iniciar sesion y redirigir a portal correspondiente.
-    //si es invalido, redirigir a login.
-// }
+export const loginLoader = async () => {
+    const data = await store.dispatch(autoLoginAsync())
+    if(data.type === 'auth/autoLogin/rejected') return null;
+    const state = store.getState().auth;
+    return redirect('/portal/' + state.userData.userType)
+}
+
+export const logoutLoader = async () => {
+    const data = await store.dispatch(logoutAsync())
+    if(data.type === 'auth/logout/rejected') return null;
+    return redirect('/')
+}

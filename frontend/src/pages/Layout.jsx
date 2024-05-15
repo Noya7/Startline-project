@@ -1,19 +1,13 @@
 import { Outlet } from "react-router-dom";
 import Header from "../components/layout/header/Header";
-import Nav from "../components/layout/nav/Nav";
 
 import classes from './Layout.module.css'
 
 const AuthLayout = () => {
     return(
-        <div className={classes.background}>
-            <div className={classes.main}>
-                <Nav />
-                <div className={classes.body}>
-                    <Header type={'dashboard'} />
-                    <Outlet />
-                </div>
-            </div>
+        <div className={classes.main}>
+            <Header dashboardMode />
+            <Outlet />
         </div>
     )
 }

@@ -14,12 +14,10 @@
 
 .medic {
     background-color: #990033;
-
 }
 
 .admin {
     background-color: #003066;
-
 }
 
 .main {
@@ -76,12 +74,12 @@
     gap: 1rem;
 }
 
-.main a {
-    background-color: transparent;
-    border-radius: 0;
+.link {
+    color: #E0E0E0;
+    text-decoration: none;
 }
 
-.main a:hover {
+.link:hover {
     text-decoration: underline;
 }
 

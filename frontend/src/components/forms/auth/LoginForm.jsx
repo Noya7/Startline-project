@@ -37,10 +37,10 @@ const LoginForm = () => {
                     <input type='hidden' name='userType' value={userType} />
                     <TextInput onValidation={(isValid)=>setFormIsValid(isValid)} type={'DNI'} name={'DNI'} placeholder={'Ingresa tu DNI'} />
                     <TextInput type={'password'} name={'password'} placeholder={'Ingresa tu contraseña'} />
-                    <Link to="/auth/forgot">Olvidé mi contraseña</Link>
+                    <Link className={classes.link} to="/auth/forgot">Olvidé mi contraseña</Link>
                     <button disabled={!formIsValid}>Iniciar sesión</button>
                 </Form>
-                {userType !== 'medic' && <Link to={signupLink}>Registrarse</Link>}
+                {userType !== 'medic' && <Link className={classes.link} to={signupLink}>Registrarse</Link>}
                 {error && <p className={`${classes.error} ${userType === 'medic' ? classes.medicalErr : classes.nonMedicalErr}`}>{error}</p>}
             </div>
         </div>

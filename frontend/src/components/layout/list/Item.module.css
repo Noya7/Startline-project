@@ -1,26 +1,68 @@
-.item{
-    box-sizing: border-box;
-    width: 100%;
-    height: 10%;
-    display: grid;
-    grid-template-columns: 20% 70% 10%;
+.patient, .medic{
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    transition: background-color 0.3s;
+    padding: 0.5rem;
+    border-bottom: 0.1vw solid #2B2B2B;
+    transition: background-color 0.2s;
 }
 
-.item:hover{
-    background-color: #9900335a;
+.patient:hover{
+    background-color: rgba(153, 0, 51, 0.2);
 }
 
-.item p{
+.medic:hover{
+    background-color: rgba(0, 85, 102, 0.2);
+}
+
+.actions{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.patient a, .medic a{
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     justify-self: center;
-    font-weight: 400;
-}
-
-.item a{
-    width: 90%;
-    height: 90%;
-    border-radius: 2vw;
     background-color: transparent;
+    border: 0.1vw solid;
+    color: #2B2B2B;
+    transition: color, background-color 0.2s;
 }
 
+.patient a:hover{
+    color: #E0E0E0;
+    background-color: #990033;
+}
+
+.medic a:hover{
+    color: #E0E0E0;
+    background-color: #005566;
+}
+
+.medicSpan{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem
+}
+
+.medicSpan img{
+    width: 45px;
+    height: 45px;
+    border-radius: 100%;
+}
+
+.date{
+    max-width: 5rem;
+}
+
+.actions{
+    display: flex;
+    gap: 0.5rem;
+}

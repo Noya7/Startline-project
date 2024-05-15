@@ -1,0 +1,87 @@
+.main{
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+    display: grid;
+    grid-template-rows: 10% 85%;
+    gap: 5%;
+}
+
+.text{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.text h2{
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: #2B2B2B;
+}
+
+.text a{
+    font-size: 1rem;
+    color: #5F021F;
+    text-decoration: none;
+}
+
+.text a:hover{
+    text-decoration: underline;
+}
+
+.chart{
+    height: 100%;
+    width: 80%;
+}
+
+@media screen and (max-width: 1165px){
+    .text h2{
+        font-size: 1.1rem;
+    }
+}
+
+@media screen and (max-width: 1024px){
+    .text {
+        gap: 1rem;
+    }
+
+    .text h2{
+        font-size: 1rem;
+    }
+
+    .text a{
+        font-size: 0.8rem;
+    }
+}
+
+@media screen and (max-width: 768px){
+    .text h2{
+        font-size: 0.9rem;
+    }
+
+    .text a{
+        font-size: 0.7rem;
+    }
+
+    .chart{
+        width: 80%;
+    }
+}
+
+@media screen and (max-width: 425px){
+    .text{
+        gap: 0.5rem;
+    }
+
+    .text h2{
+        font-size: 0.8rem;
+    }
+
+    .text a{
+        font-size: 0.6rem;
+    }
+
+    .chart{
+        width: 95%;
+    }
+}

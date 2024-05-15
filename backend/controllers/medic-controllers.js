@@ -12,18 +12,13 @@ const HttpError = require('../models/http-error');
 
 const getAppointments = async (req, res, next) =>{
     try {
-        const {date, page} = req.query;
-        const allAppointments = await Appointment.countDocuments({date, medic: req.userData.userId})
-        const resultsPerPage = 9;
-        const totalPages = Math.ceil(allAppointments / resultsPerPage)
-        const startIndex = (page - 1) * resultsPerPage;
-        const requestedFields = '_id timeIndex name surname existingPatient'
-        const appointments = await Appointment.find({date, medic: req.userData.userId})
-        .skip(startIndex).limit(resultsPerPage).select(requestedFields)
+        const {date} = req.query;
+        const requestedFields = '_id fullDate timeIndex name surname DNI medicalReport'
+        const appointments = await Appointment.find({date, medic: req.userData.userId}).select(requestedFields)
         if(!appointments.length){
             return res.status(204).json({message: "No hay turnos programados en esta fecha."})
         }
-        return res.status(200).json({totalPages, appointments})
+        return res.status(200).json(appointments)
     } catch (err) {
         return next(err)
     }

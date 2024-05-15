@@ -81,12 +81,15 @@ const signup = async (req, res, next) => {
       DNI: createdUser.DNI,
       name: createdUser.name,
       surname: createdUser.surname,
-      usertype,
+      userType: usertype,
+      area: createdUser.area,
+      matricula: createdUser.matricula,
+      image: createdUser.image,
     };
     const token = jwt.sign(
       usertype === "patient"
         ? userData
-        : { userId: userData.userId, userType: userData.usertype },
+        : { userId: userData.userId, userType: userData.userType },
         process.env.MY_SECRET, { expiresIn: "1h" 
       }
     );
@@ -116,7 +119,7 @@ const login = async (req, res, next) =>{
       case "patient": type = Patient; break;
       default : throw new HttpError("tipo de usuario invalido.", 400)
     }
-    const existingUser = await type.findOne({DNI: DNI}, {password: 1, DNI: 1, name: 1, surname: 1});
+    const existingUser = await type.findOne({DNI: DNI}, {password: 1, DNI: 1, name: 1, surname: 1, area: 1, matricula: 1, image: 1});
     if (!existingUser) throw new HttpError("Usuario no encontrado o inexistente.", 404)
     //comparar contraseñas:
     const isRightPass = await bcrypt.compare(password, existingUser.password);
@@ -127,13 +130,16 @@ const login = async (req, res, next) =>{
         surname: existingUser.surname,
         DNI: existingUser.DNI,
         userId: existingUser._id,
-        usertype
+        userType: usertype,
+        area: existingUser.area,
+        matricula: existingUser.matricula,
+        image: existingUser.image
       }
     //obtencion de token:
     const token = jwt.sign(
       usertype === "patient"
         ? userData
-        : { userId: userData.userId, userType: userData.usertype },
+        : { userId: userData.userId, userType: userData.userType },
       process.env.MY_SECRET, { expiresIn: "1h" });
     //respuesta:
     res.cookie("token", token, {httpOnly: true, maxAge: 3600000}).status(200).json({userData, message: "Sesion iniciada correctamente. Bienvenido!"})
@@ -144,11 +150,32 @@ const login = async (req, res, next) =>{
 
 //function auto login, logs user with just token, if not expired:
 
-const autoLogin = (req, res, next) => {
-  if(!req.userData) throw new HttpError('Credenciales invalidas, caducadas o inexistentes. Por favor, loggeate de nuevo.', 400)
-  delete req.userData.iat;
-  delete req.userData.exp;
-  return res.status(200).json(req.userData)
+const autoLogin = async (req, res, next) => {
+  try {
+    if(!req.userData) throw new HttpError('Credenciales invalidas, caducadas o inexistentes. Por favor, loggeate de nuevo.', 400)
+      let type;
+      switch (req.userData.userType) {
+        case "admin": type = Admin; break;
+        case "medic": type = Medic; break;
+        case "patient": type = Patient; break;
+        default : throw new HttpError("tipo de usuario invalido.", 400)
+      }
+      const existingUser = await type.findById(req.userData.userId, {DNI: 1, name: 1, surname: 1, area: 1, matricula: 1, image: 1});
+      if (!existingUser) throw new HttpError("Usuario no encontrado o inexistente.", 404)
+      const userData = {
+        name: existingUser.name,
+        surname: existingUser.surname,
+        DNI: existingUser.DNI,
+        userId: existingUser._id,
+        userType: req.userData.userType,
+        area: existingUser.area,
+        matricula: existingUser.matricula,
+        image: existingUser.image
+      }
+      return res.status(200).json(userData)
+  } catch (error) {
+    return next(error)
+  }
 }
 
 //function logout: deletes the token cookie. Only way to actually log out since its an httpOnly cookie.

@@ -11,7 +11,7 @@ const getPatientAppointments = async (req, res, next) => {
     try {
         let { page } = req.query;
         const allAppointments = await Appointment.countDocuments({ existingPatient: req.userData.userId });
-        const resultsPerPage = 5;
+        const resultsPerPage = 12;
         const totalPages = Math.ceil(allAppointments / resultsPerPage);
         if (page < 1) page = 1;
         else if (page > totalPages) page = totalPages;
@@ -19,7 +19,7 @@ const getPatientAppointments = async (req, res, next) => {
         const requestedFields = '_id fullDate area medic existingReport review';
 
         const appointments = await Appointment.find({ existingPatient: req.userData.userId }).select(requestedFields)
-        .populate({path: 'medic', select: ' -_id name surname'})
+        .populate({path: 'medic', select: ' -_id name surname image'})
         .skip(startIndex).limit(resultsPerPage);
 
         if (!appointments.length) {
