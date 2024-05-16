@@ -60,4 +60,9 @@
     font-family: Helvetica, sans-serif;
     font-weight: 400;
     font-size: 1.5vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: #F3F3F3;
 }
