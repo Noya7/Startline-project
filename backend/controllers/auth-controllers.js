@@ -10,6 +10,7 @@ const Medic = require('../models/medic');
 const Appointment = require('../models/appointment');
 const MedicalAuthCode = require('../models/enabling-code')
 const HttpError = require('../models/http-error');
+const MedicalReport = require('../models/medical-report');
 
 //HELPER FUNCTIONS:
 
@@ -22,6 +23,21 @@ const prevAppointmentFinder = async (DNI, userId, session) => {
     const updatedAppointments = await Appointment.updateMany({DNI}, {$set: {existingPatient: userId}}, {session})
     if(updatedAppointments.modifiedCount !== appointments.length) throw new HttpError('Ocurrio un error durante la actualizacion de turnos previos. Por favor intenta de nuevo en unos minutos.', 500)
     const idArray = appointments.map(appointment => appointment._id)
+    return idArray;
+  } catch (err) {
+    return err
+  }
+}
+
+//fiprev report finder, gets reports previous to account creation for patient users.
+
+const prevReportFinder = async (DNI, userId, session) => {
+  try {
+    const reports = await MedicalReport.find({DNI}, {DNI: 1});
+    if (!reports.length) return [];
+    const updatedReports = await MedicalReport.updateMany({DNI}, {$set: {patient: userId}}, {session})
+    if(updatedReports.modifiedCount !== updatedReports.length) throw new HttpError('Ocurrio un error durante la actualizacion de reportes previos. Por favor intenta de nuevo en unos minutos.', 500)
+    const idArray = reports.map(report => report._id)
     return idArray;
   } catch (err) {
     return err
@@ -61,9 +77,11 @@ const signup = async (req, res, next) => {
       }
       case "patient": {
         const { gender, birthDate, address } = req.body;
-        createdUser = new Patient({...sharedUserData, gender, birthDate, address, medicalHistory: [], appointments: []});
+        createdUser = new Patient({...sharedUserData, gender, birthDate, address, appointments: []});
         const prevAppointments = await prevAppointmentFinder(DNI, createdUser.id, session);
         createdUser.appointments = prevAppointments;
+        const prevReports = await prevReportFinder(DNI, createdUser.id, session);
+        createdUser.medicalHistory = prevReports;
         break;
       }
       default:

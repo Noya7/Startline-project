@@ -1,17 +1,10 @@
 .main{
     display: grid;
-    grid-template-rows: 50% 40%;
-    gap: 10%;
+    grid-template-rows: 20% 35% 35%;
+    gap: 5%;
 }
 
 .upper{
     display: flex;
     gap: 5%;
-}
-
-@media (max-width: 768px){
-    .main{
-        grid-template-rows: 20% 25% 45%;
-        gap: 2.5%;
-    }
 }

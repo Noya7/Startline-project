@@ -21,7 +21,7 @@
     align-items: center;
 }
 
-.patient a, .medic a{
+.patient a, .medic a, .patient button, .medic button{
     width: 30px;
     height: 30px;
     border-radius: 100%;
@@ -32,17 +32,22 @@
     background-color: transparent;
     border: 0.1vw solid;
     color: #2B2B2B;
+    cursor: pointer;
     transition: color, background-color 0.2s;
 }
 
-.patient a:hover{
+.patient a:hover, .patient button:hover{
     color: #E0E0E0;
     background-color: #990033;
 }
 
-.medic a:hover{
+.medic a:hover, .medic button:hover{
     color: #E0E0E0;
     background-color: #005566;
+}
+
+.patient a, .medic a{
+    display: none;
 }
 
 .medicSpan{
@@ -65,4 +70,15 @@
 .actions{
     display: flex;
     gap: 0.5rem;
+}
+
+@media (max-width: 768px){
+
+    .patient button, .medic button{
+        display: none;
+    }
+
+    .patient a, .medic a{
+        display: flex;
+    }
 }

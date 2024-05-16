@@ -23,13 +23,10 @@ export const patientLoader = async () =>{
     const state = store.getState();
     let userData = state.auth.userData;
     if (!userData) {
-        console.log('No user data, trying to auto login');
         const autoLoginData = await store.dispatch(autoLoginAsync());
         if (autoLoginData.type === 'auth/autoLogin/rejected') return redirect('/auth/login');
         userData = autoLoginData.payload;
     }
-    console.log('passed dispatch');
-
     const today = new Date();
     const formattedDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
 

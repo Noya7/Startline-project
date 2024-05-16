@@ -4,7 +4,7 @@ const {validationCheck, uppercaseField} = require('../middleware/check-validatio
 const { protectRoute } = require('../middleware/check-auth');
 const {createAppointment, deleteAppointment, getUnavailableAppointments, appointmentUserCheck, getAvailableAreas, getMedicsByArea} = require('../controllers/appointment-controllers')
 const { reviewValidations, createReview } = require('../controllers/review-controllers');
-const { getPatientAppointments, getMedicalHistory } = require('../controllers/patient-controllers');
+const { getPatientAppointments, getMedicalHistory, getMedicalReport } = require('../controllers/patient-controllers');
 
 const router = express.Router();
 
@@ -13,11 +13,6 @@ router.get('/available-areas', getAvailableAreas);
 router.get('/available-medics', validationCheck([
     check('area').trim().notEmpty()
 ]), getMedicsByArea)
-
-const test = (req, res, next) => {
-    console.log(req.body);
-    return next()
-} //TODO ELIMINAR ESTO CUANDO NO SE USE MAS
 
 router.post('/unavailable-appointments', validationCheck([
     check('date').notEmpty().toDate().isISO8601(),
@@ -50,5 +45,9 @@ router.post('/create-review', validationCheck([
 ]), reviewValidations, createReview);
 
 router.get('/get-medical-history', getMedicalHistory)
+
+router.get('/get-report', validationCheck([
+    check('reportId').notEmpty().isMongoId()
+]), getMedicalReport)
 
 module.exports = router;

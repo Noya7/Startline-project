@@ -8,7 +8,7 @@ const getFormattedDate = (date) => {
   return new Date(date).toLocaleDateString('es-AR', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric'});
 }
 
-const Item = ({ data, type }) => {
+const Item = ({ data, type, onSelectAppointment }) => {
   const isPastAppointment = new Date(data.fullDate) < new Date();
 
   const medicFormat = (
@@ -21,8 +21,8 @@ const Item = ({ data, type }) => {
       <span className={classes.actions}>
         {!isPastAppointment ? (
           <span className={classes.actions}>
-            <Link to={`/appointments/${data.id}/detail`}><FaEye /></Link>
-            <Link to={`/appointments/${data.id}/rate`}><FaStar /></Link>
+            <Link to={`/appointments/view/${data.id}`}><FaEye /></Link>
+            <Link to={`/appointments/rate/${data.id}`}><FaStar /></Link>
           </span>
         ) : (
           <Link to={`/appointments/${data.id}/cancel`}><FaTrashAlt /></Link>
@@ -36,7 +36,8 @@ const Item = ({ data, type }) => {
       <p>{timeIndexes[data.timeIndex]}</p>
       <p>{data.name} {data.surname}</p>
       <span>
-        <Link to={`edit/${data._id}`}><FaPencilAlt /></Link>
+        <button onClick={()=>onSelectAppointment(data.medicalReport ? {rep: data.medicalReport} : {app: [data._id, data.DNI, data.existingPatient]})}><FaPencilAlt /></button>
+        <Link to={`${data._id}`}><FaPencilAlt /></Link>
       </span>
     </>
   )

@@ -4,6 +4,7 @@ const Patient = require('../models/patient')
 const Appointment = require('../models/appointment');
 const HttpError = require('../models/http-error');
 const { uploadPDF } = require('../firebase/storageHandling');
+const MedicalReport = require('../models/medical-report');
 
 //get appointments:
 
@@ -31,6 +32,22 @@ const getPatientAppointments = async (req, res, next) => {
         return next(err);
     }
 };
+
+//get medical report:
+
+const getMedicalReport = async (req, res, next) => {
+    try {
+        const {reportId} = req.query;
+        const report = await MedicalReport.findById(reportId, { motiveForConsultation: 1, diagnosis: 1, treatment: 1, observations: 1, date: 1})
+        if (!report) {
+            throw new HttpError('No se ha encontrado el reporte solicitado. Por favor, contactate con administracion si crees que esto es un error.', 404);
+        }
+        return res.status(200).json(report);
+    } catch (err) {
+        return next(err);
+    }
+}
+
 
 //get medical history:
 
@@ -129,4 +146,4 @@ const getMedicalHistory = async (req, res, next) => {
     }
 }
 
-module.exports = {getPatientAppointments, getMedicalHistory}
+module.exports = {getPatientAppointments, getMedicalReport, getMedicalHistory}

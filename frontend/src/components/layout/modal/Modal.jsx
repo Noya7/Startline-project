@@ -1,3 +1,4 @@
+import { FaTimes } from 'react-icons/fa'
 import classes from './Modal.module.css'
 
 const Modal = ({children, onClose}) => {
@@ -9,6 +10,7 @@ const Modal = ({children, onClose}) => {
     return(
         <div onClick={onClose} className={classes.backdrop}>
             <dialog open onClick={modalClickHandler} className={classes.modal}>
+            <button onClick={() => onClose()} className={classes.close}><FaTimes  className={classes.closeContent}/></button>
                 {children}
             </dialog>
         </div>

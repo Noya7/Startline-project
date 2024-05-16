@@ -3,7 +3,6 @@ import AppointmentsWidget from '../../../components/appointments/AppointmentsWid
 import StatsWidget from '../../../components/statistics/StatsWidget'
 import UserDataWidget from '../../../components/userData/UserDataWidget'
 import classes from './MedicDashboard.module.css'
-import { useEffect, useState } from 'react'
 
 const testData = [
   { id: Math.floor(Math.random() * 1000), name: 'John', surname: 'Doe', DNI: '12345678', fullDate: '2024-12-05 09:30' },
@@ -14,16 +13,6 @@ const testData = [
   { id: Math.floor(Math.random() * 1000), name: 'Alex', surname: 'Johnson', DNI: '65498732', fullDate: '2024-12-05 14:00' }
 ];
 
-const chartOptions = {
-  plugins: {
-    legend: {
-      position: 'right',
-    },
-  },
-  responsive: true,
-  maintainAspectRatio: true,
-};
-
 const Dashboard = () => {
   const state = useSelector(state => state.auth.userData)
 
@@ -31,7 +20,6 @@ const Dashboard = () => {
     <div className={classes.main}>
       <UserDataWidget userData={state} />
       <AppointmentsWidget userType={state.userType} nextAppointments={testData} />
-      <StatsWidget data={[12, 19]} options={chartOptions} />
     </div>
   );
 }

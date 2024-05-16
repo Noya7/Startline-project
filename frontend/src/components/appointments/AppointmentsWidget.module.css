@@ -20,9 +20,10 @@
 }
 
 .main a {
-    color: #5F021F;
+    color: #2B2B2B;
     text-decoration: none; 
     text-align: end;
+    align-self: center;
 }
 
 .main a:hover {

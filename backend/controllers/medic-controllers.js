@@ -13,7 +13,7 @@ const HttpError = require('../models/http-error');
 const getAppointments = async (req, res, next) =>{
     try {
         const {date} = req.query;
-        const requestedFields = '_id fullDate timeIndex name surname DNI medicalReport'
+        const requestedFields = '_id fullDate timeIndex name surname DNI medicalReport existingPatient'
         const appointments = await Appointment.find({date, medic: req.userData.userId}).select(requestedFields)
         if(!appointments.length){
             return res.status(204).json({message: "No hay turnos programados en esta fecha."})
@@ -30,25 +30,23 @@ const createReport = async(req, res, next) =>{
     const session = await mongoose.startSession()
     try {
         session.startTransaction()
-        const {appointment, patient, motive, diagnosis, treatment} = req.body;
-        const existingAppointment = await Appointment.findById(appointment, {existingPatient: 1, medicalReport: 1}, {session});
+        const {appointment, DNI, patient, motive, diagnosis, treatment} = req.body;
+        const existingAppointment = await Appointment.findById(appointment, {DNI: 1, existingPatient: 1, medicalReport: 1}, {session});
         if (!existingAppointment) throw new HttpError('El turno no existe o ha sido eliminado de la base de datos. Si crees que esto es un error, por favor comunicate con adminstracion.', 404);
         if (existingAppointment.medicalReport) throw new HttpError('Este turno ya tiene un reporte asociado. Podes editarlo, pero no craer dos reportes para el mismo turno.', 401);
         const createdReport = new MedicalReport({diagnosis, treatment,
             patient,
+            DNI,
             motiveForConsultation: motive,
             observations: req.body.observations || null,
             date: new Date(),
             medic: req.userData.userId
         });
-        //if there are image results, extraction and upload to firebase then get link:
-
         //saving and response:
         await createdReport.save({session})
         existingAppointment.medicalReport = createdReport.id;
         await existingAppointment.save({session})
-        const existingPatient = await Patient.findByIdAndUpdate(patient, {$push: {medicalHistory: createdReport.id}}, {session, new: true})
-        if (!existingPatient) throw new HttpError('Paciente eliminado u existente. Si crees que esto es un error, por favor comunicate con administracion.', 404)
+        await Patient.findByIdAndUpdate(patient, {$push: {medicalHistory: createdReport.id}}, {session, new: true})
         await session.commitTransaction()
         return res.status(201).json({message: "Reporte creado exitosamente!"})
     } catch (err) {
@@ -58,6 +56,32 @@ const createReport = async(req, res, next) =>{
         await session.endSession();
     }
 }
+
+//function edit report:
+
+const editReport = async(req, res, next) =>{
+    const session = await mongoose.startSession()
+    try {
+        session.startTransaction()
+        const {report, motive, diagnosis, treatment} = req.body;
+        const existingReport = await MedicalReport.findById(report, {DNI: 1}, {session});
+        if (!existingReport) throw new HttpError('El reporte no existe o ha sido eliminado de la base de datos. Si crees que esto es un error, por favor comunicate con adminstracion.', 404);
+        existingReport.motiveForConsultation = motive !== existingReport.motiveForConsultation ? motive : existingReport.motiveForConsultation;
+        existingReport.diagnosis = diagnosis !== existingReport.diagnosis ? diagnosis : existingReport.diagnosis;
+        existingReport.treatment = treatment !== existingReport.treatment ? treatment : existingReport.treatment; 
+        existingReport.observations = req.body.observations || existingReport.observations;
+        //saving and response:
+        await existingReport.save({session})
+        await session.commitTransaction()
+        return res.status(201).json({message: "Reporte editado exitosamente!"})
+    } catch (err) {
+        await session.abortTransaction()
+        return next(err)
+    } finally {
+        await session.endSession();
+    }
+}
+
 
 //function get statistics. For this, first the average calculator function is declared:
 
@@ -142,4 +166,4 @@ const colleagueSearch = async (req, res, next) => {
     }
 }
 
-module.exports = {getAppointments, getStatistics, createReport, colleagueSearch};
+module.exports = {getAppointments, getStatistics, createReport, editReport, colleagueSearch};

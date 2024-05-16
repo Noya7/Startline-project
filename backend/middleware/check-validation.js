@@ -15,7 +15,7 @@ const uppercaseField = (string) => {
 
 const uppercaseFirst = (string) => {
     const lowercaseStr = string.trim().toLowerCase();
-    const resultStr = lowercaseStr.charAt(0).toUpperCase() + resultStr.slice(1);
+    const resultStr = lowercaseStr.charAt(0).toUpperCase() + lowercaseStr.slice(1);
     return resultStr;
 }
 

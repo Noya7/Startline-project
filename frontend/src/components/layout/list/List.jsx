@@ -11,7 +11,7 @@ const today = new Date();
 const formattedDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
 
 
-const List = () => {
+const List = ({onSelectAppointment}) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedDate, setSelectedDate] = useState(formattedDate);
   const [items, setItems] = useState([]);
@@ -21,8 +21,8 @@ const List = () => {
   const listData = useSelector((state) => userType === 'patient' ? state.patient.appointments : state.medic.appointments);
 
   const itemsMapping = useCallback((data) => {
-    return !!data && data.map(item => <Item key={item._id} data={item} type={userType === 'medic' ? 'patient' : 'medic'} />)
-  }, [userType])
+    return !!data && data.map(item => <Item onSelectAppointment={(obj)=>onSelectAppointment(obj)} key={item._id} data={item} type={userType === 'medic' ? 'patient' : 'medic'} />)
+  }, [userType, onSelectAppointment])
 
   useEffect(()=>{
     setItems(itemsMapping(userType === 'medic' ? listData : listData.appointments));
@@ -34,6 +34,8 @@ const List = () => {
     dispatch(getPatientAppointmentsAsync(currentPage)) :
     dispatch(getMedicAppointmentsAsync(selectedDate))
   }, [userType, currentPage, selectedDate, dispatch])
+
+  // console.log(listData)
 
   return (
     <div className={classes.main}>

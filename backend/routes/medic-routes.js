@@ -3,8 +3,9 @@ const {check} = require('express-validator')
 
 const {validationCheck, uppercaseFirst} = require('../middleware/check-validation')
 const {protectRoute} = require('../middleware/check-auth')
-const {getAppointments, getStatistics, createReport, colleagueSearch} = require('../controllers/medic-controllers');
+const {getAppointments, getStatistics, createReport, colleagueSearch, editReport} = require('../controllers/medic-controllers');
 const { createReview, reviewValidations } = require('../controllers/review-controllers');
+const { getMedicalReport } = require('../controllers/patient-controllers');
 
 const router = express.Router()
 
@@ -18,10 +19,25 @@ router.get('/stats', validationCheck([
     check('timeFrame').notEmpty().isIn(["week", "month", "year"])
 ]), getStatistics)
 
+const test = (req, res, next) => {
+    console.log(req.body);
+    return next()
+} //TODO ELIMINAR ESTO CUANDO NO SE USE MAS
+
 router.post('/create-report', validationCheck([
-    check(["appointment", "patient"]).notEmpty().isMongoId(),
-    check(["motive", "diagnosis", "treatment"]).customSanitizer(uppercaseFirst).notEmpty()
+    check(["appointment"]).notEmpty().isMongoId(),
+    check('DNI').trim().notEmpty().isNumeric().isLength({ min: 8, max: 8 }),
+    check(["motive", "diagnosis", "treatment"]).notEmpty().customSanitizer(uppercaseFirst)
 ]), createReport)
+
+router.patch('/edit-report', validationCheck([
+    check(["report"]).notEmpty().isMongoId(),
+    check(["motive", "diagnosis", "treatment"]).notEmpty().customSanitizer(uppercaseFirst)
+]), editReport)
+
+router.get('/get-report', validationCheck([
+    check('reportId').notEmpty().isMongoId()
+]), getMedicalReport)
 
 router.post('/create-review', validationCheck([
     check('reviewedMedic').notEmpty().isMongoId(),
