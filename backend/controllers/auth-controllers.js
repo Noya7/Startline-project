@@ -96,7 +96,7 @@ const signup = async (req, res, next) => {
     await session.commitTransaction();
     //respuesta:
     return res.status(201).cookie("token", token, { 
-      // httpOnly: true, 
+      httpOnly: true, 
       maxAge: 3600000, 
       sameSite: 'none', 
       secure: true, 
@@ -149,7 +149,7 @@ const login = async (req, res, next) =>{
       process.env.MY_SECRET, { expiresIn: "1h" });
     //respuesta:
     res.cookie("token", token, { 
-      // httpOnly: true, 
+      httpOnly: true, 
       maxAge: 3600000, 
       sameSite: 'none', 
       secure: true, 
@@ -194,7 +194,7 @@ const autoLogin = async (req, res, next) => {
 
 const logout = (req, res, next) => {
   if (!req.userData) throw new HttpError('No hay una sesion activa para cerrar.', 400)
-  return res.clearCookie("token").status(200).json({message: "Sesión finalizada correctamente."})
+  return res.clearCookie("token", {httpOnly: true}).status(200).json({message: "Sesión finalizada correctamente."})
 }
 
 //function reset password:
