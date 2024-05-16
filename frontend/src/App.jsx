@@ -22,6 +22,7 @@ import ReportPage from './pages/usersArea/medics/ReportPage';
 import { reportsLoader } from './pages/usersArea/medics/loaders';
 import AdminDashboard from './pages/usersArea/admins/AdminDashboard';
 import { createMedicAction } from './pages/usersArea/admins/actions';
+import PatientAppointmentsPage from './pages/usersArea/patients/PatientAppointmentsPage';
 
 const App = () => {
   const router = createBrowserRouter([
@@ -39,19 +40,18 @@ const App = () => {
       {path: '', element: <MedicDashboard />},
       {path: 'appointments', element: <AppointmentsPage />, action: createReportAction, children: [
         {path: ':id', element: <ReportPage />, loader: reportsLoader}
-      ]},
-      {path: 'config'},
+      ]}
     ]},
     {path: '/portal/patient', loader: patientLoader, element: <Layout /> , children: [
       {path: '', element: <PatientDashboard />, children: [
-        {path: 'new-appointment', element: <NewAppointmentModal />, loader: newAppointmentLoader},
+        {path: 'new-appointment', element: <NewAppointmentModal />, action: newAppointmentAction,  loader: newAppointmentLoader},
     ]},
-      {path: 'appointments', element: <AppointmentsPage />},
-      {path: 'config'},
+      {path: 'appointments', element: <PatientAppointmentsPage /> , children: [
+        {path: ':id', element: <ReportPage />, loader: reportsLoader}
+    ]}
     ]},
     {path: '/portal/admin', loader: patientLoader, element: <Layout />, action: createMedicAction , children: [
       {path: '', element: <AdminDashboard /> },
-      {path: 'config'},
     ]}
 ])
 

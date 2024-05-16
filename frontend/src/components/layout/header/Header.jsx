@@ -10,6 +10,8 @@ const Header = ({dashboardMode}) => {
   const[menuIsOpen, setMenuIsOpen] = useState(false)
   const userData = useSelector((store)=>store.auth.userData)
 
+  console.log(userData)
+
   if (dashboardMode) return (
     <div className={classes.dashboardContainer}>
       <Card element='header' styling={{borderRadius: '2rem'}}>
@@ -30,7 +32,7 @@ const Header = ({dashboardMode}) => {
         <Link to={"/"} className={classes.homeTitle}>StartLine Clinic</Link>
         <span>
           <Link to={"new-appointment"}>Turnos Online</Link>
-          <Link to={"auth/login"}>Iniciar Sesion</Link>
+          <Link to={"auth/login"}>{userData ? 'Volver a Sesion' : 'Iniciar Sesion'}</Link>
         </span>
       </div>
       <nav className={classes.lowerHeader}>

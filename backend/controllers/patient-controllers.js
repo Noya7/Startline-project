@@ -17,7 +17,7 @@ const getPatientAppointments = async (req, res, next) => {
         if (page < 1) page = 1;
         else if (page > totalPages) page = totalPages;
         const startIndex = (page - 1) * resultsPerPage;
-        const requestedFields = '_id fullDate area medic existingReport review';
+        const requestedFields = '_id fullDate area medic medicalReport review';
 
         const appointments = await Appointment.find({ existingPatient: req.userData.userId }).select(requestedFields)
         .populate({path: 'medic', select: ' -_id name surname image'})

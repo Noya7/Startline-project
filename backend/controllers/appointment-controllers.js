@@ -156,12 +156,12 @@ const deleteAppointment = async (req, res, next) => {
     const session = await mongoose.startSession()
     try {
         session.startTransaction()
-        const appointment = await Appointment.findById(req.body.id, {existingPatient: 1});
+        const appointment = await Appointment.findById(req.query.id, {existingPatient: 1});
         if(!appointment) throw new HttpError('Este turno fue eliminado o no existe.', 404);
         const isCreator = appointment.existingPatient.equals(req.userData.userId) 
         if (!isCreator) throw new HttpError('No podes eliminar turnos que no te pertenecen.', 409);
-        await Appointment.findByIdAndDelete(req.body.id, {session})
-        await Patient.findByIdAndUpdate(req.userData.userId, {$pull: {appointments: req.body.id}}, {session})
+        await Appointment.findByIdAndDelete(req.query.id, {session})
+        await Patient.findByIdAndUpdate(req.userData.userId, {$pull: {appointments: req.query.id}}, {session})
         await session.commitTransaction()
         return res.status(204).json({message: "Turno eliminado."})
     } catch (err) {

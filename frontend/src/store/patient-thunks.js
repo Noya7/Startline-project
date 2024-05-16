@@ -29,3 +29,23 @@ export const getUnavailableAsync = createAsyncThunk('appointments/get-unavailabl
     if(!response.ok) throw new Error(data.error || DEFAULT_ERROR_MSG)
     return data;
 })
+
+export const getPatientReportAsync = createAsyncThunk('patient/get-report', async (reportId) => {
+    const response = await fetch(import.meta.env.VITE_API_URL + `/patient/get-report?reportId=${reportId}`, {
+        credentials: 'include'
+    });
+    const data = await response.json();
+    if(!response.ok) throw new Error(data.error || DEFAULT_ERROR_MSG);
+    return data;
+})
+
+export const deleteAppointmentsAsync = createAsyncThunk('patients/delete-appointment', async (id) => {
+    console.log(id)
+    const response = await fetch(import.meta.env.VITE_API_URL + `/patient/delete-appointment?id=${id}`, {
+        method: 'DELETE',
+        credentials: 'include'
+    })
+    const data = await response.json()
+    if(!response.ok) throw new Error(data.error || DEFAULT_ERROR_MSG)
+    return data;
+})

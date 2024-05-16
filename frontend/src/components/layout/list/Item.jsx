@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom'
-import { FaEye, FaPencilAlt, FaStar, FaTrashAlt } from 'react-icons/fa';
+import { FaEye, FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
 import classes from './Item.module.css'
+import { useDispatch } from 'react-redux';
+import { deleteAppointmentsAsync } from '../../../store/patient-thunks';
 
 const timeIndexes = ['08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30'];
 
@@ -11,6 +13,8 @@ const getFormattedDate = (date) => {
 const Item = ({ data, type, onSelectAppointment }) => {
   const isPastAppointment = new Date(data.fullDate) < new Date();
 
+  const dispatch = useDispatch()
+
   const medicFormat = (
     <>
       <p className={classes.date}>{getFormattedDate(data.fullDate)}</p>
@@ -19,13 +23,10 @@ const Item = ({ data, type, onSelectAppointment }) => {
         <p>{data.medic?.name} {data.medic?.surname}, {data.area}</p>
       </span>
       <span className={classes.actions}>
-        {!isPastAppointment ? (
-          <span className={classes.actions}>
-            <Link to={`/appointments/view/${data.id}`}><FaEye /></Link>
-            <Link to={`/appointments/rate/${data.id}`}><FaStar /></Link>
-          </span>
+        {(isPastAppointment && !!data.medicalReport) ? (
+            <button onClick={()=>onSelectAppointment({rep: data.medicalReport})}><FaEye /></button>
         ) : (
-          <Link to={`/appointments/${data.id}/cancel`}><FaTrashAlt /></Link>
+          <button onClick={()=>(dispatch(deleteAppointmentsAsync(data._id)))}><FaTrashAlt /></button>
         )}
       </span>
     </>

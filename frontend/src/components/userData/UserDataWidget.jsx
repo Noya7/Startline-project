@@ -22,7 +22,6 @@ const UserDataWidget = ({userData}) => {
                 </span>
             </div>
             <span className={userData.userType === 'medic' ? classes.buttons : classes.patientButtons}>
-                <Link to='/portal/config'>Configuración</Link>
                 <Link onClick={()=>{dispatch(logoutAsync()); return navigate('/')}}>Cerrar sesión</Link>
             </span>
         </div>

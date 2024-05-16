@@ -1,6 +1,5 @@
 import { useSelector } from 'react-redux'
 import AppointmentsWidget from '../../../components/appointments/AppointmentsWidget'
-import StatsWidget from '../../../components/statistics/StatsWidget'
 import UserDataWidget from '../../../components/userData/UserDataWidget'
 import classes from './MedicDashboard.module.css'
 

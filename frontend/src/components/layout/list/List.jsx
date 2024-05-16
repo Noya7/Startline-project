@@ -35,7 +35,7 @@ const List = ({onSelectAppointment}) => {
     dispatch(getMedicAppointmentsAsync(selectedDate))
   }, [userType, currentPage, selectedDate, dispatch])
 
-  // console.log(listData)
+  console.log(listData)
 
   return (
     <div className={classes.main}>
