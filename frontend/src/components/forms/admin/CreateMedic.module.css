@@ -28,6 +28,10 @@
     /* width: 25rem; */
 }
 
+.form input{
+    color: black;
+}
+
 .form button{
     width: 100%;
     padding: 0.5rem;

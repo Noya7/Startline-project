@@ -1,19 +1,29 @@
-.input{
+.inputContainer {
+    display: flex;
+    align-items: center;
+  }
+  
+  .input {
     box-sizing: border-box;
     width: 100%;
     justify-self: center;
     padding: 0.5rem;
     border: 0.1vw solid rgba(0, 0, 0, 0.4);
-    background-color: rgba(0, 0, 0, 0.2);
-    color: #E0E0E0;
+    background-color: rgba(0, 0, 0, 0.474);
+    color: #ffffff;
     transition: background-color 0.3s;
-}
-
-input:focus {
+  }
+  
+  input:focus {
     outline: none;
-}
-
-.invalid{
-    color: red;
+  }
+  
+  .invalid {
+    color: rgb(249, 153, 29);
     border-style: solid;
-}
+  }
+  
+  .icon {
+    color: rgb(249, 153, 29);
+    margin-left: 0.5rem;
+  }

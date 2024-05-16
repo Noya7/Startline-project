@@ -32,14 +32,31 @@
     justify-content: space-between;
 }
 
+.main input[type=date]{
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    background-color: rgba(208, 208, 208, 0.756);
+    color: #CCCCCC;
+}
+
 .selection select{
     width: 48%;
     padding: 0.5rem;
     border-radius: 0.5rem;
     border: 1px solid rgba(0, 0, 0, 0.2);
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(65, 82, 234, 0.488);
+    color: #CCCCCC;
+    background-color: rgba(208, 208, 208, 0.756);
+}
+
+.selection select option{
+    background-color: rgba(0, 0, 0, 0.665);
     color: #CCCCCC;
 }
+
+
 
 .form input[type="date"]{
     width: 100%;
