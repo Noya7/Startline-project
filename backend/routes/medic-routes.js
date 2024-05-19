@@ -3,9 +3,10 @@ const {check} = require('express-validator')
 
 const {validationCheck, uppercaseFirst} = require('../middleware/check-validation')
 const {protectRoute} = require('../middleware/check-auth')
-const {getAppointments, getStatistics, createReport, colleagueSearch, editReport} = require('../controllers/medic-controllers');
+const {getStatistics, createReport, colleagueSearch, editReport} = require('../controllers/medic-controllers');
 const { createReview, reviewValidations } = require('../controllers/review-controllers');
 const { getMedicalReport } = require('../controllers/patient-controllers');
+const { getAppointments } = require('../controllers/appointment-controllers');
 
 const router = express.Router()
 

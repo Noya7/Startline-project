@@ -7,7 +7,7 @@
     gap: 1.5rem;
     flex-direction: column;
     align-items: center;
-    background-color: #004CA3;
+    background-color: #003066;
 }
 
 .main h2{
@@ -29,6 +29,7 @@
 
 .selection{
     display: flex;
+    gap: 1rem;
     justify-content: space-between;
 }
 
@@ -41,39 +42,26 @@
     color: #CCCCCC;
 }
 
-.selection select{
-    width: 48%;
+.selection select, .appointmentSelection{
     padding: 0.5rem;
     border-radius: 0.5rem;
     border: 1px solid rgba(0, 0, 0, 0.2);
-    background-color: rgba(65, 82, 234, 0.488);
-    color: #CCCCCC;
-    background-color: rgba(208, 208, 208, 0.756);
-}
-
-.selection select option{
-    background-color: rgba(0, 0, 0, 0.665);
+    background-color: rgba(0, 0, 0, 0.2);
     color: #CCCCCC;
 }
 
-
+.selection select option, .appointmentSelection option{
+    background-color: #003066;
+    color: #CCCCCC;
+}
 
 .form input[type="date"]{
     width: 100%;
     padding: 0.5rem;
     border-radius: 0.5rem;
-    border: none;
+    border: 1px solid rgba(0, 0, 0, 0.2);
     background-color: rgba(0, 0, 0, 0.2);
     cursor: pointer;
-}
-
-.appointmentSelection{
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding: 0.5rem;
-    border-radius: 0.5rem;
-    background-color: rgba(0, 0, 0, 0.2);
 }
 
 .form input[type='date']:disabled, .selection select:disabled, .appointmentSelection:disabled{
@@ -83,11 +71,18 @@
 .form button{
     width: 100%;
     padding: 0.5rem;
-    border-radius: 0.5rem;
-    background-color: #990033;
+    border-radius: 1rem;
+    border: 0.1vw solid rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.2);
     color: white;
     cursor: pointer;
+    transition: background-color 0.3s;
 }
+
+.form button:hover {
+    background-color: rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+  }
 
 .form button:disabled{
     background-color: #2B2B2B;
@@ -113,26 +108,4 @@
 .success {
     background-color: rgba(51, 204, 51, 0.55);
     border: 0.1vw solid rgba(51, 204, 51, 0.85);
-}
-
-@media (max-width: 768px){
-    /* .main{
-        min-width: 15rem;
-        max-width: 30rem;
-    } */
-
-    /* .response{
-        width: 22rem;
-        font-size: 1rem;
-    } */
-}
-
-@media (max-width: 375px){
-    .main{
-        width: 90vw;
-    }
-
-    /* .response{
-        width: 21rem;
-    } */
 }

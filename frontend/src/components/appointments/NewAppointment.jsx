@@ -30,9 +30,6 @@ const possibleAppointments = [
 //TODO: VALIDACION DE FORM
 
 const NewAppointment = () => {
-  const [name, setName] = useState('');
-  const [surname, setSurname] = useState('');
-  const [dni, setDni] = useState('');
   const [selectedArea, setSelectedArea] = useState('');
   const [selectedDoctor, setSelectedDoctor] = useState('');
   const [selectedDate, setSelectedDate] = useState('');
@@ -77,7 +74,6 @@ const NewAppointment = () => {
     setSelectedDate(event.target.value);
   };
 
-
   useEffect(()=>{
     console.log(selectedArea)
   }, [selectedArea])
@@ -93,9 +89,9 @@ const NewAppointment = () => {
       <h2>Nuevo Turno</h2>
       <Form method='post' className={classes.form}>
         <span className={classes.inputs}>
-          <TextInput type="text" name="name" onChange={(event) => setName(event.target.value)} placeholder="Nombre" />
-          <TextInput type="text" name="surname" onChange={(event) => setSurname(event.target.value)} placeholder="Apellido" />
-          <TextInput type="text" name="DNI" onChange={(event) => setDni(event.target.value)} placeholder="DNI" />
+          <TextInput type="text" name="name" placeholder="Nombre" />
+          <TextInput type="text" name="surname" placeholder="Apellido" />
+          <TextInput type="text" name="DNI" placeholder="DNI" />
         </span>
         <span className={classes.selection}>
           <select name='area' value={selectedArea} onChange={handleAreaChange}>

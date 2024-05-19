@@ -22,7 +22,7 @@ const ForgotPassForm = () => {
     }, [navigation.state, responseData])
 
     return (
-      <div className={`${classes.container} ${divClass}`}>
+      <div className={`${classes.container}`}>
         <h1>Recuperar Contraseña</h1>
         <span className={classes.typeSelect}>
             <button onClick={() => handleUserType('patient')}>Paciente</button>
@@ -33,7 +33,7 @@ const ForgotPassForm = () => {
             <input type='hidden' name='userType' value={userType}/>
             <label htmlFor='DNI'>Ingresa el DNI asociado a tu cuenta:</label>
             <TextInput type='DNI' name='DNI' placeholder='DNI' onValidation={(isValid)=>setFormIsValid(isValid)}/>
-            <button className={`${classes.button} ${!formIsValid && classes.buttonDisabled}`} disabled={!formIsValid}>Recuperar</button>
+            <button className={`${classes.button}`} disabled={!formIsValid}>Recuperar</button>
             {response && <p className={`${classes.response} ${responseData.name ? classes.error : classes.success}`}>{response.message}</p>}
           </Form>
       </div>

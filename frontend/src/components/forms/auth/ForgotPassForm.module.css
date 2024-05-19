@@ -1,26 +1,14 @@
 .container {
-    width: 30vw;
-    height: auto;
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    border: 0.1vw solid;
+    padding: 1.5rem;
+    border: 0.1vw solid #F3F3F3;
     border-radius: 1vw;
     color: #E0E0E0;
-    transition: background-color 0.5s;
-}
-
-.patient {
-    background-color: #0088A3;
-}
-
-.medic {
-    background-color: #990033;
-}
-
-.admin {
     background-color: #003066;
+    box-sizing: border-box;
 }
 
 .container h1 {
@@ -77,7 +65,7 @@
     background-color: rgba(0, 0, 0, 0.4);
     transition: background-color 0.3s, color 0.3s;
     font-weight: bold;
-    border-radius: 0.5rem;
+    border-radius: 1rem;
 }
 
 .button:hover {
@@ -85,7 +73,7 @@
     cursor: pointer;
 }
 
-.buttonDisabled {
+.button:disabled{
     background-color: rgba(0, 0, 0, 0.2);
     color: rgba(224, 224, 224, 0.5);
     cursor: not-allowed;
@@ -128,9 +116,6 @@
 }
 
 @media screen and (max-width: 768px) {
-    .container {
-        width: 80vw;
-    }
 
     .container h1 {
         font-size: 1.75rem;

@@ -172,4 +172,37 @@ const deleteAppointment = async (req, res, next) => {
     }
 }
 
-module.exports = {appointmentUserCheck, getAvailableAreas, getMedicsByArea, createAppointment, deleteAppointment, getUnavailableAppointments}
+const getAppointments = async (req, res, next) => {
+    try {
+        //si es medico, no necesita page porque como maximo recibe 17 turnos por dia.
+        if (req.userData.userType === 'medic'){
+            const {date} = req.query;
+            const appointments = await Appointment.find({medic: req.userData.userId, date})
+            .select('fullDate date timeIndex area name surname medicalReport')
+            .sort({fullDate: -1})
+            if (!appointments.length) return res.status(204).json({message: 'No hay turnos para mostrar.'})
+            return res.status(200).json(appointments)
+        }
+        //si es paciente, necesita page para paginar los resultados.
+        if(!req.userData.userType === 'patient') throw new HttpError('Tipo de usuario invalido.', 403)
+        let { page } = req.query;
+        const allAppointments = await Appointment.countDocuments({ existingPatient: req.userData.userId });
+        const resultsPerPage = 12;
+        const totalPages = Math.ceil(allAppointments / resultsPerPage);
+        if (page < 1) page = 1;
+        else if (page > totalPages) page = totalPages;
+        const startIndex = (page - 1) * resultsPerPage;
+        const requestedFields = '_id fullDate area medic medicalReport review';
+        const appointments = await Appointment.find({ existingPatient: req.userData.userId }).select(requestedFields)
+        .populate({path: 'medic', select: ' -_id name surname image'})
+        .sort({fullDate: -1}).skip(startIndex).limit(resultsPerPage);
+        if (!appointments.length) {
+            return res.status(404).json({ message: "No hay ninguna cita en el historial. Si crees que esto es un error, por favor contactate con administracion." });
+        }
+        return res.status(200).json({ totalPages, appointments });
+    } catch (err) {
+        return next(err)
+    }
+}
+
+module.exports = {appointmentUserCheck, getAvailableAreas, getMedicsByArea, createAppointment, deleteAppointment, getUnavailableAppointments, getAppointments}

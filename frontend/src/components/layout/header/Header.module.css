@@ -85,7 +85,6 @@
 .upperHeader span{
     box-sizing: border-box;
     width: max-content;
-    /* padding: 0.5rem 0; */
     height: 100%;
     display: flex;
     gap: 2rem;
@@ -184,6 +183,7 @@
 
     .upperHeader span a{
         padding: 0 0.5rem;
+        font-size: 0.8rem;
     }
 }
 

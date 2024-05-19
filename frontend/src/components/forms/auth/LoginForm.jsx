@@ -25,26 +25,26 @@ const LoginForm = () => {
     }, [navigation.state, errorData])
 
     return (
-        <div className={`${classes.container} ${divClass}`}>
-            <div className={classes.main}>
-                <h1>Iniciar sesión</h1>
-                <span className={classes.typeSelect}>
-                    <button onClick={() => handleUserType('patient')}>Paciente</button>
-                    <button onClick={() => handleUserType('medic')}>Médico</button>
-                    <button onClick={() => handleUserType('admin')}>Administrador</button>
-                </span>
-                <Form method='post'>
-                    <input type='hidden' name='userType' value={userType} />
-                    <TextInput onValidation={(isValid)=>setFormIsValid(isValid)} type={'DNI'} name={'DNI'} placeholder={'Ingresa tu DNI'} />
-                    <TextInput type={'password'} name={'password'} placeholder={'Ingresa tu contraseña'} />
-                    <Link className={classes.link} to="/auth/forgot">Olvidé mi contraseña</Link>
-                    <button disabled={!formIsValid}>Iniciar sesión</button>
-                </Form>
-                {userType !== 'medic' && <Link className={classes.link} to={signupLink}>Registrarse</Link>}
-                {error && <p className={`${classes.error} ${userType === 'medic' ? classes.medicalErr : classes.nonMedicalErr}`}>{error}</p>}
-            </div>
+        <div className={classes.main}>
+            <h1>Iniciar sesión</h1>
+            <span className={classes.typeSelect}>
+                <button className={userType === 'patient' && classes.patient} onClick={() => handleUserType('patient')}>Paciente</button>
+                <button onClick={() => handleUserType('medic')}>Médico</button>
+                <button onClick={() => handleUserType('admin')}>Administrador</button>
+            </span>
+            <Form method='post'>
+                <input type='hidden' name='userType' value={userType} />
+                <TextInput onValidation={(isValid)=>setFormIsValid(isValid)} type={'DNI'} name={'DNI'} placeholder={'Ingresa tu DNI'} />
+                <TextInput type={'password'} name={'password'} placeholder={'Ingresa tu contraseña'} />
+                <Link className={classes.link} to="/auth/forgot">Olvidé mi contraseña</Link>
+                <button disabled={!formIsValid}>Iniciar sesión</button>
+            </Form>
+            {userType !== 'medic' && <Link className={classes.link} to={signupLink}>Registrarse</Link>}
+            {error && <p className={`${classes.error} ${userType === 'medic' ? classes.medicalErr : classes.nonMedicalErr}`}>{error}</p>}
         </div>
     );
 }
+
+//TODO: ELIMINATE ERRORS AND INSTEAD SHOW THEM IN TOASTS.
 
 export default LoginForm

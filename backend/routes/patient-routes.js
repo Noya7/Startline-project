@@ -2,7 +2,7 @@ const express = require('express');
 const {check} = require('express-validator');
 const {validationCheck, uppercaseField} = require('../middleware/check-validation')
 const { protectRoute } = require('../middleware/check-auth');
-const {createAppointment, deleteAppointment, getUnavailableAppointments, appointmentUserCheck, getAvailableAreas, getMedicsByArea} = require('../controllers/appointment-controllers')
+const {createAppointment, deleteAppointment, getUnavailableAppointments, appointmentUserCheck, getAvailableAreas, getMedicsByArea, getAppointments} = require('../controllers/appointment-controllers')
 const { reviewValidations, createReview } = require('../controllers/review-controllers');
 const { getPatientAppointments, getMedicalHistory, getMedicalReport } = require('../controllers/patient-controllers');
 
@@ -32,7 +32,7 @@ router.use(protectRoute(true, 'patient'));
 
 router.get('/appointments', validationCheck([
     check('page').notEmpty().isInt()
-]), getPatientAppointments)
+]), getAppointments)
 
 router.delete('/delete-appointment', validationCheck([
     check('id').notEmpty().isMongoId()
