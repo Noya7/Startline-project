@@ -6,6 +6,5 @@ export const newAppointmentAction = async ({request}) => {
     const formData = await request.formData();
     const body = bodyExtractor(formData);
     const data = await store.dispatch(createAppointmentAsync(body));
-    if (data.error) return data.error.message;
-    return data.payload;
+    return data;
 };

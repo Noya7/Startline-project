@@ -37,6 +37,7 @@ const TextInput = ({ name, type, placeholder, onValidation, value }) => {
   
   return (
     <input
+      autoComplete='on'
       required
       name={name}
       className={`${classes.input} ${!!fieldWasTouched && !fieldIsValid && classes.invalid}`}

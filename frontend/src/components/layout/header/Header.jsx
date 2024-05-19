@@ -9,9 +9,7 @@ import Nav from '../nav/Nav';
 const Header = ({dashboardMode}) => {
   const[menuIsOpen, setMenuIsOpen] = useState(false)
   const userData = useSelector((store)=>store.auth.userData)
-
-  console.log(userData)
-
+  
   if (dashboardMode) return (
     <div className={classes.dashboardContainer}>
       <Card element='header' styling={{borderRadius: '2rem'}}>

@@ -9,7 +9,6 @@ const appointmentSlice = createSlice({
             state.areas = action.payload;
         }),
         builder.addCase(getMedicsAsync.fulfilled, (state, action) => {
-            console.log(action.payload)
             state.medics = action.payload;
         }),
         builder.addCase(getUnavailableAsync.fulfilled, (state, action) => {

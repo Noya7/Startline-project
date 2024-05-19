@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Form, useActionData, useLoaderData, useNavigation } from 'react-router-dom';
+import { getMedicsAsync, getUnavailableAsync } from '../../store/appointments-thunks';
 import TextInput from '../forms/input/TextInput';
+import {toast, ToastContainer} from 'react-toastify';
 
 import classes from './NewAppointment.module.css';
-import { getMedicsAsync, getUnavailableAsync } from '../../store/appointments-thunks';
 
 const possibleAppointments = [
   { time: '08:00', index: 0 },
@@ -27,13 +28,27 @@ const possibleAppointments = [
   { time: '17:30', index: 17 }
 ];
 
+// Obtener la fecha de hoy
+const today = new Date();
+const thisYear = today.getFullYear();
+const thisMonth = String(today.getMonth() + 1).padStart(2, '0');
+const thisDay = String(today.getDate()).padStart(2, '0');
+const minDate = `${thisYear}-${thisMonth}-${thisDay}`;
+
+// Calcular la fecha máxima (dos meses desde hoy)
+const twoMonths = new Date(today);
+twoMonths.setMonth(twoMonths.getMonth() + 2);
+const maxYear = twoMonths.getFullYear();
+const maxMonth = String(twoMonths.getMonth() + 1).padStart(2, '0');
+const maxDay = String(twoMonths.getDate()).padStart(2, '0');
+const maxDate = `${maxYear}-${maxMonth}-${maxDay}`;
+
 //TODO: VALIDACION DE FORM
 
 const NewAppointment = () => {
   const [selectedArea, setSelectedArea] = useState('');
   const [selectedDoctor, setSelectedDoctor] = useState('');
   const [selectedDate, setSelectedDate] = useState('');
-  const [response, setResponse] = useState(null);
 
   const navigation = useNavigation()
   const responseData = useActionData()
@@ -41,44 +56,36 @@ const NewAppointment = () => {
   const areas = useLoaderData();
   const doctors = useSelector(state => state.appointments.medics);
   const unavailableAppointments = useSelector(state => state.appointments.unavailable);
-  console.log(doctors)
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (selectedArea) {
+    //SI EN UN FUTURO ESTO SE GENERA UN LOOP EN ESTE COMPONENTE, ES POR ESTE IF PROBABLEMENTE.
+    if (selectedArea && !selectedDoctor) {
       dispatch(getMedicsAsync(selectedArea));
     }
-  }, [dispatch, selectedArea]);
-
-  useEffect(() => {
     if (selectedDoctor && selectedDate) {
       dispatch(getUnavailableAsync({selectedDoctor, selectedDate}));
     }
-  }, [dispatch, selectedDoctor, selectedDate]);
 
-  useEffect(()=>{
-    navigation.state === 'idle' ? setResponse(responseData) : setResponse(null)
-  }, [navigation.state, responseData])
+  }, [dispatch, selectedArea, selectedDoctor, selectedDate]);
 
-  const handleAreaChange = (event) => {
-    setSelectedArea(event.target.value);
-    setSelectedDoctor('');
-  };
+  useEffect(() => {
+    if (navigation.state === 'idle' && responseData) {
+      responseData.error?.message && toast.error(responseData.error.message);
+      responseData.payload?.message && toast.success(responseData.payload.message);
+      }
+  }, [navigation.state, responseData]);
 
-  const handleDoctorChange = (event) => {
-    setSelectedDoctor(event.target.value);
-  };
-
-  const handleDateChange = (event) => {
-    setSelectedDate(event.target.value);
-  };
-
-  useEffect(()=>{
-    console.log(selectedArea)
-  }, [selectedArea])
-
-  console.log(unavailableAppointments)
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    switch(name){
+      case 'area': setSelectedArea(value); setSelectedDoctor(''); break;
+      case 'medic': setSelectedDoctor(value); break;
+      case 'date': setSelectedDate(value); break;
+      default: break;
+    }
+  }
 
   const availableAppointments = possibleAppointments
   .filter(appointment => !unavailableAppointments?.includes(appointment.index))
@@ -94,23 +101,23 @@ const NewAppointment = () => {
           <TextInput type="text" name="DNI" placeholder="DNI" />
         </span>
         <span className={classes.selection}>
-          <select name='area' value={selectedArea} onChange={handleAreaChange}>
+          <select name='area' value={selectedArea} onChange={handleInputChange}>
             <option value="">Seleccionar área</option>
             {areas && areas.map( (area, i) => <option key={`${area}_${i}`} value={area}>{area}</option> ) }
           </select>
-          <select name='medic' value={selectedDoctor} onChange={handleDoctorChange} disabled={!selectedArea}>
+          <select name='medic' value={selectedDoctor} onChange={handleInputChange} disabled={!selectedArea}>
             <option value="">Seleccionar médico</option>
             {doctors?.map(doctor =>  <option key={doctor._id} value={doctor._id}>{`${doctor.name} ${doctor.surname}`}</option> )}
           </select>
         </span>
-        <input name='date' type="date" value={selectedDate} onChange={handleDateChange} disabled={!selectedDoctor} />
+        <input name='date' type="date" min={minDate} max={maxDate} value={selectedDate} onChange={handleInputChange} disabled={!selectedDoctor} />
         <select name='timeIndex' className={classes.appointmentSelection} disabled={!selectedDate}>
           <option value="">Seleccionar turno</option>
           {availableAppointments}
         </select>
         <button type="submit" disabled={false}>Programar turno</button>
       </Form>
-      {response && <p className={`${classes.response} ${responseData.name ? classes.error : classes.success}`}>{response.message}</p>}
+      <ToastContainer />
     </div>
   );
 };

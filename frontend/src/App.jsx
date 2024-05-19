@@ -23,6 +23,8 @@ import { reportsLoader } from './pages/usersArea/medics/loaders';
 import AdminDashboard from './pages/usersArea/admins/AdminDashboard';
 import { createMedicAction } from './pages/usersArea/admins/actions';
 import PatientAppointmentsPage from './pages/usersArea/patients/PatientAppointmentsPage';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const App = () => {
   const router = createBrowserRouter([
