@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import classes from './UserDataWidget.module.css'
 import { useDispatch } from 'react-redux'
@@ -7,6 +7,11 @@ import { logoutAsync } from '../../store/auth-thunks'
 const UserDataWidget = ({userData}) => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
+
+    const logoutHandler = () => {
+        dispatch(logoutAsync())
+        navigate('/')
+    }
 
   return (
     <div className={`${classes.main} ${classes[userData.userType]}`}>
@@ -22,7 +27,7 @@ const UserDataWidget = ({userData}) => {
                 </span>
             </div>
             <span className={userData.userType === 'medic' ? classes.buttons : classes.patientButtons}>
-                <Link onClick={()=>{dispatch(logoutAsync()); return navigate('/')}}>Cerrar sesión</Link>
+                <button onClick={logoutHandler}>Cerrar sesión</button>
             </span>
         </div>
     </div>

@@ -116,9 +116,8 @@ const signup = async (req, res, next) => {
     return res.status(201).cookie("token", token, { 
       httpOnly: true, 
       maxAge: 3600000, 
-      sameSite: 'none', 
-      secure: true, 
-      domain: '.vercel.app' 
+      sameSite: 'none',
+      secure: true,
     }).json({ userData, message: "Usuario creado correctamente!" });
   } catch (err) {
     //falta eliminar imagen de perfil de medico en caso de un error.
@@ -171,7 +170,6 @@ const login = async (req, res, next) =>{
       maxAge: 3600000, 
       sameSite: 'none', 
       secure: true, 
-      // domain: '.vercel.app' 
     }).status(200).json({userData, message: "Sesion iniciada correctamente. Bienvenido!"})
   } catch (err) {
     return next(err)

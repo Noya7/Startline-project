@@ -13,7 +13,6 @@ const authSlice = createSlice({
         }),
         builder.addCase(logoutAsync.fulfilled, (state) => {
             state.userData = null;
-            console.log('logged out');
         }),
         builder.addCase(patientVerificationAsync.fulfilled, (state, action) => {
             state.signupData = action.payload;

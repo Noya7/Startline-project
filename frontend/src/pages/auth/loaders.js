@@ -4,7 +4,7 @@ import { autoLoginAsync, logoutAsync, medicVerificationAsync, resetTokenVerifica
 
 export const signupLoader = async ({params, request}) => {
     const {usertype} = params;
-    if (!['admin', 'medic', 'patient'].includes(usertype)) return redirect('/');
+    if (!['admin', 'medic', 'patient'].includes(usertype)) return redirect(`/?err=Error:%20Tipo%20de%20usuario%20no%20válido`);
     switch (usertype) {
         case 'patient': {
             const state = store.getState();
@@ -14,9 +14,9 @@ export const signupLoader = async ({params, request}) => {
         case'medic': {
             const url = new URL(request.url);
             const token = url.searchParams.get('token');
-            if (!token) return redirect('/');
+            if (!token) return redirect(`/?err=Error:%20Token%20no%20encontrado`);
             const data = await store.dispatch(medicVerificationAsync(token))
-            if (data.error) return redirect('/');
+            if (data.error) return redirect(`/?err=${data.error.message}`);
             return data.payload;
         }
         default: return null;
@@ -26,9 +26,9 @@ export const signupLoader = async ({params, request}) => {
 export const resetPasswordLoader = async ({request}) => {
     const url = new URL(request.url);
     const token = url.searchParams.get('token');
-    if (!token) return redirect('/');
+    if (!token) return redirect(`/?err=Error:%20Token%20no%20encontrado`);
     const data = await store.dispatch(resetTokenVerificationAsync(token))
-    if (data.error) return redirect('/');
+    if (data.error) return redirect(`/?err=${data.error.message}`);
     const resetData = {token: data.meta.arg, userData: data.payload.existingUser, userType: data.payload.usertype}
     return resetData;
 }

@@ -1,8 +1,6 @@
 .container{
     box-sizing: border-box;
     justify-self: center;
-    width: 50%;
-    height: max-content;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
@@ -25,7 +23,6 @@
     max-width: 25rem;
     flex-direction: column;
     gap: 1rem;
-    /* width: 25rem; */
 }
 
 .form input{

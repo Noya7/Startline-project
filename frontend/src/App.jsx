@@ -1,7 +1,7 @@
 import {RouterProvider, createBrowserRouter} from 'react-router-dom'
 
 import Layout, { HomeLayout } from './pages/Layout'
-import Home from './pages/Home';
+import Home, { HomeLoader } from './pages/Home';
 import AppointmentsPage from './pages/usersArea/medics/AppointmentsPage';
 import LoginPage from './pages/auth/Login';
 import SignupPage from './pages/auth/Signup';
@@ -29,7 +29,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const App = () => {
   const router = createBrowserRouter([
     {path: '/', element: <HomeLayout />, children: [
-      {path: '/', element: <Home />, children: [
+      {path: '/', element: <Home />, loader: HomeLoader, children: [
         {path: '/new-appointment', element: <NewAppointmentModal />, loader: newAppointmentLoader, action: newAppointmentAction},
         {path: '/auth/login', element: <LoginPage />, loader: loginLoader, action: loginAction},
         {path: '/auth/patient-verify', element: <PatientVerificationPage />, action: PatientVerificationAction},
@@ -52,8 +52,8 @@ const App = () => {
         {path: ':id', element: <ReportPage />, loader: reportsLoader}
     ]}
     ]},
-    {path: '/portal/admin', loader: patientLoader, element: <Layout />, action: createMedicAction , children: [
-      {path: '', element: <AdminDashboard /> },
+    {path: '/portal/admin', loader: patientLoader, element: <Layout />, children: [
+      {path: '/portal/admin', action: createMedicAction, element: <AdminDashboard />, loader: newAppointmentLoader },
     ]}
 ])
 

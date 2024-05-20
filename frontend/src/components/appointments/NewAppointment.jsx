@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Form, useActionData, useLoaderData, useNavigation } from 'react-router-dom';
+import { Form, useActionData, useLoaderData } from 'react-router-dom';
 import { getMedicsAsync, getUnavailableAsync } from '../../store/appointments-thunks';
 import TextInput from '../forms/input/TextInput';
-import {toast, ToastContainer} from 'react-toastify';
+import {ToastContainer} from 'react-toastify';
 
 import classes from './NewAppointment.module.css';
+import useResponseToast from '../../hooks/useResponseToast';
 
 const possibleAppointments = [
   { time: '08:00', index: 0 },
@@ -45,53 +46,42 @@ const maxDate = `${maxYear}-${maxMonth}-${maxDay}`;
 
 //TODO: VALIDACION DE FORM
 
+const defaultFields = {
+  area: '',
+  medic: '',
+  date: '',
+  timeIndex: ''
+}
+
 const NewAppointment = () => {
-  const [selectedArea, setSelectedArea] = useState('');
-  const [selectedDoctor, setSelectedDoctor] = useState('');
-  const [selectedDate, setSelectedDate] = useState('');
-
-  const navigation = useNavigation()
+  const [fields, setFields] = useState(defaultFields);
   const responseData = useActionData()
-
   const areas = useLoaderData();
-  const doctors = useSelector(state => state.appointments.medics);
-  const unavailableAppointments = useSelector(state => state.appointments.unavailable);
-
+  const {medics, unavailable} = useSelector(state => state.appointments);
   const dispatch = useDispatch();
 
   useEffect(() => {
     //SI EN UN FUTURO ESTO SE GENERA UN LOOP EN ESTE COMPONENTE, ES POR ESTE IF PROBABLEMENTE.
-    if (selectedArea && !selectedDoctor) {
-      dispatch(getMedicsAsync(selectedArea));
+    if (fields.area.length && !fields.medic.length) {
+      dispatch(getMedicsAsync(fields.area));
     }
-    if (selectedDoctor && selectedDate) {
-      dispatch(getUnavailableAsync({selectedDoctor, selectedDate}));
+    if (fields.medic.length && fields.date.length) {
+      dispatch(getUnavailableAsync({selectedDoctor: fields.medic, selectedDate: fields.date}));
     }
-
-  }, [dispatch, selectedArea, selectedDoctor, selectedDate]);
-
-  useEffect(() => {
-    if (navigation.state === 'idle' && responseData) {
-      responseData.error?.message && toast.error(responseData.error.message);
-      responseData.payload?.message && toast.success(responseData.payload.message);
-      }
-  }, [navigation.state, responseData]);
+  }, [dispatch, fields]);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    switch(name){
-      case 'area': setSelectedArea(value); setSelectedDoctor(''); break;
-      case 'medic': setSelectedDoctor(value); break;
-      case 'date': setSelectedDate(value); break;
-      default: break;
-    }
+    setFields( name === 'area' ? {...fields, [name]: value, medic: '', date: '', timeIndex: ''} : {...fields, [name]: value});
   }
 
   const availableAppointments = possibleAppointments
-  .filter(appointment => !unavailableAppointments?.includes(appointment.index))
+  .filter(appointment => !unavailable?.includes(appointment.index))
   .map(appointment => <option key={appointment.index} value={appointment.index}>{appointment.time}</option>);
 
+  useResponseToast(responseData)
   return (
+    <>
     <div className={classes.main}>
       <h2>Nuevo Turno</h2>
       <Form method='post' className={classes.form}>
@@ -101,24 +91,25 @@ const NewAppointment = () => {
           <TextInput type="text" name="DNI" placeholder="DNI" />
         </span>
         <span className={classes.selection}>
-          <select name='area' value={selectedArea} onChange={handleInputChange}>
+          <select name='area' value={fields.area} onChange={handleInputChange}>
             <option value="">Seleccionar área</option>
             {areas && areas.map( (area, i) => <option key={`${area}_${i}`} value={area}>{area}</option> ) }
           </select>
-          <select name='medic' value={selectedDoctor} onChange={handleInputChange} disabled={!selectedArea}>
+          <select name='medic' value={fields.medic} onChange={handleInputChange} disabled={!fields.area.length}>
             <option value="">Seleccionar médico</option>
-            {doctors?.map(doctor =>  <option key={doctor._id} value={doctor._id}>{`${doctor.name} ${doctor.surname}`}</option> )}
+            {medics?.map(doctor =>  <option key={doctor._id} value={doctor._id}>{`${doctor.name} ${doctor.surname}`}</option> )}
           </select>
         </span>
-        <input name='date' type="date" min={minDate} max={maxDate} value={selectedDate} onChange={handleInputChange} disabled={!selectedDoctor} />
-        <select name='timeIndex' className={classes.appointmentSelection} disabled={!selectedDate}>
+        <input name='date' type="date" min={minDate} max={maxDate} value={fields.date} onChange={handleInputChange} disabled={!fields.medic.length} />
+        <select name='timeIndex' onChange={handleInputChange} className={classes.appointmentSelection} disabled={!fields.date.length}>
           <option value="">Seleccionar turno</option>
           {availableAppointments}
         </select>
-        <button type="submit" disabled={false}>Programar turno</button>
+        <button type="submit" disabled={!fields.timeIndex.length}>Programar turno</button>
       </Form>
-      <ToastContainer />
     </div>
+    <ToastContainer />
+    </>
   );
 };
 

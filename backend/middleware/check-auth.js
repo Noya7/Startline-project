@@ -11,7 +11,10 @@ const checkAuth = (req, res, next) => {
             req.userData = {...decodedToken};
         }        
         return next();
-    } catch (err) {return next(err)}
+    } catch (err) {
+        if (err instanceof HttpError) return res.clearCookie("token", {httpOnly: true}).status(err.status).json({error: err.message});
+        return next(err)
+    }
 }
 
 const protectRoute = (routeProtection, userType) => {

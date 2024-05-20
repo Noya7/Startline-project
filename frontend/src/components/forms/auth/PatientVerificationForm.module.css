@@ -43,14 +43,10 @@
     outline: none;
 }
 
-.error {
-    width: 100%;
-    padding: 0.2rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: rgba(255, 0, 0, 0.5);
-    border: 0.1vw solid rgba(255, 0, 0, 0.5);
+.main form button:disabled{
+    background-color: rgba(0, 0, 0, 0.6);
+    cursor: not-allowed;
+    color: #7C7C7C;
 }
 
 @media screen and (max-width: 768px) {

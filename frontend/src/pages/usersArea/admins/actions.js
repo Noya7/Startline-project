@@ -6,7 +6,5 @@ export const createMedicAction = async ({request}) =>{
     const formData = await request.formData();
     const body = bodyExtractor(formData);
     const data = await store.dispatch(createMedicAsync(body))
-    if (data.error) return data.error.message;
-    console.log(data)
-    return null;
+    return data;
 }
