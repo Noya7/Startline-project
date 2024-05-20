@@ -12,8 +12,6 @@ const AppointmentsWidget = ({userType}) => {
 
   const appointments = useSelector(state =>userType === 'medic' ?  state.medic.appointments : state.patient.appointments.appointments)
 
-  console.log(appointments)
-
   useEffect(()=>{
     const mappingFunction = (data) => {
       return !!data && data.map(item => <WidgetItem key={item._id} data={item} userType={userType} />)

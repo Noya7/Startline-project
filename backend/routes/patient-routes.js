@@ -4,7 +4,7 @@ const {validationCheck, uppercaseField} = require('../middleware/check-validatio
 const { protectRoute } = require('../middleware/check-auth');
 const {createAppointment, deleteAppointment, getUnavailableAppointments, appointmentUserCheck, getAvailableAreas, getMedicsByArea, getAppointments} = require('../controllers/appointment-controllers')
 const { reviewValidations, createReview } = require('../controllers/review-controllers');
-const { getPatientAppointments, getMedicalHistory, getMedicalReport } = require('../controllers/patient-controllers');
+const { getMedicalHistory, getMedicalReport } = require('../controllers/patient-controllers');
 
 const router = express.Router();
 
