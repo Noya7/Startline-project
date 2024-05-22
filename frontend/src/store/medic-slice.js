@@ -9,7 +9,6 @@ const medicSlice = createSlice({
             state.appointments = action.payload;
         }),
         builder.addCase(getReportAsync.fulfilled, (state, action) => {
-            console.log(action.payload);
             state.report = action.payload;
         })
         builder.addCase(editMedicalReportAsync.fulfilled, (state) => {

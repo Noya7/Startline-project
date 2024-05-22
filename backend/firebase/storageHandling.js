@@ -27,7 +27,7 @@ const profileImageUpload = async (file, userId) => {
           stream.end(file.buffer);
         });
     } catch (err) {
-      return new HttpError('Ocurrió un error inesperado al subir la imagen. Error: ' + err.message, 500);
+      throw new HttpError('Ocurrió un error inesperado al subir la imagen. Error: ' + err.message, 500);
     }
 };
 

@@ -10,7 +10,7 @@ import classes from './AppointmentsWidget.module.css';
 const AppointmentsWidget = ({userType}) => {
   const [items, setItems] = useState([])
 
-  const appointments = useSelector(state =>userType === 'medic' ?  state.medic.appointments : state.patient.appointments.appointments)
+  const appointments = useSelector(state =>userType === 'medic' ?  state.medic.appointments : state.patient.appointments?.appointments)
 
   useEffect(()=>{
     const mappingFunction = (data) => {

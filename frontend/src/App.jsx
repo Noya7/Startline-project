@@ -22,7 +22,6 @@ import ReportPage from './pages/usersArea/medics/ReportPage';
 import { reportsLoader } from './pages/usersArea/medics/loaders';
 import AdminDashboard from './pages/usersArea/admins/AdminDashboard';
 import { createMedicAction } from './pages/usersArea/admins/actions';
-import PatientAppointmentsPage from './pages/usersArea/patients/PatientAppointmentsPage';
 import 'react-toastify/dist/ReactToastify.css';
 
 
@@ -48,7 +47,7 @@ const App = () => {
       {path: '', element: <PatientDashboard />, children: [
         {path: 'new-appointment', element: <NewAppointmentModal />, action: newAppointmentAction,  loader: newAppointmentLoader},
     ]},
-      {path: 'appointments', element: <PatientAppointmentsPage /> , children: [
+      {path: 'appointments', element: <AppointmentsPage /> , children: [
         {path: ':id', element: <ReportPage />, loader: reportsLoader}
     ]}
     ]},
