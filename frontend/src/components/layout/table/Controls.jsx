@@ -3,16 +3,21 @@ import classes from './Controls.module.css';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { getPatientAppointmentsAsync } from '../../../store/patient-thunks';
 import { getMedicAppointmentsAsync } from '../../../store/medic-thunks';
+import { useEffect, useState } from 'react';
 
 const Controls = () => {
+  const [paginationData, setPaginationData] = useState({currentPage: 1, totalPages: 1})
   const dispatch = useDispatch();
-
   const userType = useSelector(state => state.auth.userData.userType);
-  const {totalPages, currentPage} = useSelector(state => userType === 'patient' ? state.patient.appointments : state.medic.appointments);
+  const patientAppointmentData = useSelector(state => state.patient.appointments);
+
+  useEffect(()=>{
+    !!patientAppointmentData && setPaginationData({currentPage: patientAppointmentData.currentPage, totalPages: patientAppointmentData.totalPages})
+  },[patientAppointmentData])
 
   const handlePageChange = (direction) => {
-  const newPage = direction === 'next' ? currentPage + 1 : currentPage - 1;
-    if (newPage >= 1 && newPage <= totalPages) dispatch(getPatientAppointmentsAsync(newPage));
+    const newPage = direction === 'next' ? paginationData.currentPage + 1 : paginationData.currentPage - 1;
+    if (newPage >= 1 && newPage <= paginationData.totalPages) dispatch(getPatientAppointmentsAsync(newPage));
   };
 
   const handleDateChange = (selectedDate) => {
@@ -31,13 +36,13 @@ const Controls = () => {
         )}
         {userType === 'patient' && (
           <span className={classes.pagination}>
-            <button onClick={() => handlePageChange('prev')} disabled={currentPage === 1}>
+            <button onClick={() => handlePageChange('prev')} disabled={paginationData.currentPage === 1}>
               <FaChevronLeft />
             </button>
             <span>
-              Página {currentPage} de {totalPages}
+              Página {paginationData.currentPage} de {paginationData.totalPages}
             </span>
-            <button onClick={() => handlePageChange('next')} disabled={currentPage === totalPages}>
+            <button onClick={() => handlePageChange('next')} disabled={paginationData.currentPage === paginationData.totalPages}>
               <FaChevronRight />
             </button>
           </span>

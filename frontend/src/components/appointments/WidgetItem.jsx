@@ -2,7 +2,7 @@ import classes from './WidgetItem.module.css';
 
 const WidgetItem = ({ data, userType }) => {
     const date = new Date(data.fullDate);
-    const options = { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' };
+    const options = { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'UTC', hour12: false};
     const formattedDate = date.toLocaleString('es-ES', options);
 
     return (

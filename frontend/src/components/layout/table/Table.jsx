@@ -9,8 +9,8 @@ import Controls from './Controls';
 const timeIndexes = ['08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30'];
 
 const getFormattedDate = (date) => {
-    return new Date(date).toLocaleDateString('es-AR', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric'});
-  }
+    return new Date(date).toLocaleDateString('es-AR', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', timeZone: 'UTC', hour12: false});
+}
 
 const Table = () => {
     const userType = useSelector(state => state.auth.userData.userType)
@@ -75,7 +75,6 @@ const Table = () => {
         data: data
     })
 
-    
     return (
         <div className={classes.main}>
             <div className={classes.options}>

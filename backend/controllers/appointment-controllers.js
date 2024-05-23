@@ -179,14 +179,14 @@ const getAppointments = async (req, res, next) => {
             const {date} = req.query;
             const appointments = await Appointment.find({medic: req.userData.userId, date})
             .select('fullDate date timeIndex name surname medicalReport')
-            .sort({fullDate: -1})
+            .sort({timeIndex: 1})
             return res.status(200).json(appointments)
         }
         //si es paciente, necesita page para paginar los resultados.
         if(!req.userData.userType === 'patient') throw new HttpError('Tipo de usuario invalido.', 403)
         let { page } = req.query;
         const allAppointments = await Appointment.countDocuments({ existingPatient: req.userData.userId });
-        const resultsPerPage = 1;
+        const resultsPerPage = 12;
         const totalPages = Math.ceil(allAppointments / resultsPerPage);
         if (page < 1) page = 1;
         else if (page > totalPages && !!totalPages) page = totalPages;
