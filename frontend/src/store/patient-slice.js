@@ -7,12 +7,13 @@ const patientSlice = createSlice({
     extraReducers: builder => {
         builder.addCase(getPatientAppointmentsAsync.fulfilled, (state, action) => {
             state.appointments = action.payload;
+            console.log(state.appointments)
         }),
         builder.addCase(getPatientReportAsync.fulfilled, (state, action) => {
             state.report = action.payload;
         }),
         builder.addCase(deleteAppointmentsAsync.fulfilled, (state, action) => {
-            state.appointments = state.appointments.filter(appointment => appointment._id !== action.payload._id)
+            state.appointments.appointments = state.appointments.appointments.filter(appointment => appointment._id !== action.payload.id)
         })
     }
 })

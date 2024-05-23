@@ -40,12 +40,12 @@ export const getPatientReportAsync = createAsyncThunk('patient/get-report', asyn
 })
 
 export const deleteAppointmentsAsync = createAsyncThunk('patients/delete-appointment', async (id) => {
-    console.log(id)
     const response = await fetch(import.meta.env.VITE_API_URL + `/patient/delete-appointment?id=${id}`, {
         method: 'DELETE',
         credentials: 'include'
     })
     const data = await response.json()
-    if(!response.ok) throw new Error(data.error || DEFAULT_ERROR_MSG)
+    if(!response.ok) throw new Error(data.error || DEFAULT_ERROR_MSG);
+    data.id = id;
     return data;
 })

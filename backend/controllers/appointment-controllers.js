@@ -163,7 +163,7 @@ const deleteAppointment = async (req, res, next) => {
         await Appointment.findByIdAndDelete(req.query.id, {session})
         await Patient.findByIdAndUpdate(req.userData.userId, {$pull: {appointments: req.query.id}}, {session})
         await session.commitTransaction()
-        return res.status(204).json({message: "Turno eliminado."})
+        return res.status(200).json({message: "Turno eliminado."})
     } catch (err) {
         await session.abortTransaction()
         return next(err)
