@@ -44,8 +44,6 @@ const maxMonth = String(twoMonths.getMonth() + 1).padStart(2, '0');
 const maxDay = String(twoMonths.getDate()).padStart(2, '0');
 const maxDate = `${maxYear}-${maxMonth}-${maxDay}`;
 
-//TODO: VALIDACION DE FORM
-
 const defaultFields = {
   area: '',
   medic: '',

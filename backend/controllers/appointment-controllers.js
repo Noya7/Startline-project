@@ -178,7 +178,7 @@ const getAppointments = async (req, res, next) => {
         if (req.userData.userType === 'medic'){
             const {date} = req.query;
             const appointments = await Appointment.find({medic: req.userData.userId, date})
-            .select('fullDate date timeIndex name surname medicalReport')
+            .select('fullDate date timeIndex name surname medicalReport existingPatient DNI')
             .sort({timeIndex: 1})
             return res.status(200).json(appointments)
         }

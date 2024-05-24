@@ -60,25 +60,19 @@ const createReport = async(req, res, next) =>{
 //function edit report:
 
 const editReport = async(req, res, next) =>{
-    const session = await mongoose.startSession()
     try {
-        session.startTransaction()
         const {report, motive, diagnosis, treatment} = req.body;
-        const existingReport = await MedicalReport.findById(report, {DNI: 1}, {session});
+        const existingReport = await MedicalReport.findById(report, {DNI: 1});
         if (!existingReport) throw new HttpError('El reporte no existe o ha sido eliminado de la base de datos. Si crees que esto es un error, por favor comunicate con adminstracion.', 404);
         existingReport.motiveForConsultation = motive !== existingReport.motiveForConsultation ? motive : existingReport.motiveForConsultation;
         existingReport.diagnosis = diagnosis !== existingReport.diagnosis ? diagnosis : existingReport.diagnosis;
         existingReport.treatment = treatment !== existingReport.treatment ? treatment : existingReport.treatment; 
         existingReport.observations = req.body.observations || existingReport.observations;
         //saving and response:
-        await existingReport.save({session})
-        await session.commitTransaction()
+        await existingReport.save()
         return res.status(201).json({message: "Reporte editado exitosamente!"})
     } catch (err) {
-        await session.abortTransaction()
         return next(err)
-    } finally {
-        await session.endSession();
     }
 }
 

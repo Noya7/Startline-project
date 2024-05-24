@@ -20,11 +20,13 @@ const Table = () => {
         if (userType === 'medic') return [
             {Header: 'Hora', Cell: ({row}) => timeIndexes[row.original.timeIndex]},
             {Header: 'Paciente', Cell: ({row}) => `${row.original.name} ${row.original.surname}`},
-            {Header: 'Acciones', Cell: ({row}) => (
+            {Header: 'Acciones', Cell: ({row}) => {
+                const isPastAppointment = new Date(row.original.fullDate) < new Date();
+                return (
                 <span className={classes.actions}>
-                    <Link className={classes.medicLink} to={`${row.original._id}`}>{row.original.medicalReport ? <FaEye className={classes.icon} /> : <FaPencilAlt  className={classes.icon} /> }</Link>
+                    {isPastAppointment && <Link className={classes.medicLink} to={`${row.original._id}`}>{row.original.medicalReport ? <FaEye className={classes.icon} /> : <FaPencilAlt  className={classes.icon} /> }</Link>}
                 </span>
-            )},
+            )}},
         ]
         return [
             {Header: 'Fecha', Cell: ({row}) => getFormattedDate(row.original.fullDate)},
@@ -41,10 +43,10 @@ const Table = () => {
                 const isPastAppointment = new Date(row.original.fullDate) < new Date();
                 return(
                 <span className={classes.actions}>
-                    {(isPastAppointment && !!row.original.medicalReport) ? (
-                    <Link className={classes.patientLink} to={`${row.original.medicalReport}`}><FaEye /></Link>
+                    {isPastAppointment ? (
+                    !!row.original.medicalReport && <Link className={classes.patientLink} to={`${row.original.medicalReport}`}><FaEye className={classes.icon} /></Link>
                     ) : (
-                    <Link className={classes.patientLink} to={`delete/${row.original._id}`}><FaTrashAlt /></Link>
+                    <Link className={classes.patientLink} to={`delete/${row.original._id}`}><FaTrashAlt className={classes.icon} /></Link>
                     )}
                 </span>
             )} },

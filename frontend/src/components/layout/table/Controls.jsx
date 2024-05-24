@@ -20,18 +20,12 @@ const Controls = () => {
     if (newPage >= 1 && newPage <= paginationData.totalPages) dispatch(getPatientAppointmentsAsync(newPage));
   };
 
-  const handleDateChange = (selectedDate) => {
-    const date = new Date(selectedDate);
-    const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
-    dispatch(getMedicAppointmentsAsync(formattedDate));
-  };
-
   return (
       <div className={classes.controls}>
         {userType === 'medic' && (
           <span className={classes.inputs}>
             <label name='date' htmlFor='size'>Fecha:</label>
-            <input type="date" onChange={e => handleDateChange(e.target.value)} />
+            <input type="date" onChange={e => dispatch(getMedicAppointmentsAsync(e.target.value)) } />
           </span>
         )}
         {userType === 'patient' && (

@@ -2,7 +2,7 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 1rem;
   padding: 0.5rem;
   padding-top: 0;
   border-radius: 0.5rem;
@@ -23,7 +23,6 @@
 .tableContainer{
   display: flex;
   width: 100%;
-  /* flex-grow: 1; */
   overflow: scroll;
 }
 
@@ -34,8 +33,8 @@
 .table{
   width: 100%;
   background-color: #F3F3F3;
-  border-radius: 0.5rem;
   box-shadow: 1px 4px 6px #000000;
+  border-collapse: collapse;
 }
 
 .refference tr{
@@ -54,12 +53,8 @@
 }
 
 .refference tr th{
-  font-size: 1.3rem;
-  font-weight: 400;
-}
-
-.body{
-  overflow: hidden;
+  font-size: 1.5rem;
+  font-weight: 500;
 }
 
 .body tr{
@@ -75,12 +70,16 @@
 }
 
 .body tr td{
-  text-align: center;
+  font-size: 1.3rem;
+  padding: 0.5rem;
+  border-bottom: 0.1vw solid rgba(0, 0, 0, 0.2);
   justify-content: center;
   align-items: center;
 }
 
 .icon{
+  width: 30px;
+  aspect-ratio: 1;
   text-align: center;
 }
 
@@ -91,8 +90,8 @@
 }
 
 .medicLink, .patientLink{
-  width: 30px;
-  height: 30px;
+  width: 35px;
+  height: 35px;
   border-radius: 100%;
   display: flex;
   justify-content: center;
@@ -117,7 +116,6 @@
 .professionalInfo{
   display: flex;
   gap: 1rem;
-  justify-content: center;
   align-items: center;
 }
 
@@ -140,4 +138,16 @@
   font-size: 1.5rem;
   font-weight: 600;
   color: #2B2B2B;
+}
+
+@media (max-width: 768px) {
+  .refference tr th{
+    font-size: 1rem;
+    padding: 0.25rem;
+    align-items: start;
+  }
+  .body tr td{
+    font-size: 1rem;
+    padding: 0.25rem;
+  }
 }

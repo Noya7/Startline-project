@@ -12,20 +12,28 @@
 }
 
 .inputs {
-  width: 10rem;
+  width: 15rem;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   align-items: center;
 }
 
-.inputs input[type="date"],
 .inputs select {
   width: 100%;
   padding-left: 0.5rem;
   border: 1px solid #ccc;
   border-radius: 0.25rem;
   font-size: 1rem;
+}
+
+.inputs input[type="date"]{
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: 0.1vw solid rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.1);
+  cursor: pointer;
 }
 
 .pagination {
@@ -47,48 +55,3 @@
   background-color: #ccc;
   cursor: not-allowed;
 }
-
-/* @media (max-width: 825px) {
-  .controls {
-    flex-direction: row;
-  }
-
-  .inputs {
-    width: 40%;
-    flex-direction: column;
-    gap: 1rem;
-    font-size: 1rem;
-  }
-
-  .inputs input[type="date"],
-  .inputs select {
-    width: 100%;
-    padding-left: 0.5rem;
-    font-size: 1rem;
-  }
-}
-
-@media (max-width: 425px) {
-  .controls {
-    flex-direction: column;
-    height: 80%;
-  }
-
-  .inputs {
-    width: 100%;
-    flex-direction: row;
-    gap: 1rem;
-    font-size: 0.8rem;
-  }
-
-  .inputs input[type="date"],
-  .inputs select {
-    width: 100%;
-    padding-left: 0.5rem;
-    font-size: 1rem;
-  }
-
-  .pagination {
-    margin-top: 1rem;
-  }
-} */
