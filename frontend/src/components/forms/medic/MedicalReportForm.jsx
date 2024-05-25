@@ -66,7 +66,7 @@ const MedicalReportForm = () => {
             <label htmlFor="observations">Observaciones:</label>
             <textarea readOnly={readOnly} defaultValue={reportData.rep?.observations || ''} type="text" id="observations" name="observations" />
           
-            {!readOnly && <button disabled={!formIsValid} type="submit">Enviar</button>}
+            {!readOnly && <button disabled={!formIsValid} type="submit">Guardar</button>}
           </Form>
       <ToastContainer />
       </div>

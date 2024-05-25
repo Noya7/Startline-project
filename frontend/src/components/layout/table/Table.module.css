@@ -27,7 +27,8 @@
 }
 
 .tableContainer::-webkit-scrollbar{
-  display: none;
+  width: 5px;
+  height: 5px;
 }
 
 .table{
@@ -40,9 +41,7 @@
 .refference tr{
   color: #E0E0E0;
   font-weight: 600;
-  border-top-left-radius: 0.5rem;
-  border-top-right-radius: 0.5rem;
-  box-shadow: 1px 4px 6px #CCCCCC, 0px 2px 4px #CCCCCC;
+  /* box-shadow: 1px 4px 6px #CCCCCC, 0px 2px 4px #CCCCCC; */
 }
 
 .medic tr{
@@ -53,6 +52,8 @@
 }
 
 .refference tr th{
+  padding: 0 0.5rem;
+  text-align: left;
   font-size: 1.5rem;
   font-weight: 500;
 }
@@ -70,11 +71,16 @@
 }
 
 .body tr td{
+  min-width: 15rem;
   font-size: 1.3rem;
   padding: 0.5rem;
   border-bottom: 0.1vw solid rgba(0, 0, 0, 0.2);
   justify-content: center;
   align-items: center;
+}
+
+.test{
+  background-color: #005566;
 }
 
 .icon{
@@ -143,11 +149,9 @@
 @media (max-width: 768px) {
   .refference tr th{
     font-size: 1rem;
-    padding: 0.25rem;
-    align-items: start;
   }
   .body tr td{
+    min-width: 10rem;
     font-size: 1rem;
-    padding: 0.25rem;
   }
 }

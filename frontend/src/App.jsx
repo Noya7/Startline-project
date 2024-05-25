@@ -42,7 +42,7 @@ const App = () => {
     {path: '/portal/medic', loader: patientLoader, element: <Layout /> , children: [
       {path: '', element: <MedicDashboard />},
       {path: 'appointments', element: <AppointmentsPage />, action: createReportAction, children: [
-        {path: ':id', element: <ReportPage />, loader: reportsLoader, action: createReportAction}
+        {path: ':type/:id', element: <ReportPage />, loader: reportsLoader, action: createReportAction}
       ]}
     ]},
     {path: '/portal/patient', loader: patientLoader, element: <Layout /> , children: [
