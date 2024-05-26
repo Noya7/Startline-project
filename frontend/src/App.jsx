@@ -8,25 +8,22 @@ import SignupPage from './pages/auth/Signup';
 import PatientVerificationPage from './pages/auth/PatientVerification';
 import ForgotPasswordPage from './pages/auth/ForgotPassword';
 import ResetPasswordPage from './pages/auth/ResetPassword';
-import {PatientVerificationAction, forgotPasswordAction, loginAction, resetPasswordAction, signupAction} from './pages/auth/actions'
-import { loginLoader, resetPasswordLoader, signupLoader } from './pages/auth/loaders';
-
-import { patientLoader } from './pages/usersArea/loaders';
+import DeleteAppointmentModal from './pages/usersArea/patients/DeleteAppointment';
+import ReviewModal from './pages/usersArea/patients/ReviewModal';
 import MedicDashboard from './pages/usersArea/medics/MedicDashboard';
 import PatientDashboard from './pages/usersArea/patients/PatientDashboard';
 import NewAppointmentModal from './pages/usersArea/patients/NewAppointmentModal';
-import { newAppointmentLoader } from './pages/appointments/loaders';
-import { newAppointmentAction } from './pages/appointments/actions';
-import { createReportAction } from './pages/usersArea/medics/actions';
 import ReportPage from './pages/usersArea/medics/ReportPage';
-import { reportsLoader } from './pages/usersArea/medics/loaders';
 import AdminDashboard from './pages/usersArea/admins/AdminDashboard';
-import { createMedicAction } from './pages/usersArea/admins/actions';
 import 'react-toastify/dist/ReactToastify.css';
-import DeleteAppointmentModal from './pages/usersArea/patients/DeleteAppointment';
-import { patientReportLoader, reviewLoader } from './pages/usersArea/patients/loaders';
-import ReviewModal from './pages/usersArea/patients/ReviewModal';
-import { createReviewAction } from './pages/usersArea/patients/actions';
+
+//actions & loaders:
+
+import { newAppointmentLoader, newAppointmentAction } from './pages/actions-loaders/appointments';
+import { PatientVerificationAction, forgotPasswordAction, loginAction, resetPasswordAction, signupAction, 
+  loginLoader, resetPasswordLoader, signupLoader } from './pages/actions-loaders/auth';
+import { createMedicAction, createReportAction, createReviewAction,
+  portalLoader, reportsLoader, patientReportLoader, reviewLoader } from './pages/actions-loaders/usersArea';
 
 
 const App = () => {
@@ -41,13 +38,13 @@ const App = () => {
         {path: '/auth/reset', element: <ResetPasswordPage />, loader: resetPasswordLoader, action: resetPasswordAction},
       ]}
   ]},
-    {path: '/portal/medic', loader: patientLoader, element: <Layout /> , children: [
+    {path: '/portal/medic', loader: portalLoader, element: <Layout /> , children: [
       {path: '', element: <MedicDashboard />},
       {path: 'appointments', element: <AppointmentsPage />, action: createReportAction, children: [
         {path: ':type/:id', element: <ReportPage />, loader: reportsLoader, action: createReportAction}
       ]}
     ]},
-    {path: '/portal/patient', loader: patientLoader, element: <Layout /> , children: [
+    {path: '/portal/patient', loader: portalLoader, element: <Layout /> , children: [
       {path: '', element: <PatientDashboard />, children: [
         {path: 'new-appointment', element: <NewAppointmentModal />, action: newAppointmentAction,  loader: newAppointmentLoader},
     ]},
@@ -57,7 +54,7 @@ const App = () => {
         {path: 'review/:id', element: <ReviewModal />, action: createReviewAction, loader: reviewLoader}
     ]}
     ]},
-    {path: '/portal/admin', loader: patientLoader, element: <Layout />, children: [
+    {path: '/portal/admin', loader: portalLoader, element: <Layout />, children: [
       {path: '/portal/admin', action: createMedicAction, element: <AdminDashboard />, loader: newAppointmentLoader },
     ]}
 ])
