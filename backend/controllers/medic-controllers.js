@@ -92,40 +92,19 @@ const calculateAverageStats = (stats) => {
 
 const getStatistics = async(req, res, next) =>{
     try {
-        const { timeFrame } = req.query;
         const {userId} = req.userData;
-
-        if (!["week", "month", "year"].includes(timeFrame)) throw new HttpError('Plazo de tiempo invalido. Por favor verifica este dato.', 400)
-        const startDate = dayjs().startOf(timeFrame).toDate();
+        const startDate = dayjs().startOf("month").toDate();
         const endDate = dayjs().endOf('year').toDate();
-
         // Obtener estadísticas de revisiones para el período especificado
         const reviews = await Review.find({reviewedMedic: userId, creationDate: { $gte: startDate, $lte: endDate }})
         .select('type rating creationDate');
-
-        if(!reviews.length) return res.status(204).json({message: "No hay suficiente informacion para generar estadisticas"})
-
+        if(!reviews.length) return res.status(404).json({message: "No hay suficiente informacion para generar estadisticas"})
         // Procesar las revisiones para el gráfico
-        let medicStats, patientStats = new Object;
-
+        let patientStats = {1:0, 2:0, 3:0, 4:0, 5:0}
         reviews.forEach(review => {
-            // Agrupar revisiones por tipo (medico/paciente) y por tiempo
-            const timeKey = dayjs(review.creationDate).format("YYYY-MM-DD");
-
-            if (review.type === "medic") {
-                if (!medicStats[timeKey]) medicStats[timeKey] = [];
-                medicStats[timeKey].push(review.rating);
-            } else if (review.type === "patient") {
-                if (!patientStats[timeKey]) patientStats[timeKey] = [];
-                patientStats[timeKey].push(review.rating);
-            }
+            patientStats[review.rating] += 1;            
         });
-
-        // Calcular el promedio de ratings por día
-        const medicAverage = calculateAverageStats(medicStats);
-        const patientAverage = calculateAverageStats(patientStats);
-
-        return res.status(200).json({ medicAverage, patientAverage });
+        return res.status(200).json(patientStats);
     } catch (err) {
         return next(err);
     }

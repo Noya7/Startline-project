@@ -79,18 +79,9 @@
   align-items: center;
 }
 
-.test{
-  background-color: #005566;
-}
-
-.icon{
-  width: 30px;
-  aspect-ratio: 1;
-  text-align: center;
-}
-
 .actions{
   display: flex;
+  gap: 1.5rem;
   justify-content: center;
   align-items: center;
 }
@@ -117,6 +108,14 @@
 .patientLink:hover{
   color: #E0E0E0;
   background-color: #005566;
+}
+
+.icon{
+  width: 25px;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .professionalInfo{

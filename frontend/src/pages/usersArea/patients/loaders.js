@@ -11,3 +11,10 @@ export const patientReportLoader = async ({params}) => {
     localStorage.setItem('appointment', JSON.stringify(data));
     return {rep: data}
 }
+
+export const reviewLoader = async ({params, request}) => {
+    const {id} = params;
+    const url = new URL(request.url)
+    const medicId = url.searchParams.get('med');
+    return {medicId, appId: id};
+}

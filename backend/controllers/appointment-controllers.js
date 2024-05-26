@@ -193,7 +193,7 @@ const getAppointments = async (req, res, next) => {
         const startIndex = (page - 1) * resultsPerPage;
         const requestedFields = 'fullDate area medic medicalReport review';
         const appointments = await Appointment.find({ existingPatient: req.userData.userId }).select(requestedFields)
-        .populate({path: 'medic', select: ' -_id name surname image'})
+        .populate({path: 'medic', select: 'name surname image'})
         .sort({fullDate: -1}).skip(startIndex).limit(resultsPerPage);
         if (!appointments.length) {
             return res.status(404).json({ message: "No hay ninguna cita en el historial. Si crees que esto es un error, por favor contactate con administracion." });

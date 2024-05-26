@@ -1,12 +1,12 @@
 .main {
     position: relative;
     box-sizing: border-box;
-    width: 100%;
-    height: 100%;
     display: flex;
     font-family: Helvetica, sans-serif;
     background-size: cover;
     background-position: center;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
   
   .main::before { 
@@ -16,18 +16,17 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 20%, rgba(0, 0, 0, 0.95) 90%);
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 10%, rgba(0, 0, 0, 0.95) 90%);
   }
   
   .textGrid {
     box-sizing: border-box;
-    width: 100%;
-    height: 45%;
-    padding: 1% 10%;
-    align-self: flex-end;
-    display: grid;
-    grid-template-rows: 35% 60%;
+    display: flex;
+    flex-direction: column;
     gap: 5%;
+    padding: 5% 10%;
+    align-self: flex-end;
+    text-align: justify;
     color: #E0E0E0;
     z-index: 1;
   }
@@ -35,34 +34,32 @@
 .textGrid h2{
     font-family: 'Times New Roman', Times, serif;
     font-weight: 300;
-    font-size: 3.5vw;
+    font-size: 3rem;
 }
 
-.textGrid span{
-    width: 60%;
-    height: 100%;
-    display: grid;
-    grid-template-columns: 75% 20%;
-    gap: 5%;
-}
-
-.textGrid span p{
+.textGrid p{
     font-family: Helvetica, sans-serif;
     font-weight: 300;
-    font-size: 1.5vw;
+    font-size: 1.5rem;
 }
 
-.textGrid span a{
-    width: 100%;
-    height: 33%;
-    border: 0.1vw solid #F3F3F3;
-    border-radius: 1vw;
-    font-family: Helvetica, sans-serif;
-    font-weight: 400;
-    font-size: 1.5vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-decoration: none;
-    color: #F3F3F3;
+
+@media (max-width: 768px) {
+  .textGrid{
+      padding: 15% 5%;
+  }
+  
+  .textGrid p{
+      font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 425px) {
+  .textGrid{
+      padding: 15% 5%;
+  }
+
+  .textGrid p{
+      font-size: 1.2rem;
+  }
 }

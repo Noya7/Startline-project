@@ -16,9 +16,9 @@ const ForgotPassForm = () => {
       <div className={`${classes.container}`}>
         <h1>Recuperar Contraseña</h1>
         <span className={classes.typeSelect}>
-          <button onClick={() => setUserType('patient')}>Paciente</button>
-          <button onClick={() => setUserType('medic')}>Médico</button>
-          <button onClick={() => setUserType('admin')}>Administrador</button>
+          <button className={userType === 'patient' ? classes[userType] : classes.notSelected} onClick={() => setUserType('patient')}>Paciente</button>
+          <button className={userType === 'medic' ? classes[userType] : classes.notSelected} onClick={() => setUserType('medic')}>Médico</button>
+          <button className={userType === 'admin' ? classes[userType] : classes.notSelected} onClick={() => setUserType('admin')}>Administrador</button>
         </span>
         <Form method='post'>
           <input type='hidden' required readOnly name='userType' value={userType}/>

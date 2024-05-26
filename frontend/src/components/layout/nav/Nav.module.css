@@ -41,6 +41,21 @@
     align-items: center;
 }
 
+.patient{
+    color: #F3F3F3;
+    background-color: #0088A3;
+}
+
+.medic{
+    color: #F3F3F3;
+    background-color: #990033;
+}
+
+.admin{
+    color: #F3F3F3;
+    background-color: #004CA3;
+}
+
 @media only screen and (max-width: 925px){
     .navButton{
         width: 45px;

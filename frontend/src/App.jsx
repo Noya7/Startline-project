@@ -24,7 +24,9 @@ import AdminDashboard from './pages/usersArea/admins/AdminDashboard';
 import { createMedicAction } from './pages/usersArea/admins/actions';
 import 'react-toastify/dist/ReactToastify.css';
 import DeleteAppointmentModal from './pages/usersArea/patients/DeleteAppointment';
-import { patientReportLoader } from './pages/usersArea/patients/loaders';
+import { patientReportLoader, reviewLoader } from './pages/usersArea/patients/loaders';
+import ReviewModal from './pages/usersArea/patients/ReviewModal';
+import { createReviewAction } from './pages/usersArea/patients/actions';
 
 
 const App = () => {
@@ -51,7 +53,8 @@ const App = () => {
     ]},
       {path: 'appointments', element: <AppointmentsPage /> , children: [
         {path: ':id', element: <ReportPage />, loader: patientReportLoader},
-        {path: 'delete/:id', element: <DeleteAppointmentModal />}
+        {path: 'delete/:id', element: <DeleteAppointmentModal />},
+        {path: 'review/:id', element: <ReviewModal />, action: createReviewAction, loader: reviewLoader}
     ]}
     ]},
     {path: '/portal/admin', loader: patientLoader, element: <Layout />, children: [

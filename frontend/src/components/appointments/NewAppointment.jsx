@@ -56,10 +56,10 @@ const NewAppointment = () => {
   const responseData = useActionData()
   const areas = useLoaderData();
   const {medics, unavailable} = useSelector(state => state.appointments);
+  const userData = useSelector(state => state.auth.userData);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    //SI EN UN FUTURO ESTO SE GENERA UN LOOP EN ESTE COMPONENTE, ES POR ESTE IF PROBABLEMENTE.
     if (fields.area.length && !fields.medic.length) {
       dispatch(getMedicsAsync(fields.area));
     }
@@ -84,9 +84,9 @@ const NewAppointment = () => {
       <h2>Nuevo Turno</h2>
       <Form method='post' className={classes.form}>
         <span className={classes.inputs}>
-          <TextInput type="text" name="name" placeholder="Nombre" />
-          <TextInput type="text" name="surname" placeholder="Apellido" />
-          <TextInput type="text" name="DNI" placeholder="DNI" />
+          <TextInput type="text" name="name" placeholder="Nombre" value={userData?.userType === 'patient' && userData.name} />
+          <TextInput type="text" name="surname" placeholder="Apellido" value={userData?.userType === 'patient' && userData.surname} />
+          <TextInput type="DNI" name="DNI" placeholder="DNI" value={userData?.userType === 'patient' && userData.DNI} />
         </span>
         <span className={classes.selection}>
           <select name='area' value={fields.area} onChange={handleInputChange}>

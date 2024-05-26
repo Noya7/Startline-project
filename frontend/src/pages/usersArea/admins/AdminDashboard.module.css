@@ -1,7 +1,7 @@
 .main{
     display: grid;
     grid-template-rows: 20% 1fr;
-    gap: 10%;
+    gap: 5%;
 }
 
 @media(max-width: 768px){

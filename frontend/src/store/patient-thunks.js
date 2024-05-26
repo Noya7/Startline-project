@@ -49,3 +49,17 @@ export const deleteAppointmentsAsync = createAsyncThunk('patients/delete-appoint
     data.id = id;
     return data;
 })
+
+export const createReviewAsync = createAsyncThunk('patients/create-review', async (body) => {
+    const response = await fetch(import.meta.env.VITE_API_URL + `/patient/create-review`, {
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        method: 'POST',
+        body: JSON.stringify(body)
+    })
+    const data = await response.json()
+    if(!response.ok) throw new Error(data.error || DEFAULT_ERROR_MSG)
+    return data;
+})

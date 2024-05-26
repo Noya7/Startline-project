@@ -22,9 +22,9 @@ const LoginForm = () => {
             <div className={classes.main}>
                 <h1>Iniciar sesión</h1>
                 <span className={classes.typeSelect}>
-                    <button value='patient' onClick={ e => handleUserType(e)}>Paciente</button>
-                    <button value='medic' onClick={ e => handleUserType(e)}>Médico</button>
-                    <button value='admin' onClick={ e => handleUserType(e)}>Administrador</button>
+                    <button className={userType === 'patient' ? classes[userType] : classes.notSelected} value='patient' onClick={ e => handleUserType(e)}>Paciente</button>
+                    <button className={userType === 'medic' ? classes[userType] : classes.notSelected} value='medic' onClick={ e => handleUserType(e)}>Médico</button>
+                    <button className={userType === 'admin' ? classes[userType] : classes.notSelected} value='admin' onClick={ e => handleUserType(e)}>Administrador</button>
                 </span>
                 <Form method='post'>
                     <input type='hidden' name='userType' value={userType} />

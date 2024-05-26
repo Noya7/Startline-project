@@ -40,12 +40,12 @@ const TextInput = ({ name, type, placeholder, onValidation, value }) => {
       autoComplete='on'
       required
       name={name}
-      className={`${classes.input} ${!!fieldWasTouched && !fieldIsValid && classes.invalid}`}
+      className={`${classes.input} ${fieldWasTouched && !fieldIsValid ? classes.invalid : ''}`}
       type={type === 'signup_password' ? 'password' : type ==='DNI' ? 'number' : type}
       placeholder={placeholder}
-      onBlur={()=>setFieldWasTouched(true)}
+      onBlur={(e)=>setFieldWasTouched(e.target.value.trim().length > 3)}
       onChange={changeHandler}
-      defaultValue={value || ''} // Establecer el valor inicial del input
+      defaultValue={value || ''}
       readOnly={!!value}
     />
   );

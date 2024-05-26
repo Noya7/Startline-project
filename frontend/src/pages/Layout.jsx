@@ -16,11 +16,9 @@ export default AuthLayout;
 
 export const HomeLayout = () => {
     return(
-        <div className={classes.homeBackground}>
-            <div className={classes.homeGrid}>
-                <Header />
-                <Outlet />
-            </div>
+        <div className={classes.homeGrid}>
+            <Header />
+            <Outlet />
         </div>
     )
 }

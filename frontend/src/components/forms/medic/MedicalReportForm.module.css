@@ -50,6 +50,7 @@
     color: #E0E0E0;
     font-size: 1rem;
     cursor: pointer;
+    transition:  0.3s;
 }
 
 .form button:hover{
@@ -57,7 +58,7 @@
 }
 
 .form button:disabled{
-    background-color: rgba(95, 2, 31, 0.438);
+    background-color: rgba(95, 2, 31, 0.45);
     color: #CCCCCC;
     cursor: not-allowed;
 }

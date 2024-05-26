@@ -14,10 +14,7 @@ const WidgetItem = ({ data, userType }) => {
                 <p className={classes.area}>Área: {data.area}</p>
             </>
             ) : (
-            <>
                 <p>{data.name} {data.surname}</p>
-                <p className={classes.dni}>DNI: {data.DNI}</p>
-            </>
             )}
         </li>
     );

@@ -16,14 +16,7 @@ router.get('/appointments', validationCheck([
     check('date').notEmpty().toDate().isISO8601(),
 ]), getAppointments)
 
-router.get('/stats', validationCheck([
-    check('timeFrame').notEmpty().isIn(["week", "month", "year"])
-]), getStatistics)
-
-const test = (req, res, next) => {
-    console.log(req.body);
-    return next()
-} //TODO ELIMINAR ESTO CUANDO NO SE USE MAS
+router.get('/stats', getStatistics)
 
 router.post('/create-report', validationCheck([
     check(["appointment"]).notEmpty().isMongoId(),

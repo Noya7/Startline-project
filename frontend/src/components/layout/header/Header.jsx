@@ -1,5 +1,5 @@
 import Card from '../card/Card';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import classes from './Header.module.css';
 import {useSelector} from 'react-redux'
 import { useState } from 'react';
@@ -9,6 +9,8 @@ import Nav from '../nav/Nav';
 const Header = ({dashboardMode}) => {
   const[menuIsOpen, setMenuIsOpen] = useState(false)
   const userData = useSelector((store)=>store.auth.userData)
+
+  const navigate = useNavigate();
   
   if (dashboardMode) return (
     <div className={classes.dashboardContainer}>
@@ -28,9 +30,9 @@ const Header = ({dashboardMode}) => {
     <header className={classes.homeMain}>
       <div className={classes.upperHeader}>
         <Link to={"/"} className={classes.homeTitle}>StartLine Clinic</Link>
-        <span>
-          <Link to={"new-appointment"}>Turnos Online</Link>
-          <Link to={"auth/login"}>{userData ? 'Volver a Sesion' : 'Iniciar Sesion'}</Link>
+        <span className={classes.homeOptions}>
+          <button onClick={()=> navigate("new-appointment")}>Turnos Online</button>
+          <button onClick={()=> navigate("auth/login")}>{userData ? 'Volver a Sesion' : 'Iniciar Sesion'}</button>
         </span>
       </div>
       <nav className={classes.lowerHeader}>

@@ -13,24 +13,24 @@ const UserDataWidget = ({userData}) => {
         navigate('/')
     }
 
-  return (
-    <div className={`${classes.main} ${classes[userData.userType]}`}>
-        {userData.userType === 'medic' && <div className={classes.image}>
-                <img src={userData.image} alt={`Imagen de ${userData.name}`} />
-        </div>}
-        <div className={userData.userType === 'patient' ? classes.patientInfo : classes.medicInfo}>
-            <div className={classes.text}>
-                <h2>{userData.name} {userData.surname}</h2>
-                <span>
-                    {userData.userType === 'medic' && <p >Área: {userData.area}</p>}
-                    <p className={classes.identification}>{userData.userType === 'medic' ? `Matricula: ${userData.matricula}` : `DNI: ${userData.DNI  }`}</p>
+    return (
+        <div className={`${classes.main} ${classes[userData.userType]}`}>
+            {userData.userType === 'medic' && <div className={classes.image}>
+                    <img src={userData.image} alt={`Imagen de ${userData.name}`} />
+            </div>}
+            <div className={userData.userType === 'patient' ? classes.patientInfo : classes.medicInfo}>
+                <div className={classes.text}>
+                    <h2>{userData.name} {userData.surname}</h2>
+                    <span>
+                        {userData.userType === 'medic' && <p >Área: {userData.area}</p>}
+                        <p className={classes.identification}>{userData.userType === 'medic' ? `Matricula: ${userData.matricula}` : `DNI: ${userData.DNI  }`}</p>
+                    </span>
+                </div>
+                <span className={userData.userType === 'medic' ? classes.buttons : classes.patientButtons}>
+                    <button onClick={logoutHandler}>Cerrar sesión</button>
                 </span>
             </div>
-            <span className={userData.userType === 'medic' ? classes.buttons : classes.patientButtons}>
-                <button onClick={logoutHandler}>Cerrar sesión</button>
-            </span>
         </div>
-    </div>
   )
 }
 

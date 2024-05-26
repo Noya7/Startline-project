@@ -11,9 +11,10 @@
 }
 
 .item {
+    width: 20rem;
     max-width: 15rem;
     box-sizing: border-box;
-    padding: 1rem;
+    padding: 0.5rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -24,6 +25,7 @@
 
 .item h2 {
     width: max-content;
+    max-width: 12rem;
     box-sizing: border-box;
     padding: 0 1rem;
     border-radius: 1rem;
@@ -31,8 +33,7 @@
     align-items: center;
     justify-self: center;
     font-size: 1rem;
-    font-weight: bold;
-    margin-bottom: 8px;
+    font-weight: 400;
     background-color: rgba(0, 0, 0, 0.2);
 }
 

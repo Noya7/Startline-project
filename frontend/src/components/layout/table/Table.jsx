@@ -1,6 +1,6 @@
 import {useTable} from 'react-table'
 import {Link} from 'react-router-dom'
-import { FaEye, FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
+import { FaEye, FaPencilAlt, FaStar, FaTrashAlt } from 'react-icons/fa';
 import { useMemo } from 'react'
 import { useSelector } from 'react-redux';
 import Controls from './Controls';
@@ -54,7 +54,12 @@ const Table = () => {
                 return(
                     <span className={classes.actions}>
                         {isPastAppointment ? (
-                        !!row.original.medicalReport && <Link className={classes.patientLink} to={`${row.original.medicalReport}`}><FaEye className={classes.icon} /></Link>
+                        !!row.original.medicalReport && (
+                        <>
+                            <Link className={classes.patientLink} to={`${row.original.medicalReport}`}><FaEye className={classes.icon} /></Link>
+                            {!row.original.review && <Link className={classes.patientLink} to={`review/${row.original._id}?med=${row.original.medic._id}`}><FaStar className={classes.icon} /></Link>}
+                        </>
+                        )
                         ) : (
                         <Link className={classes.patientLink} to={`delete/${row.original._id}`}><FaTrashAlt className={classes.icon} /></Link>
                         )}

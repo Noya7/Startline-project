@@ -47,3 +47,12 @@ export const editMedicalReportAsync = createAsyncThunk('medic/edit-report', asyn
     if(!response.ok) throw new Error(data.error || DEFAULT_ERROR_MSG);
     return data;
 })
+
+export const getStatisticsAsync = createAsyncThunk('medic/get-statistics', async () => {
+    const response = await fetch(import.meta.env.VITE_API_URL + '/medic/stats', {
+        credentials: 'include'
+    });
+    const data = await response.json();
+    if(!response.ok) throw new Error(data.error || DEFAULT_ERROR_MSG);
+    return data;
+})

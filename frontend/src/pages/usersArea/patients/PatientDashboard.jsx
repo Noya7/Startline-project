@@ -11,8 +11,8 @@ const PatientDashboard = () => {
     <div className={classes.main}>
       <Outlet />
       <UserDataWidget userData={state} />
-      <ButtonPanel />
       <AppointmentsWidget userType={state.userType} />
+      <ButtonPanel />
     </div>
   );
 }

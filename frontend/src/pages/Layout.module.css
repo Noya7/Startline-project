@@ -9,16 +9,11 @@
     background-color: #CCCCCC;
 }
 
-.homeBackground{
+.homeGrid{
     box-sizing: border-box;
     width: 100vw;
     height: 100vh;
-    background: linear-gradient(to top, #F3F3F3 75%, #003066 );
-}
-
-.homeGrid{
-    width: 100%;
-    height: 100%;
     display: grid;
     grid-template-rows: 15% 85%;
+    overflow-y: auto;
 }

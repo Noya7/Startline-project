@@ -1,0 +1,106 @@
+.main{
+    width: 40rem;
+    height: 40rem;
+    max-width: 35rem;
+    max-height: 30rem;
+    display: flex;
+    gap: 1.5rem;
+    padding: 1rem;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #F3F3F3;
+}
+
+.main h2{
+    font-size: 2rem;
+    text-align: center;
+    color: #2B2B2B;
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    justify-content: center;
+    width: 85%;
+    height: 100%;
+    font-size: 1.2rem;
+    color: #2B2B2B;
+
+}
+
+.ratings{
+    display: flex;
+    gap: 1.5rem;
+    align-self: center;
+}
+
+.ratingLabel {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .ratingIcon {
+    font-size: 1.5rem;
+    color: #cccccc;
+    transition: color 0.3s;
+  }
+
+    .ratingIcon:hover {
+        color: rgb(255, 193, 7, 0.5);
+    }
+  
+  .ratingIconOn {
+    font-size: 1.5rem;
+    color: #ffc107;
+  }
+
+/* .ratings label{
+    display: flex;
+    flex-direction: column;
+    font-size: 1.2rem;
+} */
+
+.form textarea{
+    width: 100%;
+    height: 100%;
+    font-size: 1.2rem;
+    padding: 0.5rem;
+    margin: 0.5rem 0;
+    border: 0.1vw solid #2B2B2B;
+    border-radius: 0.5rem;
+    resize: none;
+    transition: border 0.3s;
+}
+
+.form textarea::-webkit-scrollbar{
+    display: none;
+}
+
+.form textarea:focus{
+    outline: none;
+    border: 0.1vw solid #0088A3;
+}
+
+.form button{
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: #005566;
+    color: #E0E0E0;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.form button:hover{
+    background-color: #0088A3;
+}
+
+.form button:disabled{
+    background-color: rgba(0, 85, 102, 0.45);
+    color: #CCCCCC;
+    cursor: not-allowed;
+}

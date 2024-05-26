@@ -40,7 +40,7 @@ router.delete('/delete-appointment', validationCheck([
 
 router.post('/create-review', validationCheck([
     check(['reviewedMedic', 'appointment']).notEmpty().isMongoId(),
-    check('rating').trim().notEmpty().isInt({min: 1, max: 10}),
+    check('rating').trim().notEmpty().isInt({min: 1, max: 5}),
     check('review').trim().notEmpty().isLength({min: 25, max: 500}),
 ]), reviewValidations, createReview);
 

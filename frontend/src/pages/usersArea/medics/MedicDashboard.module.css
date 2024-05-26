@@ -1,7 +1,7 @@
 .main{
     display: grid;
-    grid-template-rows: 30% 45%;
-    gap: 10%;
+    grid-template-rows: 20% 25% 45%;
+    gap: 5%;
 }
 
 /* @media (max-width: 768px){

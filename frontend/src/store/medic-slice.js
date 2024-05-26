@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { editMedicalReportAsync, getMedicAppointmentsAsync, getReportAsync } from "./medic-thunks";
+import { editMedicalReportAsync, getMedicAppointmentsAsync, getReportAsync, getStatisticsAsync } from "./medic-thunks";
 
 const medicSlice = createSlice({
     name: 'medic',
-    initialState: { appointments: null, report: null },
+    initialState: { appointments: null, report: null, statistics: null},
     extraReducers: builder => {
         builder.addCase(getMedicAppointmentsAsync.fulfilled, (state, action) => {
             state.appointments = action.payload;
@@ -13,6 +13,9 @@ const medicSlice = createSlice({
         })
         builder.addCase(editMedicalReportAsync.fulfilled, (state) => {
             state.report = null
+        }),
+        builder.addCase(getStatisticsAsync.fulfilled, (state, action) => {
+            state.statistics = action.payload;
         })
     }
 })

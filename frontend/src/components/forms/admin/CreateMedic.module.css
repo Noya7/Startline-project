@@ -25,22 +25,36 @@
     gap: 1rem;
 }
 
+.form select{
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.2);
+    color: #2B2B2B;
+}
+
+.form select option{
+    background-color: rgba(0, 0, 0, 0.2);
+    color: #2B2B2B;
+}
+
 .form input{
-    color: black;
+    color: #2B2B2B;
 }
 
 .form button{
     width: 100%;
     padding: 0.5rem;
-    background-color: #2B2B2B;
-    color: white;
+    background-color: #004CA3;
+    color: #E0E0E0;
     border: none;
     border-radius: 0.5rem;
     cursor: pointer;
+    transition: all 0.3s;
 }
 
 .form button:hover{
-    background-color: #4D4D4D;
+    background-color: #003066;
 }
 
 @media (max-width: 768px) {
