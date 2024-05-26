@@ -13,20 +13,14 @@ const router = require('./routes/router')
 const app = express();
 
 const corsOptions = {
-    origin: function (origin, callback) {
-        if (origin.startsWith('https://startline-project.vercel.app')) {
-          callback(null, true)
-        } else {
-          callback(new Error('Not allowed by CORS'))
-        }
-    },
-    origin: [process.env.FRONTEND_URL],
+    // origin: [process.env.FRONTEND_URL],
+    origin: true,
     credentials: true,
     optionsSuccessStatus: 200
 };
 
 app.options('*', cors(corsOptions));
-app.use(express.json(), cors(), cookieParser(), checkAuth)
+app.use(express.json(), cors(corsOptions), cookieParser(), checkAuth)
 app.use('/api', router)
 app.use(errorHandler)
 
