@@ -13,7 +13,14 @@ const router = require('./routes/router')
 const app = express();
 
 const corsOptions = {
-    origin: [process.env.FRONTEND_URL, 'https://startline-project.vercel.app/'],
+    origin: function (origin, callback) {
+        if (origin.startsWith('https://startline-project.vercel.app')) {
+          callback(null, true)
+        } else {
+          callback(new Error('Not allowed by CORS'))
+        }
+    },
+    origin: [process.env.FRONTEND_URL],
     credentials: true,
     optionsSuccessStatus: 200
 };
