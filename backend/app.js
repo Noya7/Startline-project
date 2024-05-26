@@ -26,7 +26,7 @@ const corsOptions = {
 };
 
 app.options('*', cors(corsOptions));
-app.use(express.json(), cors(corsOptions), cookieParser(), checkAuth)
+app.use(express.json(), cors(), cookieParser(), checkAuth)
 app.use('/api', router)
 app.use(errorHandler)
 
