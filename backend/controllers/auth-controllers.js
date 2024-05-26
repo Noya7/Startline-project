@@ -210,7 +210,7 @@ const autoLogin = async (req, res, next) => {
 
 const logout = (req, res, next) => {
   if (!req.userData) throw new HttpError('No hay una sesion activa para cerrar.', 400)
-  return res.clearCookie("token", {httpOnly: true}).status(200).json({message: "Sesión finalizada correctamente."})
+  return res.clearCookie("token", {httpOnly: true, sameSite: 'none', secure: true}).status(200).json({message: "Sesión finalizada correctamente."})
 }
 
 //function reset password:
