@@ -6,3 +6,12 @@
     background-color: #F3F3F3;
     border-radius: 0.5rem;
 }
+
+.main h2{
+    box-sizing: border-box;
+    font-size: 1.3rem;
+    padding: 1rem;
+    color: #2B2B2B;
+    align-self: center;
+    text-align: justify;
+}

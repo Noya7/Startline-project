@@ -18,7 +18,7 @@ const chartOptions = {
 
 const StatsWidget = () => {
   let data = useSelector(state => state.medic.statistics);
-  data = Object.values(data);
+  data = !!data?.length && Object.values(data);
 
   const chartData = {
     labels: ["1 estrella","2 estrella","3 estrella","4 estrella","5 estrella"],
@@ -32,7 +32,11 @@ const StatsWidget = () => {
 
   return (
     <div className={classes.main}>
-      <Pie options={chartOptions} data={chartData} redraw />
+      {data && data.length > 0 ? (
+        <Pie options={chartOptions} data={chartData} redraw />
+      ) : (
+        <h2>No hay suficientes datos para generar un grafico de estadisticas.</h2>
+      )}
     </div>
   );
 };
