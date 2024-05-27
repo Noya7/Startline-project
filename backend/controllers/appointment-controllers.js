@@ -45,7 +45,7 @@ const timeValidation = (date, timeIndex) => {
     //Validar que la fecha este dentro del periodo de dos meses desde hoy.
     const maxDate = dayjs().add(2, "months");
     if (input.isAfter(maxDate)) throw new HttpError("Lo sentimos, no programamos turnos con mas de dos meses de antelación.", 400);
-    if ([0, 6].includes(dayjs(date).day())) throw new HttpError("Lo sentimos, no programamos turnos en fines de semana.", 400)
+    if ([1, 6].includes(dayjs(date).day())) throw new HttpError("Lo sentimos, no programamos turnos en fines de semana.", 400)
     return;
 }
 
