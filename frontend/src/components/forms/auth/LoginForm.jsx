@@ -2,7 +2,6 @@ import { useState } from 'react';
 import TextInput from '../input/TextInput'
 import { Form, Link, useActionData } from 'react-router-dom';
 import useResponseToast from '../../../hooks/useResponseToast';
-import { ToastContainer } from 'react-toastify';
 import classes from './LoginForm.module.css'
 
 const LoginForm = () => {
@@ -35,7 +34,6 @@ const LoginForm = () => {
                 </Form>
             {userType !== 'medic' && <Link className={classes.link} to={signupLink}>Registrarse</Link>}
             </div>
-            <ToastContainer />
         </>
     );
 }

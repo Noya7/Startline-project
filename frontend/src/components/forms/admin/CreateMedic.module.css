@@ -1,12 +1,32 @@
+.openButton{
+    height: 3rem;
+    padding: 1rem;
+    justify-self: center;
+    border-radius: 0.5rem;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(0, 76, 163);
+    color: #E0E0E0;
+    font-weight: 500;
+    font-size: 1.3rem;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.openButton:hover{
+    background-color: rgb(0, 55, 117);
+}
+
 .container{
     box-sizing: border-box;
     justify-self: center;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    background-color: #F3F3F3;
-    padding: 1.5rem;
-    border-radius: 1rem;
+    background-color: #003066;
+    padding: 3rem;
     justify-content: center;
     align-items: center;
 }
@@ -14,7 +34,7 @@
 .container h2 {
     font-size: 1.5rem;
     font-weight: 500;
-    color: #2B2B2B;
+    color: #E0E0E0;
     text-align: center;
 }
 
@@ -25,36 +45,46 @@
     gap: 1rem;
 }
 
+.form label{
+    color: #CCCCCC;
+}
+
 .form select{
     padding: 0.5rem;
     border-radius: 0.5rem;
     border: 1px solid rgba(0, 0, 0, 0.2);
     background-color: rgba(0, 0, 0, 0.2);
-    color: #2B2B2B;
+    color: #CCCCCC;
 }
 
 .form select option{
-    background-color: rgba(0, 0, 0, 0.2);
-    color: #2B2B2B;
+    background-color: #003066;
+    color: #CCCCCC;
 }
 
 .form input{
-    color: #2B2B2B;
+    color: #E0E0E0;
 }
 
 .form button{
     width: 100%;
     padding: 0.5rem;
-    background-color: #004CA3;
+    border-radius: 1rem;
+    border: 0.1vw solid rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.2);
     color: #E0E0E0;
-    border: none;
-    border-radius: 0.5rem;
     cursor: pointer;
     transition: all 0.3s;
 }
 
 .form button:hover{
-    background-color: #003066;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.form button:disabled{
+    background-color: rgba(0, 0, 0, 0.4);
+    color: #7C7C7C;
+    cursor: not-allowed;
 }
 
 @media (max-width: 768px) {

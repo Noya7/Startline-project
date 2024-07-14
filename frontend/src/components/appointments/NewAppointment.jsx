@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Form, useActionData, useLoaderData } from 'react-router-dom';
+import { Form, useNavigate, useActionData, useLoaderData, useSubmit } from 'react-router-dom';
 import { getMedicsAsync, getUnavailableAsync } from '../../store/appointments-thunks';
 import TextInput from '../forms/input/TextInput';
-import {ToastContainer} from 'react-toastify';
+import useResponseToast from '../../hooks/useResponseToast';
 
 import classes from './NewAppointment.module.css';
-import useResponseToast from '../../hooks/useResponseToast';
 
 const possibleAppointments = [
   { time: '08:00', index: 0 },
@@ -58,6 +57,8 @@ const NewAppointment = () => {
   const {medics, unavailable} = useSelector(state => state.appointments);
   const userData = useSelector(state => state.auth.userData);
   const dispatch = useDispatch();
+  const navigate = useNavigate()
+  const submit = useSubmit();
 
   useEffect(() => {
     if (fields.area.length && !fields.medic.length) {
@@ -78,8 +79,13 @@ const NewAppointment = () => {
   .map(appointment => <option key={appointment.index} value={appointment.index}>{appointment.time}</option>);
 
   useResponseToast(responseData)
+
+  const submitHandler = () => {
+    submit();
+    setTimeout(()=>{navigate('../')}, 500)
+  }
+
   return (
-    <>
     <div className={classes.main}>
       <h2>Nuevo Turno</h2>
       <Form method='post' className={classes.form}>
@@ -103,11 +109,9 @@ const NewAppointment = () => {
           <option value="">Seleccionar turno</option>
           {availableAppointments}
         </select>
-        <button type="submit" disabled={!fields.timeIndex.length}>Programar turno</button>
+        <button onClick={submitHandler} disabled={!fields.timeIndex.length}>Programar turno</button>
       </Form>
     </div>
-    <ToastContainer />
-    </>
   );
 };
 

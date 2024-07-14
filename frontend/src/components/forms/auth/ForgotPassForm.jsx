@@ -2,7 +2,6 @@ import { useState } from 'react';
 import TextInput from '../input/TextInput';
 import classes from './ForgotPassForm.module.css'
 import { Form, useActionData } from 'react-router-dom'
-import { ToastContainer } from 'react-toastify';
 import useResponseToast from '../../../hooks/useResponseToast';
 
 const ForgotPassForm = () => {
@@ -12,7 +11,6 @@ const ForgotPassForm = () => {
 
     useResponseToast(responseData)
     return (
-    <>
       <div className={`${classes.container}`}>
         <h1>Recuperar Contraseña</h1>
         <span className={classes.typeSelect}>
@@ -27,8 +25,6 @@ const ForgotPassForm = () => {
           <button className={`${classes.button}`} disabled={!formIsValid}>Recuperar</button>
         </Form>
       </div>
-      <ToastContainer />
-    </>
     )
 }
 
