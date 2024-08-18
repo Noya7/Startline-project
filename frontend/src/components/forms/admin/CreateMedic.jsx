@@ -1,9 +1,10 @@
 import { Form, useActionData, useLoaderData, useSubmit } from 'react-router-dom';
-import classes from './CreateMedic.module.css';
 import TextInput from '../input/TextInput';
 import { useEffect, useState } from 'react';
 import useResponseToast from '../../../hooks/useResponseToast';
 import Modal from '../../layout/modal/Modal'
+
+import classes from './CreateMedic.module.css';
 
 const defaultFields = {
   area: false,
@@ -40,7 +41,7 @@ const CreateMedic = () => {
     <button className={classes.openButton} onClick={()=>setToggleModal(true)}>Habilitar un nuevo profesional</button>
     {toggleModal && <Modal onClose={()=>setToggleModal(false)}>
         <div className={classes.container}>
-          <h2>Habilitar un nuevo profesional:</h2>
+          <h2>Habilitar un nuevo profesional</h2>
           <Form method='post' className={classes.form}>
             <label htmlFor='area'>Area:</label>
             <select name='area' onChange={(e) => {setCreateNew(e.target.value === 'new'); handleFieldValidation('area', !!e.target.value)}} required>

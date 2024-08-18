@@ -1,10 +1,10 @@
-import Card from '../card/Card';
 import { Link, useNavigate } from 'react-router-dom';
-import classes from './Header.module.css';
 import {useSelector} from 'react-redux'
 import { useState } from 'react';
 import {FaBars, FaPhone, FaFacebook, FaLinkedin, FaInstagram} from 'react-icons/fa'
 import Nav from '../nav/Nav';
+
+import classes from './Header.module.css';
 
 const Header = ({dashboardMode}) => {
   const[menuIsOpen, setMenuIsOpen] = useState(false)
@@ -14,15 +14,15 @@ const Header = ({dashboardMode}) => {
   
   if (dashboardMode) return (
     <div className={classes.dashboardContainer}>
-      <Card element='header' styling={{borderRadius: '2rem'}}>
+      <header className={classes.authMain}>
         <div className={`${classes.dashBoardMain}`}>
           <Link to={'/'} className={`${classes.title}`}>StartLine Clinic</Link>
           <button onClick={()=>setMenuIsOpen(!menuIsOpen)} className={`${classes.menuButton} ${menuIsOpen ? classes.open : ''}`}>
             <FaBars />
           </button>
         </div>
-      </Card>
-      <Nav userType={userData.userType} menuIsOpen={menuIsOpen} />
+      </header>
+      <Nav userType={userData.userType} menuIsOpen={menuIsOpen} onNavigation={()=>setMenuIsOpen(false)} />
     </div>
   );
 
@@ -38,10 +38,10 @@ const Header = ({dashboardMode}) => {
       <nav className={classes.lowerHeader}>
         <a className={classes.location} href="https://www.google.com/maps?q=Independencia+757+-+Córdoba" target="_blank">Independencia 757 - Córdoba</a>
         <span className={classes.icons}>
-          <a href="tel: 08105552553"><FaPhone /></a>
-          <a href="https://es-la.facebook.com/SanatorioAllende/"><FaFacebook /></a>
-          <a href="https://ar.linkedin.com/company/sanatorio-allende-s.a"><FaLinkedin /></a>
-          <a href="https://www.instagram.com/sanatorio_allende/"><FaInstagram /></a>
+          <a href="tel: 08105552553" target="_blank"><FaPhone /></a>
+          <a href="https://es-la.facebook.com/SanatorioAllende/" target="_blank"><FaFacebook /></a>
+          <a href="https://ar.linkedin.com/company/sanatorio-allende-s.a" target="_blank"><FaLinkedin /></a>
+          <a href="https://www.instagram.com/sanatorio_allende/" target="_blank"><FaInstagram /></a>
         </span>
       </nav>
     </header>

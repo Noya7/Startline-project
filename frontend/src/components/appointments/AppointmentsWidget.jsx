@@ -1,4 +1,3 @@
-import Card from './../layout/card/Card'
 import {Link} from 'react-router-dom';
 import WidgetItem from './WidgetItem';
 import { useSelector } from 'react-redux';
@@ -20,15 +19,13 @@ const AppointmentsWidget = ({userType}) => {
   }, [appointments, userType])
   
   return (
-    <Card styling={{ borderRadius: '1rem' }}>
-      <div className={classes.main}>
-        <span className={classes.legend}>
-          <h2>{userType === 'medic' ? 'Próximos turnos:' : 'Mis turnos:'}</h2>
-          <Link to="appointments">Ir a turnos</Link>
-        </span>
-        { items.length ? <ul>{items}</ul> : <li className={classes.empty}>No hay turnos próximos</li> }
-      </div>
-    </Card>
+    <div className={classes.main}>
+      <span className={classes.legend}>
+        <h2>{userType === 'medic' ? 'Próximos turnos:' : 'Mis turnos:'}</h2>
+        <Link to="appointments">Ir a turnos</Link>
+      </span>
+      { items.length ? <ul>{items}</ul> : <li className={classes.empty}>No hay turnos próximos</li> }
+    </div>
   );
 };
 

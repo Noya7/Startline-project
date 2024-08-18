@@ -1,11 +1,5 @@
 .main{
-    display: grid;
-    grid-template-rows: 20% 1fr;
-    gap: 5%;
-}
-
-@media(max-width: 768px){
-    .main{
-        gap: 5%;
-    }
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
 }
